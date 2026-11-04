@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Catalog | Prince Athletics Footwear</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { black: '#0a0a0a', dark: '#121212', card: '#1e1e1e', gold: '#FFD700', goldDark: '#B8860B', green: '#00FF66' }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Montserrat', sans-serif; }</style>
+</head>
+<body class="bg-brand-black text-white antialiased flex flex-col min-h-screen">
+    <!-- NAVBAR -->
+    <nav class="sticky top-0 z-40 bg-brand-dark/95 backdrop-blur-md border-b border-brand-gold/30">
+        <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <img src="logo.png" onerror="this.onerror=null; this.src='https://via.placeholder.com/150/000000/00FF66?text=PRINCE';" class="h-12 w-12 object-contain rounded-full border-2 border-brand-gold">
+                <div>
+                    <h1 class="text-lg font-black italic text-yellow-400">PRINCE ATHLETICS</h1>
+                    <p class="text-[9px] text-brand-green font-bold uppercase">Back to Home</p>
+                </div>
+            </a>
+            <div class="flex items-center gap-3">
+                <a href="index.html" class="text-xs font-bold bg-brand-card text-brand-gold px-3 py-2 rounded-lg border border-brand-gold/40">Home</a>
+                <button onclick="toggleCartDrawer()" class="relative bg-brand-gold text-black p-2.5 rounded-full">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="cartCount" class="absolute -top-1 -right-1 bg-red-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- CATALOG CONTENT (2-ROW MOBILE OPTIMIZED GRID) -->
+    <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-8 sm:py-12 flex-1 w-full">
+        <h2 id="categoryTitle" class="text-2xl sm:text-3xl font-black italic text-yellow-400 uppercase mb-2">Category Catalog</h2>
+        <p class="text-xs text-gray-400 mb-8">Authentic gear and inventory available for this section.</p>
+        <div id="categoryProductGrid" class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6"></div>
+    </main>
+
+    <!-- IMAGE LIGHTBOX MODAL (OPEN / CLOSE) -->
+    <div id="imageModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4" onclick="closeImageModal()">
+        <div class="relative max-w-3xl max-h-[90vh] flex items-center justify-center" onclick="event.stopPropagation()">
+            <button onclick="closeImageModal()" class="absolute -top-10 right-0 text-white hover:text-brand-gold text-2xl font-black"><i class="fa-solid fa-xmark"></i></button>
+            <img id="modalImage" src="" class="max-w-full max-h-[80vh] object-contain rounded-2xl border border-brand-gold/40 shadow-2xl">
+        </div>
+    </div>
+
+    <!-- CART DRAWER -->
+    <div id="cartDrawer" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex justify-end">
+        <div class="bg-brand-dark w-full max-w-md h-full shadow-2xl flex flex-col p-6 overflow-y-auto border-l border-brand-gold/30">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-4 mb-4">
+                <h3 class="text-xl font-black italic text-yellow-400">YOUR CART</h3>
+                <button onclick="toggleCartDrawer()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div id="cartItems" class="flex-1 space-y-3 mb-6"></div>
+            <div class="border-t border-gray-800 pt-4 space-y-4">
+                <div class="flex justify-between font-bold text-lg">
+                    <span>Total:</span>
+                    <span id="cartTotal" class="text-brand-green">$0.00 USD</span>
+                </div>
+                <button onclick="checkoutWhatsApp()" class="w-full bg-brand-green text-black font-black py-3 rounded-xl uppercase text-xs">
+                    <i class="fa-brands fa-whatsapp"></i> Order via WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CHANGE THIS VARIABLE FOR EACH FILE: "Footwear", "Equipment", "Apparel", or "Football"
+        const targetCategory = "Footwear"; // Change this for each category pageS
+
+        document.getElementById('categoryTitle').textContent = targetCategory + " Collection";
+
+        let products = JSON.parse(localStorage.getItem('prince_products')) || [];
+        let cart = JSON.parse(localStorage.getItem('prince_cart')) || [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCategoryProducts();
+            updateCartUI();
+        });
+
+        function renderCategoryProducts() {
+            const grid = document.getElementById('categoryProductGrid');
+            grid.innerHTML = '';
+            const filtered = products.filter(p => p.category.toLowerCase() === targetCategory.toLowerCase());
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-center text-gray-500 py-12">No products found in this category.</p>`;
+                return;
+            }
+
+            filtered.forEach(product => {
+                const isOutOfStock = product.stock <= 0;
+                grid.innerHTML = grid.innerHTML + `
+                    <div class="bg-brand-card border border-gray-800 rounded-2xl overflow-hidden flex flex-col justify-between group">
+                        <div class="h-32 sm:h-44 bg-black/40 flex items-center justify-center p-2 relative cursor-pointer" onclick="openImageModal('${product.image}')">
+                            <img src="${product.image}" class="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300" alt="${product.name}">
+                            <span class="absolute top-2 left-2 bg-brand-green/20 text-brand-green font-bold text-[9px] sm:text-[10px] px-2 py-0.5 rounded-full">${product.stock} In Stock</span>
+                            <span class="absolute bottom-2 right-2 bg-black/60 text-white text-[9px] px-1.5 py-0.5 rounded"><i class="fa-solid fa-expand"></i></span>
+                        </div>
+                        <div class="p-3 sm:p-4 flex-1 flex flex-col justify-between">
+                            <div>
+                                <span class="text-[9px] sm:text-[10px] text-brand-gold uppercase font-bold">${product.brand || 'Prince'}</span>
+                                <h3 class="text-xs sm:text-sm font-bold text-white line-clamp-2 mt-0.5">${product.name}</h3>
+                                <p class="text-[10px] sm:text-[11px] text-gray-400 mt-1 line-clamp-2">${product.desc}</p>
+                            </div>
+                            <div class="flex items-center justify-between mt-3 pt-2 border-t border-gray-800">
+                                <span class="text-sm sm:text-base font-black text-brand-green">$${product.price.toFixed(2)}</span>
+                                <button onclick="addToCart(${product.id})" ${isOutOfStock ? 'disabled' : ''} class="${isOutOfStock ? 'bg-gray-700 text-gray-400' : 'bg-brand-gold hover:bg-brand-green text-black'} font-black text-[11px] sm:text-xs px-2.5 sm:px-3 py-1.5 rounded-lg uppercase transition">
+                                    ${isOutOfStock ? 'Sold Out' : 'Add'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Image Modal Controls
+        function openImageModal(imgUrl) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modalImg.src = imgUrl;
+            modal.classList.remove('hidden');
+        }
+
+        function closeImageModal() {
+            document.getElementById('imageModal').classList.add('hidden');
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product || product.stock <= 0) return;
+            const existing = cart.find(i => i.id === productId);
+            if (existing) {
+                if (existing.qty + 1 > product.stock) {
+                    alert(`Only ${product.stock} units available in stock.`);
+                    return;
+                }
+                existing.qty++;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+            localStorage.setItem('prince_cart', JSON.stringify(cart));
+            updateCartUI();
+            toggleCartDrawer(true);
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cartItems');
+            container.innerHTML = '';
+            let total = 0, count = 0;
+            cart.forEach(item => {
+                total += item.price * item.qty;
+                count += item.qty;
+                container.innerHTML += `<div class="flex justify-between items-center bg-black p-2.5 rounded-xl text-xs border border-gray-800"><span>${item.name} (x${item.qty})</span><span class="text-brand-green font-bold">$${(item.price * item.qty).toFixed(2)}</span></div>`;
+            });
+            document.getElementById('cartCount').textContent = count;
+            document.getElementById('cartTotal').textContent = `$${total.toFixed(2)} USD`;
+        }
+
+        function checkoutWhatsApp() {
+            if (cart.length === 0) return;
+            let msg = "*ORDER FROM CATEGORY PAGE*\n";
+            cart.forEach(i => msg += `- ${i.name} x${i.qty} - $${(i.price * i.qty).toFixed(2)}\n`);
+            window.open(`https://wa.me/8764023170?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        function toggleCartDrawer(open) {
+            const drawer = document.getElementById('cartDrawer');
+            if (open === true) drawer.classList.remove('hidden');
+            else if (open === false) drawer.classList.add('hidden');
+            else drawer.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>

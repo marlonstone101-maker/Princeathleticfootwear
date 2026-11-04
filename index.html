@@ -57,7 +57,16 @@
         .gold-glow {
             box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
         }
-        /* Custom Scrollbar */
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        /* Custom Scrollbar for rest of page */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #0a0a0a; }
         ::-webkit-scrollbar-thumb { background: #FFD700; border-radius: 4px; }
@@ -77,63 +86,57 @@
 
     <!-- MAIN NAVBAR -->
     <nav class="sticky top-0 z-40 bg-brand-dark/95 backdrop-blur-md border-b border-brand-gold/30">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-2 sm:gap-4">
             <!-- Brand Logo -->
-            <a href="#" class="flex items-center gap-3 group">
-                <img id="mainLogo" src="logo.png" onerror="this.onerror=null; this.src='https://via.placeholder.com/150/000000/00FF66?text=PRINCE+ATHLETICS';" alt="Prince Athletics Logo" class="h-12 w-12 sm:h-14 sm:w-14 object-contain rounded-full border-2 border-brand-gold group-hover:scale-105 transition-transform duration-300">
+            <a href="index.html" class="flex items-center gap-2 sm:gap-3 group shrink-0">
+                <img id="mainLogo" src="logo.png" onerror="this.onerror=null; this.src='https://via.placeholder.com/150/000000/00FF66?text=PRINCE+ATHLETICS';" alt="Prince Athletics Logo" class="h-10 w-10 sm:h-14 sm:w-14 object-contain rounded-full border-2 border-brand-gold group-hover:scale-105 transition-transform duration-300">
                 <div>
-                    <h1 class="text-lg sm:text-2xl font-black italic tracking-tighter leading-none gold-gradient-text">PRINCE ATHLETICS</h1>
-                    <p class="text-[9px] sm:text-xs text-brand-green font-bold tracking-widest uppercase">Footwear & Equipment</p>
+                    <h1 class="text-sm sm:text-2xl font-black italic tracking-tighter leading-none gold-gradient-text">PRINCE ATHLETICS</h1>
+                    <p class="text-[8px] sm:text-xs text-brand-green font-bold tracking-widest uppercase">Footwear & Equipment</p>
                 </div>
             </a>
 
-            <!-- Search Bar (Desktop & Tablet) -->
-            <div class="hidden md:flex flex-1 max-w-xs mx-8 relative">
-                <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search spikes, jerseys, gear..." class="w-full bg-brand-black border border-gray-700 rounded-full py-2 pl-4 pr-10 text-sm focus:outline-none focus:border-brand-gold text-white">
+            <!-- Search Bar (Desktop Only) -->
+            <div class="hidden md:flex flex-1 max-w-sm mx-8 relative">
+                <input type="text" id="searchInput" oninput="filterProducts()" placeholder="Search spikes, jerseys..." class="w-full bg-brand-black border border-gray-700 rounded-full py-2 pl-4 pr-10 text-sm focus:outline-none focus:border-brand-gold text-white">
                 <i class="fa-solid fa-magnifying-glass absolute right-3 top-2.5 text-gray-400"></i>
             </div>
 
             <!-- Navigation Actions -->
-            <div class="flex items-center gap-3">
-                <!-- Admin Button -->
-                <button onclick="toggleAdminModal()" class="text-xs font-bold bg-brand-card hover:bg-gray-800 text-brand-gold px-3 py-2 rounded-lg border border-brand-gold/40 flex items-center gap-1.5 transition">
-                    <i class="fa-solid fa-user-gear text-brand-green"></i>
+            <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+                <button onclick="toggleAdminModal()" class="text-xs font-bold bg-brand-card hover:bg-gray-800 text-brand-gold px-2.5 sm:px-3 py-2 rounded-lg border border-brand-gold/40 flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-user-gear text-brand-green text-xs sm:text-sm"></i>
                     <span class="hidden sm:inline">Admin</span>
                 </button>
-
-                <!-- Cart Icon -->
-                <button onclick="toggleCartDrawer()" class="relative bg-brand-gold text-black font-black p-2.5 rounded-full hover:bg-brand-green transition duration-300">
-                    <i class="fa-solid fa-cart-shopping text-base sm:text-lg"></i>
+                <button onclick="toggleCartDrawer()" class="relative bg-brand-gold text-black font-black p-2 sm:p-2.5 rounded-full hover:bg-brand-green transition duration-300">
+                    <i class="fa-solid fa-cart-shopping text-sm sm:text-lg"></i>
                     <span id="cartCount" class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] sm:text-xs w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center font-bold">0</span>
                 </button>
             </div>
         </div>
-        <!-- Mobile Search Bar Row -->
-        <div class="block md:hidden px-4 pb-3">
-            <div class="relative">
-                <input type="text" id="searchMobileInput" oninput="filterProductsMobile()" placeholder="Search spikes, jerseys, gear..." class="w-full bg-brand-black border border-gray-700 rounded-full py-1.5 pl-4 pr-10 text-xs focus:outline-none focus:border-brand-gold text-white">
-                <i class="fa-solid fa-magnifying-glass absolute right-3 top-2 text-gray-400 text-xs"></i>
-            </div>
-        </div>
     </nav>
+
+    <!-- MOBILE & TABLET SEARCH BAR (Transparent / Transparent Background) -->
+    <div class="block md:hidden bg-transparent px-4 py-2">
+        <div class="relative w-full">
+            <input type="text" id="searchInputMobile" oninput="document.getElementById('searchInput').value = this.value; filterProducts()" placeholder="Search spikes, jerseys, equipment..." class="w-full bg-brand-black/50 backdrop-blur-sm border border-gray-700/80 rounded-full py-2 pl-4 pr-10 text-xs text-white focus:outline-none focus:border-brand-gold">
+            <i class="fa-solid fa-magnifying-glass absolute right-3 top-2.5 text-gray-400 text-xs"></i>
+        </div>
+    </div>
 
     <!-- HERO SLIDESHOW SECTION -->
     <header class="relative bg-brand-black overflow-hidden border-b border-brand-gold/20">
         <div id="heroCarousel" class="relative h-[280px] sm:h-[420px] md:h-[550px] w-full flex items-center justify-center">
-            <!-- Dynamic Slides Injected via JS -->
             <div id="heroSlideContainer" class="w-full h-full relative">
-                <!-- Default Slide 1 -->
                 <div class="hero-slide absolute inset-0 opacity-100 transition-opacity duration-1000 bg-cover bg-center flex items-center justify-center" style="background-image: linear-gradient(to right, rgba(0,0,0,0.85), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80');">
                     <div class="text-center px-4 max-w-3xl">
                         <span class="inline-block bg-brand-green text-black font-black text-[10px] sm:text-xs px-3 py-1 rounded-full uppercase tracking-wider mb-2">New Arrival 2026</span>
                         <h2 class="text-2xl sm:text-4xl md:text-6xl font-black italic tracking-tight text-white mb-2">ENGINEERED FOR <span class="gold-gradient-text">SPEED</span></h2>
                         <p class="text-gray-300 text-xs sm:text-base md:text-lg mb-4">Equipping elite track & field athletes across Jamaica and worldwide.</p>
-                        <a href="#catalog" class="inline-block bg-brand-gold hover:bg-brand-green text-black font-black text-xs sm:text-base px-6 sm:px-8 py-2.5 sm:py-3 rounded-full uppercase tracking-wider shadow-lg transition">Shop Collection</a>
+                        <a href="#categories" class="inline-block bg-brand-gold hover:bg-brand-green text-black font-black text-xs sm:text-base px-6 sm:px-8 py-2.5 sm:py-3 rounded-full uppercase tracking-wider shadow-lg transition">Shop Categories</a>
                     </div>
                 </div>
             </div>
-
-            <!-- Controls -->
             <button onclick="prevSlide()" class="absolute left-3 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-brand-gold text-white hover:text-black p-2 sm:p-3 rounded-full transition"><i class="fa-solid fa-chevron-left text-xs sm:text-base"></i></button>
             <button onclick="nextSlide()" class="absolute right-3 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-brand-gold text-white hover:text-black p-2 sm:p-3 rounded-full transition"><i class="fa-solid fa-chevron-right text-xs sm:text-base"></i></button>
         </div>
@@ -154,81 +157,176 @@
         </div>
     </section>
 
-    <!-- MAIN PRODUCT CATALOG & INVENTORY SECTION -->
-    <main id="catalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 flex-1 w-full scroll-mt-24">
-        <!-- Section Header -->
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-4 border-b border-gray-800 pb-4">
-            <div>
-                <h2 class="text-xl sm:text-3xl md:text-4xl font-black italic gold-gradient-text uppercase">OFFICIAL ATHLETIC CATALOG</h2>
-                <p class="text-xs md:text-sm text-gray-400">Authentic footwear, track gear & training equipment with live inventory count</p>
-            </div>
-
-            <!-- Category Filter Tabs -->
-            <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-none" id="categoryFilters">
-                <button onclick="filterCategory('all')" class="cat-btn active bg-brand-gold text-black text-xs font-bold px-4 py-2 rounded-full whitespace-nowrap">All Items</button>
-                <button onclick="filterCategory('Footwear')" class="cat-btn bg-brand-card text-gray-300 hover:text-white text-xs font-bold px-4 py-2 rounded-full whitespace-nowrap">Spikes & Footwear</button>
-                <button onclick="filterCategory('Equipment')" class="cat-btn bg-brand-card text-gray-300 hover:text-white text-xs font-bold px-4 py-2 rounded-full whitespace-nowrap">Track Equipment</button>
-                <button onclick="filterCategory('Apparel')" class="cat-btn bg-brand-card text-gray-300 hover:text-white text-xs font-bold px-4 py-2 rounded-full whitespace-nowrap">Jerseys & Apparel</button>
-                <button onclick="filterCategory('Football')" class="cat-btn bg-brand-card text-gray-300 hover:text-white text-xs font-bold px-4 py-2 rounded-full whitespace-nowrap">Football Gear</button>
-            </div>
+    <!-- SHOP BY CATEGORY SECTION (2-ROW GRID) -->
+    <section id="categories" class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-8 sm:py-12 flex-1 w-full scroll-mt-24">
+        <div class="text-center mb-8">
+            <h2 class="text-2xl sm:text-4xl font-black italic gold-gradient-text uppercase">SHOP BY CATEGORY</h2>
+            <p class="text-xs sm:text-sm text-gray-400 mt-1">Select a category to explore professional athletic gear and footwear</p>
         </div>
 
-        <!-- PRODUCT GRID (2 COLUMNS ON MOBILE & TABLET, 4 ON DESKTOP) -->
-        <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
-            <!-- Dynamic Content Injected via JavaScript -->
-        </div>
-    </main>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+            <!-- Category 1: Footwear -->
+            <a href="footwear.html" class="group relative bg-brand-card border border-gray-800 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl hover:border-brand-gold transition duration-300 block flex flex-col">
+                <div class="h-32 sm:h-52 overflow-hidden bg-black/50 relative">
+                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80" alt="Spikes & Footwear" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
+                </div>
+                <div class="p-3 sm:p-5 text-center absolute bottom-0 inset-x-0">
+                    <span class="text-[9px] sm:text-[10px] font-bold text-brand-green uppercase tracking-widest block">Performance</span>
+                    <h3 class="text-xs sm:text-lg font-black text-white italic group-hover:text-brand-gold transition leading-tight mt-0.5">Spikes & Footwear</h3>
+                    <p class="hidden sm:block text-xs text-gray-400 mt-1">Sprint spikes, jumping & throwing shoes</p>
+                </div>
+            </a>
 
-    <!-- LOCAL GALLERY SECTION -->
+            <!-- Category 2: Equipment -->
+            <a href="equipment.html" class="group relative bg-brand-card border border-gray-800 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl hover:border-brand-gold transition duration-300 block flex flex-col">
+                <div class="h-32 sm:h-52 overflow-hidden bg-black/50 relative">
+                    <img src="https://images.unsplash.com/photo-1517649763962-0c6232662000?auto=format&fit=crop&w=600&q=80" alt="Track Equipment" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
+                </div>
+                <div class="p-3 sm:p-5 text-center absolute bottom-0 inset-x-0">
+                    <span class="text-[9px] sm:text-[10px] font-bold text-brand-green uppercase tracking-widest block">Training</span>
+                    <h3 class="text-xs sm:text-lg font-black text-white italic group-hover:text-brand-gold transition leading-tight mt-0.5">Track Equipment</h3>
+                    <p class="hidden sm:block text-xs text-gray-400 mt-1">Stopwatches, batons & agility ladders</p>
+                </div>
+            </a>
+
+            <!-- Category 3: Apparel -->
+            <a href="apparel.html" class="group relative bg-brand-card border border-gray-800 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl hover:border-brand-gold transition duration-300 block flex flex-col">
+                <div class="h-32 sm:h-52 overflow-hidden bg-black/50 relative">
+                    <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80" alt="Jerseys & Apparel" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
+                </div>
+                <div class="p-3 sm:p-5 text-center absolute bottom-0 inset-x-0">
+                    <span class="text-[9px] sm:text-[10px] font-bold text-brand-green uppercase tracking-widest block">Competition</span>
+                    <h3 class="text-xs sm:text-lg font-black text-white italic group-hover:text-brand-gold transition leading-tight mt-0.5">Jerseys & Apparel</h3>
+                    <p class="hidden sm:block text-xs text-gray-400 mt-1">Dry-fit team kits & athletic wear</p>
+                </div>
+            </a>
+
+            <!-- Category 4: Football -->
+            <a href="football.html" class="group relative bg-brand-card border border-gray-800 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl hover:border-brand-gold transition duration-300 block flex flex-col">
+                <div class="h-32 sm:h-52 overflow-hidden bg-black/50 relative">
+                    <img src="https://images.unsplash.com/photo-1614632537190-23e4146777db?auto=format&fit=crop&w=600&q=80" alt="Football Gear" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
+                </div>
+                <div class="p-3 sm:p-5 text-center absolute bottom-0 inset-x-0">
+                    <span class="text-[9px] sm:text-[10px] font-bold text-brand-green uppercase tracking-widest block">Pitch Gear</span>
+                    <h3 class="text-xs sm:text-lg font-black text-white italic group-hover:text-brand-gold transition leading-tight mt-0.5">Football Gear</h3>
+                    <p class="hidden sm:block text-xs text-gray-400 mt-1">Match balls & shin guards</p>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- FEATURED HIGHLIGHT BANNER WITH CLEAR <IMG> TAG SECTIONS FOR VS CODE -->
+    <section class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- 1. Footwear Banner Card -->
+            <a href="footwear.html" class="group relative bg-brand-dark border-2 border-brand-gold rounded-3xl overflow-hidden shadow-2xl p-6 sm:p-8 flex flex-col justify-between hover:scale-[1.02] transition duration-300 min-h-[260px]">
+                <!-- ADD / CHANGE BANNER IMAGE HERE -->
+                <img src="image2.jpg" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80'" alt="Footwear Banner" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                <!-- Dark Gradient Overlay so text stands out -->
+                <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/40"></div>
+
+                <div class="relative z-10">
+                    <span class="bg-brand-green text-black font-black text-[10px] px-3 py-1 rounded-full uppercase tracking-widest">Elite Performance</span>
+                    <h3 class="text-xl sm:text-3xl font-black italic text-white mt-2 group-hover:text-brand-gold transition">PRO FOOTWEAR & SPIKES</h3>
+                    <p class="text-gray-300 text-xs sm:text-sm mt-1">Carbon-plated racing spikes and training shoes.</p>
+                </div>
+                <div class="relative z-10 mt-6 flex items-center justify-between">
+                    <span class="bg-brand-gold text-black font-black text-xs sm:text-sm px-5 py-2.5 rounded-full uppercase tracking-wider group-hover:bg-brand-green transition flex items-center gap-2">
+                        <span>Shop Now</span> <i class="fa-solid fa-arrow-right animate-bounce"></i>
+                    </span>
+                    <span class="text-brand-green font-black text-xs italic tracking-widest animate-pulse border border-brand-green/50 px-3 py-1 rounded-full bg-black/60">CLICK ME!</span>
+                </div>
+            </a>
+
+            <!-- 2. Stopwatch & Equipment Banner Card -->
+            <a href="equipment.html" class="group relative bg-brand-dark border-2 border-brand-green rounded-3xl overflow-hidden shadow-2xl p-6 sm:p-8 flex flex-col justify-between hover:scale-[1.02] transition duration-300 min-h-[260px]">
+                <!-- ADD / CHANGE BANNER IMAGE HERE -->
+                <img src="image1.jpg" onerror="this.src='https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=800&q=80'" alt="Equipment Banner" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                <!-- Dark Gradient Overlay so text stands out -->
+                <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/40"></div>
+
+                <div class="relative z-10">
+                    <span class="bg-brand-gold text-black font-black text-[10px] px-3 py-1 rounded-full uppercase tracking-widest">Precision Timing</span>
+                    <h3 class="text-xl sm:text-3xl font-black italic text-white mt-2 group-hover:text-brand-green transition">STOPWATCH & EQUIPMENT</h3>
+                    <p class="text-gray-300 text-xs sm:text-sm mt-1">Pro stopwatches, batons, agility ladders & timers.</p>
+                </div>
+                <div class="relative z-10 mt-6 flex items-center justify-between">
+                    <span class="bg-brand-green text-black font-black text-xs sm:text-sm px-5 py-2.5 rounded-full uppercase tracking-wider group-hover:bg-brand-gold transition flex items-center gap-2">
+                        <span>Shop Now</span> <i class="fa-solid fa-arrow-right animate-bounce"></i>
+                    </span>
+                    <span class="text-brand-gold font-black text-xs italic tracking-widest animate-pulse border border-brand-gold/50 px-3 py-1 rounded-full bg-black/60">CLICK ME!</span>
+                </div>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- LIVE SEARCH RESULTS MODAL -->
+    <div id="searchResultsModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-brand-dark border border-brand-gold w-full max-w-4xl rounded-3xl p-6 shadow-2xl max-h-[85vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-3 mb-4">
+                <h3 class="text-xl font-black gold-gradient-text uppercase"><i class="fa-solid fa-magnifying-glass mr-2"></i> Search Results</h3>
+                <button onclick="closeSearchModal()" class="text-gray-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="searchResultsGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- LOCAL GALLERY SECTION (SMOOTH HORIZONTAL SCROLL ON MOBILE, NO SCROLLBAR) -->
     <section class="bg-brand-dark py-10 border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-4">
             <h3 class="text-lg sm:text-2xl font-black italic gold-gradient-text mb-1 text-center uppercase">TEAM & STORE GALLERY</h3>
             <p class="text-center text-xs text-gray-400 mb-6">Authentic gear captured live from Kingston tracks and our athletic showroom</p>
             
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-                <div class="bg-brand-card border border-gray-800 rounded-xl overflow-hidden group">
-                    <img src="img/gallery-1.jpg" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=600&q=80';" class="w-full h-32 sm:h-40 object-cover group-hover:scale-105 transition duration-300" alt="Champs Prep">
-                    <div class="p-2 sm:p-3">
-                        <p class="text-[11px] sm:text-xs font-bold text-white">Champs Preparation 2026</p>
-                        <p class="text-[9px] sm:text-[10px] text-gray-400">Kingston National Stadium</p>
+            <!-- Horizontal Scroll Container for Mobile, Grid for Desktop -->
+            <div class="flex md:grid md:grid-cols-4 gap-4 overflow-x-auto no-scrollbar snap-x pb-4">
+                <div class="min-w-[240px] sm:min-w-[280px] md:min-w-0 snap-start bg-brand-card border border-gray-800 rounded-2xl overflow-hidden group shrink-0">
+                    <img src="img/gallery-1.jpg" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=600&q=80';" class="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition duration-300" alt="Champs Prep">
+                    <div class="p-3">
+                        <p class="text-xs font-bold text-white">Champs Preparation 2026</p>
+                        <p class="text-[10px] text-gray-400">Kingston National Stadium</p>
                     </div>
                 </div>
-                <div class="bg-brand-card border border-gray-800 rounded-xl overflow-hidden group">
-                    <img src="img/gallery-2.jpg" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517649763962-0c6232662000?auto=format&fit=crop&w=600&q=80';" class="w-full h-32 sm:h-40 object-cover group-hover:scale-105 transition duration-300" alt="Pro Spikes">
-                    <div class="p-2 sm:p-3">
-                        <p class="text-[11px] sm:text-xs font-bold text-white">Pro Track Spikes Setup</p>
-                        <p class="text-[9px] sm:text-[10px] text-gray-400">Premium Spike Fittings</p>
+                <div class="min-w-[240px] sm:min-w-[280px] md:min-w-0 snap-start bg-brand-card border border-gray-800 rounded-2xl overflow-hidden group shrink-0">
+                    <img src="img/gallery-2.jpg" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1517649763962-0c6232662000?auto=format&fit=crop&w=600&q=80';" class="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition duration-300" alt="Pro Spikes">
+                    <div class="p-3">
+                        <p class="text-xs font-bold text-white">Pro Track Spikes Setup</p>
+                        <p class="text-[10px] text-gray-400">Premium Spike Fittings</p>
                     </div>
                 </div>
-                <div class="bg-brand-card border border-gray-800 rounded-xl overflow-hidden group">
-                    <img src="img/gallery-3.jpg" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1519766304817-4f37bda74a29?auto=format&fit=crop&w=600&q=80';" class="w-full h-32 sm:h-40 object-cover group-hover:scale-105 transition duration-300" alt="Football Kits">
-                    <div class="p-2 sm:p-3">
-                        <p class="text-[11px] sm:text-xs font-bold text-white">Football Team Kits</p>
-                        <p class="text-[9px] sm:text-[10px] text-gray-400">Custom Jerseys & Shin Guards</p>
+                <div class="min-w-[240px] sm:min-w-[280px] md:min-w-0 snap-start bg-brand-card border border-gray-800 rounded-2xl overflow-hidden group shrink-0">
+                    <img src="img/gallery-3.jpg" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1519766304817-4f37bda74a29?auto=format&fit=crop&w=600&q=80';" class="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition duration-300" alt="Football Kits">
+                    <div class="p-3">
+                        <p class="text-xs font-bold text-white">Football Team Kits</p>
+                        <p class="text-[10px] text-gray-400">Custom Jerseys & Shin Guards</p>
                     </div>
                 </div>
-                <div class="bg-brand-card border border-gray-800 rounded-xl overflow-hidden group">
-                    <img src="img/gallery-4.jpg" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1526676037777-05a232554f77?auto=format&fit=crop&w=600&q=80';" class="w-full h-32 sm:h-40 object-cover group-hover:scale-105 transition duration-300" alt="Agility Gear">
-                    <div class="p-2 sm:p-3">
-                        <p class="text-[11px] sm:text-xs font-bold text-white">Sprint & Agility Gear</p>
-                        <p class="text-[9px] sm:text-[10px] text-gray-400">Speed Ladders & Batons</p>
+                <div class="min-w-[240px] sm:min-w-[280px] md:min-w-0 snap-start bg-brand-card border border-gray-800 rounded-2xl overflow-hidden group shrink-0">
+                    <img src="img/gallery-4.jpg" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1526676037777-05a232554f77?auto=format&fit=crop&w=600&q=80';" class="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition duration-300" alt="Agility Gear">
+                    <div class="p-3">
+                        <p class="text-xs font-bold text-white">Sprint & Agility Gear</p>
+                        <p class="text-[10px] text-gray-400">Speed Ladders & Batons</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ORGANIZED FOOTER & CONTACT INFORMATION -->
+    <!-- ORGANIZED FOOTER -->
     <footer class="bg-black text-gray-400 py-10 border-t border-brand-gold/30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-            <!-- Brand Info -->
             <div>
                 <h4 class="text-base sm:text-lg font-black text-white gold-gradient-text mb-3">PRINCE ATHLETICS</h4>
                 <p class="text-xs leading-relaxed mb-3">The ultimate store for authentic track spikes, athletic footwear, football equipment, and performance jerseys in Jamaica.</p>
                 <span class="text-xs text-brand-green font-bold flex items-center gap-1"><i class="fa-solid fa-truck-fast"></i> Shipping Worldwide</span>
             </div>
-
-            <!-- Contact Details -->
             <div>
                 <h4 class="text-xs sm:text-sm font-bold text-brand-gold uppercase tracking-wider mb-3">Direct Contact</h4>
                 <ul class="text-xs space-y-2.5">
@@ -238,15 +336,11 @@
                     <li><i class="fa-solid fa-envelope text-gray-300 mr-2 text-xs"></i> Koolprincee@gmail.com</li>
                 </ul>
             </div>
-
-            <!-- Store Location -->
             <div>
                 <h4 class="text-xs sm:text-sm font-bold text-brand-gold uppercase tracking-wider mb-3">Store Location</h4>
                 <p class="text-xs leading-relaxed mb-2"><i class="fa-solid fa-location-dot text-red-500 mr-1"></i> Old Hope Road, Kingston, Jamaica</p>
                 <p class="text-[11px] text-gray-400">Open Monday – Saturday<br>9:00 AM – 6:00 PM</p>
             </div>
-
-            <!-- Scriptural Motto & Socials -->
             <div>
                 <h4 class="text-xs sm:text-sm font-bold text-brand-gold uppercase tracking-wider mb-3">Motto</h4>
                 <p class="text-xs italic text-gray-300 mb-4">"Commit your work to the Lord, and your plans will be established." — Proverbs 16:3</p>
@@ -257,42 +351,31 @@
                 </div>
             </div>
         </div>
-
         <div class="max-w-7xl mx-auto px-4 border-t border-gray-900 pt-6 text-center text-xs text-gray-500 flex flex-col sm:flex-row justify-between items-center gap-2">
             <p>© 2026 Reserved all rights and site by MS Media</p>
             <p class="text-[11px]">Prince Athletics Footwear • Train • Compete</p>
         </div>
     </footer>
 
-    <!-- SHOPPING CART & CHECKOUT DRAWER -->
+    <!-- CART DRAWER -->
     <div id="cartDrawer" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex justify-end">
         <div class="bg-brand-dark w-full max-w-md h-full shadow-2xl flex flex-col p-5 sm:p-6 overflow-y-auto border-l border-brand-gold/30">
             <div class="flex justify-between items-center border-b border-gray-800 pb-4 mb-4">
                 <h3 class="text-lg sm:text-xl font-black italic gold-gradient-text">YOUR CART & CHECKOUT</h3>
                 <button onclick="toggleCartDrawer()" class="text-gray-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
-
-            <!-- Cart Items List -->
-            <div id="cartItems" class="flex-1 space-y-3 mb-6">
-                <!-- Injected via JS -->
-            </div>
-
-            <!-- Order Total & Customer Information Form -->
+            <div id="cartItems" class="flex-1 space-y-3 mb-6"></div>
             <div class="border-t border-gray-800 pt-4 space-y-4">
                 <div class="flex justify-between font-bold text-base sm:text-lg">
                     <span>Total Amount:</span>
                     <span id="cartTotal" class="text-brand-green">$0.00 USD</span>
                 </div>
-
-                <!-- Customer Details Inputs -->
                 <div class="space-y-3">
                     <p class="text-xs font-bold text-brand-gold uppercase tracking-wider">Customer Shipping Info</p>
                     <input type="text" id="custName" placeholder="Full Name" class="w-full bg-brand-black border border-gray-700 rounded-lg p-2.5 text-xs text-white focus:border-brand-gold focus:outline-none">
                     <input type="tel" id="custPhone" placeholder="Phone / WhatsApp Number" class="w-full bg-brand-black border border-gray-700 rounded-lg p-2.5 text-xs text-white focus:border-brand-gold focus:outline-none">
                     <textarea id="custAddress" rows="2" placeholder="Worldwide Shipping Address (Street, City, Country)" class="w-full bg-brand-black border border-gray-700 rounded-lg p-2.5 text-xs text-white focus:border-brand-gold focus:outline-none"></textarea>
                 </div>
-
-                <!-- Payment Options -->
                 <div class="space-y-2 pt-2">
                     <button onclick="checkoutStripe()" class="w-full bg-brand-gold hover:bg-yellow-400 text-black font-black py-3 rounded-xl transition flex items-center justify-center gap-2 uppercase tracking-wider text-xs">
                         <i class="fa-solid fa-credit-card"></i> Pay via Stripe Gateway
@@ -305,20 +388,18 @@
         </div>
     </div>
 
-    <!-- ADMIN PANEL MODAL (INVENTORY & PRODUCT UPLOAD) -->
+    <!-- ADMIN MODAL -->
     <div id="adminModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
         <div class="bg-brand-dark border border-brand-gold w-full max-w-xl rounded-2xl p-5 sm:p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b border-gray-800 pb-3 mb-4">
                 <h3 class="text-base sm:text-xl font-black gold-gradient-text uppercase"><i class="fa-solid fa-boxes-stacked mr-2"></i> Inventory & Products Admin</h3>
                 <button onclick="toggleAdminModal()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-
             <form id="addProductForm" onsubmit="handleProductUpload(event)" class="space-y-4">
                 <div>
                     <label class="block text-xs font-bold text-gray-300 mb-1">Product Name</label>
                     <input type="text" id="pName" required placeholder="e.g., Nike Zoom Superfly Elite 2 Spikes" class="w-full bg-brand-black border border-gray-700 rounded-lg p-2.5 text-xs text-white focus:border-brand-gold focus:outline-none">
                 </div>
-
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-bold text-gray-300 mb-1">Price ($ USD)</label>
@@ -334,8 +415,6 @@
                         </select>
                     </div>
                 </div>
-
-                <!-- INVENTORY QUANTITY FIELD -->
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-bold text-brand-gold mb-1">Stock Inventory Count</label>
@@ -346,37 +425,29 @@
                         <input type="text" id="pBrand" placeholder="e.g. Nike, Puma, Adidas" class="w-full bg-brand-black border border-gray-700 rounded-lg p-2.5 text-xs text-white focus:border-brand-gold focus:outline-none">
                     </div>
                 </div>
-
                 <div>
                     <label class="block text-xs font-bold text-gray-300 mb-1">Product Description</label>
-                    <textarea id="pDesc" rows="2" placeholder="Technical specifications, materials, and sizes..." class="w-full bg-brand-black border border-gray-700 rounded-lg p-2.5 text-xs text-white focus:border-brand-gold focus:outline-none"></textarea>
+                    <textarea id="pDesc" rows="2" placeholder="Technical specifications..." class="w-full bg-brand-black border border-gray-700 rounded-lg p-2.5 text-xs text-white focus:border-brand-gold focus:outline-none"></textarea>
                 </div>
-
                 <div>
-                    <label class="block text-xs font-bold text-gray-300 mb-1">Upload Product Image (Saved to Store & Slideshow)</label>
+                    <label class="block text-xs font-bold text-gray-300 mb-1">Upload Product Image</label>
                     <input type="file" id="pImage" accept="image/*" class="w-full text-xs text-gray-400 file:mr-3 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-brand-gold file:text-black file:font-bold hover:file:bg-brand-green cursor-pointer">
                 </div>
-
                 <div class="pt-2">
                     <button type="submit" class="w-full bg-brand-green text-black font-black py-3 rounded-xl hover:bg-green-400 transition uppercase tracking-wider text-xs">
                         <i class="fa-solid fa-plus mr-1"></i> Add Product & Update Inventory
                     </button>
                 </div>
             </form>
-
-            <!-- Inventory Manager List inside Admin Modal -->
             <div class="mt-8 border-t border-gray-800 pt-4">
                 <h4 class="text-xs font-bold text-brand-gold uppercase tracking-wider mb-3">Live Inventory Stock Control</h4>
-                <div id="adminStockList" class="space-y-2 max-h-48 overflow-y-auto pr-1">
-                    <!-- Dynamic Inventory Control Injected via JS -->
-                </div>
+                <div id="adminStockList" class="space-y-2 max-h-48 overflow-y-auto pr-1"></div>
             </div>
         </div>
     </div>
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // Default Pre-loaded Products with Stock Levels
         const defaultProducts = [
             { id: 1, name: "Puma EvoSpeed Sprint Spikes", category: "Footwear", price: 129.99, stock: 8, brand: "Puma", image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80", desc: "Lightweight track spikes designed for 100m-400m sprinters." },
             { id: 2, name: "Nike Air Zoom Victory Spikes", category: "Footwear", price: 179.99, stock: 4, brand: "Nike", image: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=600&q=80", desc: "Middle distance racing spikes with Carbon Fiber Flyplate." },
@@ -392,76 +463,74 @@
             { id: 12, name: "Loud Pea-Less Ref Whistle with Lanyard", category: "Equipment", price: 9.99, stock: 50, brand: "Prince", image: "https://images.unsplash.com/photo-1517649763962-0c6232662000?auto=format&fit=crop&w=600&q=80", desc: "High-decibel whistle for coaching and refereeing." }
         ];
 
-        // Application State
         let products = JSON.parse(localStorage.getItem('prince_products')) || defaultProducts;
-        let cart = [];
+        let cart = JSON.parse(localStorage.getItem('prince_cart')) || [];
         let slideIndex = 0;
 
-        // Initialize App
         document.addEventListener('DOMContentLoaded', () => {
-            renderProducts(products);
+            updateCartUI();
             renderAdminStockControls();
             setupSlideshow();
         });
 
-        // Save products state to LocalStorage
         function saveState() {
             localStorage.setItem('prince_products', JSON.stringify(products));
+            localStorage.setItem('prince_cart', JSON.stringify(cart));
         }
 
-        // Render Product Grid with Dynamic Inventory Indicators
-        function renderProducts(items) {
-            const grid = document.getElementById('productGrid');
+        // Live Search redirecting to search modal
+        function filterProducts() {
+            const term = document.getElementById('searchInput').value.toLowerCase().trim();
+            if (term === '') {
+                closeSearchModal();
+                return;
+            }
+
+            const filtered = products.filter(p => 
+                p.name.toLowerCase().includes(term) || 
+                p.category.toLowerCase().includes(term) || 
+                p.brand.toLowerCase().includes(term) ||
+                p.desc.toLowerCase().includes(term)
+            );
+
+            renderSearchResults(filtered);
+        }
+
+        function renderSearchResults(items) {
+            const modal = document.getElementById('searchResultsModal');
+            const grid = document.getElementById('searchResultsGrid');
+            modal.classList.remove('hidden');
             grid.innerHTML = '';
 
             if (items.length === 0) {
-                grid.innerHTML = `<p class="col-span-full text-center text-gray-500 py-12">No products found matching your search or filter.</p>`;
+                grid.innerHTML = `<p class="col-span-full text-center text-gray-400 py-8">No products found matching your search.</p>`;
                 return;
             }
 
             items.forEach(product => {
                 const isOutOfStock = product.stock <= 0;
-                const isLowStock = product.stock > 0 && product.stock <= 5;
-
-                let stockBadge = '';
-                if (isOutOfStock) {
-                    stockBadge = `<span class="bg-red-600/90 text-white font-black text-[10px] px-2 py-0.5 rounded-full uppercase">Out of Stock</span>`;
-                } else if (isLowStock) {
-                    stockBadge = `<span class="bg-amber-500/90 text-black font-black text-[10px] px-2 py-0.5 rounded-full uppercase animate-pulse">Only ${product.stock} Left!</span>`;
-                } else {
-                    stockBadge = `<span class="bg-brand-green/20 text-brand-green font-bold text-[10px] px-2 py-0.5 rounded-full border border-brand-green/30">${product.stock} In Stock</span>`;
-                }
-
-                grid.innerHTML += `
-                    <div class="bg-brand-card border border-gray-800 rounded-2xl overflow-hidden flex flex-col justify-between hover:border-brand-gold/60 transition duration-300 group">
-                        <div class="relative overflow-hidden bg-black/40 h-36 sm:h-48 flex items-center justify-center p-2">
-                            <img src="${product.image}" alt="${product.name}" class="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300">
-                            <div class="absolute top-2 left-2 flex flex-col gap-1">
-                                ${stockBadge}
-                            </div>
+                grid.innerHTML = grid.innerHTML + `
+                    <div class="bg-brand-card border border-gray-800 rounded-2xl overflow-hidden flex flex-col justify-between p-3">
+                        <div class="h-32 bg-black/40 flex items-center justify-center p-2 mb-2">
+                            <img src="${product.image}" class="max-h-full max-w-full object-contain">
                         </div>
-                        <div class="p-3 sm:p-4 flex-1 flex flex-col justify-between">
-                            <div>
-                                <span class="text-[10px] text-brand-gold uppercase tracking-wider font-bold">${product.brand || 'Prince'} • ${product.category}</span>
-                                <h3 class="text-xs sm:text-sm font-bold text-white line-clamp-2 mt-0.5 mb-1">${product.name}</h3>
-                                <p class="text-[11px] text-gray-400 line-clamp-2 mb-2 font-light">${product.desc}</p>
-                            </div>
-                            
-                            <div>
-                                <div class="flex items-center justify-between mt-2 pt-2 border-t border-gray-800/80">
-                                    <span class="text-sm sm:text-base font-black text-brand-green">$${product.price.toFixed(2)}</span>
-                                    <button onclick="addToCart(${product.id})" ${isOutOfStock ? 'disabled' : ''} class="${isOutOfStock ? 'bg-gray-700 text-gray-400 cursor-not-allowed' : 'bg-brand-gold hover:bg-brand-green text-black'} font-black text-xs px-3 py-1.5 rounded-lg transition uppercase flex items-center gap-1">
-                                        <i class="fa-solid fa-plus text-[10px]"></i> ${isOutOfStock ? 'Sold Out' : 'Add'}
-                                    </button>
-                                </div>
-                            </div>
+                        <div>
+                            <span class="text-[9px] text-brand-gold uppercase font-bold">${product.brand} • ${product.category}</span>
+                            <h4 class="text-xs font-bold text-white line-clamp-1">${product.name}</h4>
+                            <p class="text-xs font-black text-brand-green mt-1">$${product.price.toFixed(2)}</p>
                         </div>
+                        <button onclick="addToCart(${product.id})" ${isOutOfStock ? 'disabled' : ''} class="mt-2 ${isOutOfStock ? 'bg-gray-700 text-gray-400' : 'bg-brand-gold hover:bg-brand-green text-black'} font-black text-[11px] py-1.5 rounded-lg transition uppercase">
+                            ${isOutOfStock ? 'Sold Out' : 'Add to Cart'}
+                        </button>
                     </div>
                 `;
             });
         }
 
-        // Add to Cart Logic
+        function closeSearchModal() {
+            document.getElementById('searchResultsModal').classList.add('hidden');
+        }
+
         function addToCart(productId) {
             const product = products.find(p => p.id === productId);
             if (!product || product.stock <= 0) return;
@@ -480,16 +549,17 @@
                 cart.push({ ...product, qty: 1 });
             }
 
+            saveState();
             updateCartUI();
             toggleCartDrawer(true);
         }
 
-        // Update Cart UI
         function updateCartUI() {
             const cartItemsContainer = document.getElementById('cartItems');
             const cartCount = document.getElementById('cartCount');
             const cartTotal = document.getElementById('cartTotal');
 
+            if (!cartItemsContainer) return;
             cartItemsContainer.innerHTML = '';
             let total = 0;
             let totalItems = 0;
@@ -498,12 +568,12 @@
                 cartItemsContainer.innerHTML = `<p class="text-center text-gray-500 py-8 text-xs">Your shopping cart is empty.</p>`;
             } else {
                 cart.forEach(item => {
-                    total += item.price * item.qty;
-                    totalItems += item.qty;
-                    cartItemsContainer.innerHTML += `
+                    total = total + (item.price * item.qty);
+                    totalItems = totalItems + item.qty;
+                    cartItemsContainer.innerHTML = cartItemsContainer.innerHTML + `
                         <div class="flex items-center justify-between bg-brand-black p-3 rounded-xl border border-gray-800">
                             <div class="flex items-center gap-3">
-                                <img src="${item.image}" class="w-12 h-12 object-cover rounded-lg" alt="${item.name}">
+                                <img src="${item.image}" class="w-12 h-12 object-cover rounded-lg">
                                 <div>
                                     <h4 class="text-xs font-bold text-white">${item.name}</h4>
                                     <p class="text-[11px] text-brand-green font-bold">$${item.price.toFixed(2)}</p>
@@ -533,14 +603,14 @@
                 return;
             }
 
-            item.qty += delta;
+            item.qty = item.qty + delta;
             if (item.qty <= 0) {
                 cart = cart.filter(i => i.id !== productId);
             }
+            saveState();
             updateCartUI();
         }
 
-        // Deduct Inventory upon Successful Checkout
         function deductInventory() {
             cart.forEach(cartItem => {
                 const prod = products.find(p => p.id === cartItem.id);
@@ -549,60 +619,43 @@
                 }
             });
             saveState();
-            renderProducts(products);
             renderAdminStockControls();
             cart = [];
             updateCartUI();
         }
 
-        // Stripe Checkout Integration
         function checkoutStripe() {
             const name = document.getElementById('custName').value;
             const phone = document.getElementById('custPhone').value;
             const address = document.getElementById('custAddress').value;
 
-            if (cart.length === 0) {
-                alert('Your cart is empty!');
-                return;
-            }
-            if (!name || !phone || !address) {
-                alert('Please fill out your name, phone, and delivery address.');
-                return;
-            }
+            if (cart.length === 0) { alert('Your cart is empty!'); return; }
+            if (!name || !phone || !address) { alert('Please fill out your name, phone, and delivery address.'); return; }
 
             alert(`Processing Stripe Checkout for ${name}...\nTotal Amount: ${document.getElementById('cartTotal').textContent}`);
             deductInventory();
             toggleCartDrawer(false);
-            alert('Payment successful! Inventory has been updated.');
+            alert('Payment successful! Inventory updated.');
         }
 
-        // WhatsApp Direct Checkout
         function checkoutWhatsApp() {
             const name = document.getElementById('custName').value;
             const phone = document.getElementById('custPhone').value;
             const address = document.getElementById('custAddress').value;
 
-            if (cart.length === 0) {
-                alert('Your cart is empty!');
-                return;
-            }
+            if (cart.length === 0) { alert('Your cart is empty!'); return; }
 
-            let msg = `*NEW ORDER - PRINCE ATHLETICS FOOTWEAR*\n\n`;
-            msg += `*Customer:* ${name || 'N/A'}\n*Phone:* ${phone || 'N/A'}\n*Address:* ${address || 'N/A'}\n\n*Order Details:*\n`;
-
+            let msg = `*NEW ORDER - PRINCE ATHLETICS*\n\n*Customer:* ${name || 'N/A'}\n*Phone:* ${phone || 'N/A'}\n*Address:* ${address || 'N/A'}\n\n*Order Details:*\n`;
             cart.forEach(item => {
-                msg += `- ${item.name} (x${item.qty}) - $${(item.price * item.qty).toFixed(2)}\n`;
+                msg = msg + `- ${item.name} (x${item.qty}) - $${(item.price * item.qty).toFixed(2)}\n`;
             });
-
-            msg += `\n*Total Amount:* ${document.getElementById('cartTotal').textContent}\n\nShipping Worldwide requested.`;
+            msg = msg + `\n*Total:* ${document.getElementById('cartTotal').textContent}\nWorldwide shipping requested.`;
 
             deductInventory();
-            const targetNumber = "8764023170";
-            window.open(`https://wa.me/${targetNumber}?text=${encodeURIComponent(msg)}`, '_blank');
+            window.open(`https://wa.me/8764023170?text=${encodeURIComponent(msg)}`, '_blank');
             toggleCartDrawer(false);
         }
 
-        // Admin Product Upload & Inventory Control
         function handleProductUpload(event) {
             event.preventDefault();
             const name = document.getElementById('pName').value;
@@ -639,21 +692,17 @@
         function addProductToStore(product) {
             products.unshift(product);
             saveState();
-            renderProducts(products);
             renderAdminStockControls();
-            addSlideToHero(product);
             document.getElementById('addProductForm').reset();
-            alert('Product added successfully to catalog, inventory, and hero slideshow!');
+            alert('Product added successfully!');
         }
 
-        // Admin Live Stock Control List
         function renderAdminStockControls() {
             const container = document.getElementById('adminStockList');
             if (!container) return;
             container.innerHTML = '';
-
             products.forEach(p => {
-                container.innerHTML += `
+                container.innerHTML = container.innerHTML + `
                     <div class="flex items-center justify-between bg-brand-black p-2 rounded border border-gray-800 text-xs">
                         <span class="truncate font-bold text-white w-1/2">${p.name}</span>
                         <div class="flex items-center gap-2">
@@ -671,7 +720,6 @@
             if (product) {
                 product.stock = parseInt(newStock) || 0;
                 saveState();
-                renderProducts(products);
             }
         }
 
@@ -679,78 +727,11 @@
             if (confirm("Are you sure you want to delete this product?")) {
                 products = products.filter(p => p.id !== id);
                 saveState();
-                renderProducts(products);
                 renderAdminStockControls();
             }
         }
 
-        // Filtering & Real-Time Search Logic with Auto-Scroll to Catalog
-        function scrollToCatalog() {
-            const catalogEl = document.getElementById('catalog');
-            if (catalogEl) {
-                catalogEl.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
-        function filterCategory(cat) {
-            document.querySelectorAll('.cat-btn').forEach(btn => {
-                btn.classList.remove('bg-brand-gold', 'text-black');
-                btn.classList.add('bg-brand-card', 'text-gray-300');
-            });
-            event.target.classList.remove('bg-brand-card', 'text-gray-300');
-            event.target.classList.add('bg-brand-gold', 'text-black');
-
-            const term = (document.getElementById('searchInput').value || document.getElementById('searchMobileInput').value || '').toLowerCase();
-            
-            let list = products;
-            if (cat !== 'all') {
-                list = list.filter(p => p.category === cat);
-            }
-            if (term.trim() !== '') {
-                list = list.filter(p => p.name.toLowerCase().includes(term) || p.category.toLowerCase().includes(term) || p.brand.toLowerCase().includes(term) || p.desc.toLowerCase().includes(term));
-            }
-            renderProducts(list);
-        }
-
-        function filterProducts() {
-            const term = document.getElementById('searchInput').value.toLowerCase();
-            const mobileInput = document.getElementById('searchMobileInput');
-            if (mobileInput) mobileInput.value = term; // Sync mobile search input
-
-            const filtered = products.filter(p => 
-                p.name.toLowerCase().includes(term) || 
-                p.category.toLowerCase().includes(term) || 
-                p.brand.toLowerCase().includes(term) ||
-                p.desc.toLowerCase().includes(term)
-            );
-            renderProducts(filtered);
-            if (term.trim() !== '') {
-                scrollToCatalog();
-            }
-        }
-
-        function filterProductsMobile() {
-            const term = document.getElementById('searchMobileInput').value.toLowerCase();
-            const desktopInput = document.getElementById('searchInput');
-            if (desktopInput) desktopInput.value = term; // Sync desktop search input
-
-            const filtered = products.filter(p => 
-                p.name.toLowerCase().includes(term) || 
-                p.category.toLowerCase().includes(term) || 
-                p.brand.toLowerCase().includes(term) ||
-                p.desc.toLowerCase().includes(term)
-            );
-            renderProducts(filtered);
-            if (term.trim() !== '') {
-                scrollToCatalog();
-            }
-        }
-
-        // Modal Controls
-        function toggleAdminModal() {
-            document.getElementById('adminModal').classList.toggle('hidden');
-        }
-
+        function toggleAdminModal() { document.getElementById('adminModal').classList.toggle('hidden'); }
         function toggleCartDrawer(open) {
             const drawer = document.getElementById('cartDrawer');
             if (open === true) drawer.classList.remove('hidden');
@@ -758,27 +739,7 @@
             else drawer.classList.toggle('hidden');
         }
 
-        // Hero Dynamic Slideshow
-        function addSlideToHero(product) {
-            const container = document.getElementById('heroSlideContainer');
-            const slide = document.createElement('div');
-            slide.className = 'hero-slide absolute inset-0 opacity-0 transition-opacity duration-1000 bg-cover bg-center flex items-center justify-center';
-            slide.style.backgroundImage = `linear-gradient(to right, rgba(0,0,0,0.85), rgba(0,0,0,0.4)), url('${product.image}')`;
-            slide.innerHTML = `
-                <div class="text-center px-4 max-w-3xl">
-                    <span class="inline-block bg-brand-gold text-black font-black text-xs px-3 py-1 rounded-full uppercase tracking-wider mb-3">Featured Item</span>
-                    <h2 class="text-3xl sm:text-5xl md:text-6xl font-black italic tracking-tight text-white mb-2">${product.name.toUpperCase()}</h2>
-                    <p class="text-brand-green font-bold text-xl mb-6">$${product.price.toFixed(2)} USD • Only ${product.stock} Available</p>
-                    <a href="#catalog" class="inline-block bg-brand-green hover:bg-green-400 text-black font-black text-sm md:text-base px-8 py-3 rounded-full uppercase tracking-wider shadow-lg transition">Buy Now</a>
-                </div>
-            `;
-            container.appendChild(slide);
-        }
-
-        function setupSlideshow() {
-            setInterval(() => { nextSlide(); }, 6000);
-        }
-
+        function setupSlideshow() { setInterval(() => { nextSlide(); }, 6000); }
         function nextSlide() {
             const slides = document.querySelectorAll('.hero-slide');
             if (slides.length <= 1) return;
@@ -788,7 +749,6 @@
             slides[slideIndex].classList.remove('opacity-0');
             slides[slideIndex].classList.add('opacity-100');
         }
-
         function prevSlide() {
             const slides = document.querySelectorAll('.hero-slide');
             if (slides.length <= 1) return;
