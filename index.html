@@ -71,6 +71,19 @@
         ::-webkit-scrollbar-track { background: #0a0a0a; }
         ::-webkit-scrollbar-thumb { background: #FFD700; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #00FF66; }
+
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: max-content;
+            animation: marquee 25s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
     </style>
 </head>
 <body class="bg-brand-black text-white antialiased flex flex-col min-h-screen">
@@ -142,17 +155,27 @@
         </div>
     </header>
 
-    <!-- BRAND PARTNERS DISPLAY SECTION -->
-    <section class="py-6 bg-brand-dark border-b border-gray-800">
-        <div class="max-w-7xl mx-auto px-4">
-            <h3 class="text-center text-[11px] sm:text-xs font-bold text-brand-gold tracking-widest uppercase mb-4">Top Brands • Top Performance • All In One Place</h3>
-            <div class="grid grid-cols-3 md:grid-cols-6 gap-4 items-center justify-items-center opacity-80">
-                <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition">NIKE</span>
-                <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition">PUMA</span>
-                <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition">ADIDAS</span>
-                <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition">REEBOK</span>
-                <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition">NB</span>
-                <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition">ASICS</span>
+    <!-- CONTINUOUS RUNNING TOP BRANDS MARQUEE SECTION -->
+    <section class="py-5 bg-brand-dark border-b border-gray-800 overflow-hidden">
+        <div class="mb-3">
+            <h3 class="text-center text-[10px] sm:text-xs font-bold text-brand-gold tracking-widest uppercase">Top Brands • Top Performance • All In One Place</h3>
+        </div>
+        <div class="relative w-full overflow-hidden flex">
+            <div class="animate-marquee flex items-center space-x-12 sm:space-x-16 opacity-80 whitespace-nowrap">
+                <!-- Set 1 -->
+                <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition px-4">NIKE</span>
+                <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition px-4">PUMA</span>
+                <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition px-4">ADIDAS</span>
+                <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition px-4">REEBOK</span>
+                <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition px-4">NB</span>
+                <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition px-4">ASICS</span>
+                <!-- Duplicate Set for Seamless Infinite Loop -->
+                <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition px-4">NIKE</span>
+                <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition px-4">PUMA</span>
+                <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition px-4">ADIDAS</span>
+                <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition px-4">REEBOK</span>
+                <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition px-4">NB</span>
+                <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition px-4">ASICS</span>
             </div>
         </div>
     </section>
@@ -168,7 +191,7 @@
             <!-- Category 1: Footwear -->
             <a href="footwear.html" class="group relative bg-brand-card border border-gray-800 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl hover:border-brand-gold transition duration-300 block flex flex-col">
                 <div class="h-32 sm:h-52 overflow-hidden bg-black/50 relative">
-                    <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600&q=80" alt="Spikes & Footwear" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <img src="image2.jpg" alt="Spikes & Footwear" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
                 </div>
                 <div class="p-3 sm:p-5 text-center absolute bottom-0 inset-x-0">
@@ -181,7 +204,7 @@
             <!-- Category 2: Equipment -->
             <a href="equipment.html" class="group relative bg-brand-card border border-gray-800 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl hover:border-brand-gold transition duration-300 block flex flex-col">
                 <div class="h-32 sm:h-52 overflow-hidden bg-black/50 relative">
-                    <img src="https://images.unsplash.com/photo-1517649763962-0c6232662000?auto=format&fit=crop&w=600&q=80" alt="Track Equipment" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <img src="image4.jpg" alt="Track Equipment" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
                 </div>
                 <div class="p-3 sm:p-5 text-center absolute bottom-0 inset-x-0">
@@ -226,7 +249,7 @@
             <!-- 1. Footwear Banner Card -->
             <a href="footwear.html" class="group relative bg-brand-dark border-2 border-brand-gold rounded-3xl overflow-hidden shadow-2xl p-6 sm:p-8 flex flex-col justify-between hover:scale-[1.02] transition duration-300 min-h-[260px]">
                 <!-- ADD / CHANGE BANNER IMAGE HERE -->
-                <img src="image2.jpg" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80'" alt="Footwear Banner" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                <img src="image3.jpg" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80'" alt="Footwear Banner" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700">
                 <!-- Dark Gradient Overlay so text stands out -->
                 <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/40"></div>
 
