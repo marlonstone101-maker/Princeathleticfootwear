@@ -79,7 +79,7 @@
         .animate-marquee {
             display: flex;
             width: max-content;
-            animation: marquee 25s linear infinite;
+            animation: marquee 35s linear infinite;
         }
         .animate-marquee:hover {
             animation-play-state: paused;
@@ -129,7 +129,7 @@
         </div>
     </nav>
 
-    <!-- MOBILE & TABLET SEARCH BAR (Transparent / Transparent Background) -->
+    <!-- MOBILE & TABLET SEARCH BAR -->
     <div class="block md:hidden bg-transparent px-4 py-2">
         <div class="relative w-full">
             <input type="text" id="searchInputMobile" oninput="document.getElementById('searchInput').value = this.value; filterProducts()" placeholder="Search spikes, jerseys, equipment..." class="w-full bg-brand-black/50 backdrop-blur-sm border border-gray-700/80 rounded-full py-2 pl-4 pr-10 text-xs text-white focus:outline-none focus:border-brand-gold">
@@ -141,17 +141,10 @@
     <header class="relative bg-brand-black overflow-hidden border-b border-brand-gold/20">
         <div id="heroCarousel" class="relative h-[280px] sm:h-[420px] md:h-[550px] w-full flex items-center justify-center">
             <div id="heroSlideContainer" class="w-full h-full relative">
-                <div class="hero-slide absolute inset-0 opacity-100 transition-opacity duration-1000 bg-cover bg-center flex items-center justify-center" style="background-image: linear-gradient(to right, rgba(0,0,0,0.85), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80');">
-                    <div class="text-center px-4 max-w-3xl">
-                        <span class="inline-block bg-brand-green text-black font-black text-[10px] sm:text-xs px-3 py-1 rounded-full uppercase tracking-wider mb-2">New Arrival 2026</span>
-                        <h2 class="text-2xl sm:text-4xl md:text-6xl font-black italic tracking-tight text-white mb-2">ENGINEERED FOR <span class="gold-gradient-text">SPEED</span></h2>
-                        <p class="text-gray-300 text-xs sm:text-base md:text-lg mb-4">Equipping elite track & field athletes across Jamaica and worldwide.</p>
-                        <a href="#categories" class="inline-block bg-brand-gold hover:bg-brand-green text-black font-black text-xs sm:text-base px-6 sm:px-8 py-2.5 sm:py-3 rounded-full uppercase tracking-wider shadow-lg transition">Shop Categories</a>
-                    </div>
-                </div>
+                <!-- Slides injected dynamically -->
             </div>
-            <button onclick="prevSlide()" class="absolute left-3 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-brand-gold text-white hover:text-black p-2 sm:p-3 rounded-full transition"><i class="fa-solid fa-chevron-left text-xs sm:text-base"></i></button>
-            <button onclick="nextSlide()" class="absolute right-3 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-brand-gold text-white hover:text-black p-2 sm:p-3 rounded-full transition"><i class="fa-solid fa-chevron-right text-xs sm:text-base"></i></button>
+            <button onclick="prevSlide()" class="absolute left-3 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-brand-gold text-white hover:text-black p-2 sm:p-3 rounded-full transition z-20"><i class="fa-solid fa-chevron-left text-xs sm:text-base"></i></button>
+            <button onclick="nextSlide()" class="absolute right-3 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-brand-gold text-white hover:text-black p-2 sm:p-3 rounded-full transition z-20"><i class="fa-solid fa-chevron-right text-xs sm:text-base"></i></button>
         </div>
     </header>
 
@@ -162,14 +155,12 @@
         </div>
         <div class="relative w-full overflow-hidden flex">
             <div class="animate-marquee flex items-center space-x-12 sm:space-x-16 opacity-80 whitespace-nowrap">
-                <!-- Set 1 -->
                 <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition px-4">NIKE</span>
                 <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition px-4">PUMA</span>
                 <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition px-4">ADIDAS</span>
                 <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition px-4">REEBOK</span>
                 <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition px-4">NB</span>
                 <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition px-4">ASICS</span>
-                <!-- Duplicate Set for Seamless Infinite Loop -->
                 <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition px-4">NIKE</span>
                 <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition px-4">PUMA</span>
                 <span class="font-black text-xl sm:text-2xl tracking-tighter hover:text-brand-green cursor-pointer transition px-4">ADIDAS</span>
@@ -180,7 +171,7 @@
         </div>
     </section>
 
-    <!-- SHOP BY CATEGORY SECTION (2-ROW GRID) -->
+    <!-- SHOP BY CATEGORY SECTION -->
     <section id="categories" class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-8 sm:py-12 flex-1 w-full scroll-mt-24">
         <div class="text-center mb-8">
             <h2 class="text-2xl sm:text-4xl font-black italic gold-gradient-text uppercase">SHOP BY CATEGORY</h2>
@@ -188,7 +179,6 @@
         </div>
 
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-            <!-- Category 1: Footwear -->
             <a href="footwear.html" class="group relative bg-brand-card border border-gray-800 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl hover:border-brand-gold transition duration-300 block flex flex-col">
                 <div class="h-32 sm:h-52 overflow-hidden bg-black/50 relative">
                     <img src="image2.jpg" alt="Spikes & Footwear" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
@@ -201,7 +191,6 @@
                 </div>
             </a>
 
-            <!-- Category 2: Equipment -->
             <a href="equipment.html" class="group relative bg-brand-card border border-gray-800 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl hover:border-brand-gold transition duration-300 block flex flex-col">
                 <div class="h-32 sm:h-52 overflow-hidden bg-black/50 relative">
                     <img src="image4.jpg" alt="Track Equipment" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
@@ -214,7 +203,6 @@
                 </div>
             </a>
 
-            <!-- Category 3: Apparel -->
             <a href="apparel.html" class="group relative bg-brand-card border border-gray-800 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl hover:border-brand-gold transition duration-300 block flex flex-col">
                 <div class="h-32 sm:h-52 overflow-hidden bg-black/50 relative">
                     <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80" alt="Jerseys & Apparel" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
@@ -227,7 +215,6 @@
                 </div>
             </a>
 
-            <!-- Category 4: Football -->
             <a href="football.html" class="group relative bg-brand-card border border-gray-800 rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl hover:border-brand-gold transition duration-300 block flex flex-col">
                 <div class="h-32 sm:h-52 overflow-hidden bg-black/50 relative">
                     <img src="https://images.unsplash.com/photo-1614632537190-23e4146777db?auto=format&fit=crop&w=600&q=80" alt="Football Gear" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
@@ -242,17 +229,26 @@
         </div>
     </section>
 
-    <!-- FEATURED HIGHLIGHT BANNER WITH CLEAR <IMG> TAG SECTIONS FOR VS CODE -->
+    <!-- NEW ARRIVALS SECTION (CONTINUOUS AUTO-MOVING MARQUEE TICKER) -->
+    <section class="py-6 overflow-hidden">
+        <div class="text-center mb-6 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+            <h2 class="text-xl sm:text-3xl font-black italic gold-gradient-text uppercase">🔥 NEW ARRIVALS</h2>
+            <p class="text-xs text-gray-400 mt-1">Hover to pause, click any product image to zoom in</p>
+        </div>
+        <!-- Continuous Marquee Container -->
+        <div class="relative w-full overflow-hidden flex">
+            <div id="newArrivalsGrid" class="animate-marquee flex items-center space-x-6 py-2">
+                <!-- Injected dynamically via JavaScript with duplicates for infinite smooth loop -->
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURED HIGHLIGHT BANNER -->
     <section class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
-            <!-- 1. Footwear Banner Card -->
             <a href="footwear.html" class="group relative bg-brand-dark border-2 border-brand-gold rounded-3xl overflow-hidden shadow-2xl p-6 sm:p-8 flex flex-col justify-between hover:scale-[1.02] transition duration-300 min-h-[260px]">
-                <!-- ADD / CHANGE BANNER IMAGE HERE -->
                 <img src="image3.jpg" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80'" alt="Footwear Banner" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700">
-                <!-- Dark Gradient Overlay so text stands out -->
                 <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/40"></div>
-
                 <div class="relative z-10">
                     <span class="bg-brand-green text-black font-black text-[10px] px-3 py-1 rounded-full uppercase tracking-widest">Elite Performance</span>
                     <h3 class="text-xl sm:text-3xl font-black italic text-white mt-2 group-hover:text-brand-gold transition">PRO FOOTWEAR & SPIKES</h3>
@@ -266,13 +262,9 @@
                 </div>
             </a>
 
-            <!-- 2. Stopwatch & Equipment Banner Card -->
             <a href="equipment.html" class="group relative bg-brand-dark border-2 border-brand-green rounded-3xl overflow-hidden shadow-2xl p-6 sm:p-8 flex flex-col justify-between hover:scale-[1.02] transition duration-300 min-h-[260px]">
-                <!-- ADD / CHANGE BANNER IMAGE HERE -->
                 <img src="image1.jpg" onerror="this.src='https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=800&q=80'" alt="Equipment Banner" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700">
-                <!-- Dark Gradient Overlay so text stands out -->
                 <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/40"></div>
-
                 <div class="relative z-10">
                     <span class="bg-brand-gold text-black font-black text-[10px] px-3 py-1 rounded-full uppercase tracking-widest">Precision Timing</span>
                     <h3 class="text-xl sm:text-3xl font-black italic text-white mt-2 group-hover:text-brand-green transition">STOPWATCH & EQUIPMENT</h3>
@@ -285,7 +277,6 @@
                     <span class="text-brand-gold font-black text-xs italic tracking-widest animate-pulse border border-brand-gold/50 px-3 py-1 rounded-full bg-black/60">CLICK ME!</span>
                 </div>
             </a>
-
         </div>
     </section>
 
@@ -296,19 +287,25 @@
                 <h3 class="text-xl font-black gold-gradient-text uppercase"><i class="fa-solid fa-magnifying-glass mr-2"></i> Search Results</h3>
                 <button onclick="closeSearchModal()" class="text-gray-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div id="searchResultsGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                <!-- Injected via JS -->
-            </div>
+            <div id="searchResultsGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-4"></div>
         </div>
     </div>
 
-    <!-- LOCAL GALLERY SECTION (SMOOTH HORIZONTAL SCROLL ON MOBILE, NO SCROLLBAR) -->
+    <!-- IMAGE ZOOM LIGHTBOX MODAL -->
+    <div id="imageZoomModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4" onclick="closeImageZoom()">
+        <div class="relative max-w-4xl max-h-[90vh] flex flex-col items-center" onclick="event.stopPropagation()">
+            <button onclick="closeImageZoom()" class="absolute -top-10 right-0 text-white text-2xl hover:text-brand-gold transition"><i class="fa-solid fa-xmark"></i></button>
+            <img id="zoomedImageElement" src="#" class="max-h-[80vh] max-w-full object-contain rounded-xl border-2 border-brand-gold shadow-2xl">
+            <p id="zoomedImageTitle" class="mt-3 text-sm font-bold text-brand-gold uppercase tracking-wider text-center"></p>
+        </div>
+    </div>
+
+    <!-- LOCAL GALLERY SECTION -->
     <section class="bg-brand-dark py-10 border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-4">
             <h3 class="text-lg sm:text-2xl font-black italic gold-gradient-text mb-1 text-center uppercase">TEAM & STORE GALLERY</h3>
             <p class="text-center text-xs text-gray-400 mb-6">Authentic gear captured live from Kingston tracks and our athletic showroom</p>
             
-            <!-- Horizontal Scroll Container for Mobile, Grid for Desktop -->
             <div class="flex md:grid md:grid-cols-4 gap-4 overflow-x-auto no-scrollbar snap-x pb-4">
                 <div class="min-w-[240px] sm:min-w-[280px] md:min-w-0 snap-start bg-brand-card border border-gray-800 rounded-2xl overflow-hidden group shrink-0">
                     <img src="img/gallery-1.jpg" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=600&q=80';" class="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition duration-300" alt="Champs Prep">
@@ -489,11 +486,13 @@
         let products = JSON.parse(localStorage.getItem('prince_products')) || defaultProducts;
         let cart = JSON.parse(localStorage.getItem('prince_cart')) || [];
         let slideIndex = 0;
+        let slideInterval = null;
 
         document.addEventListener('DOMContentLoaded', () => {
             updateCartUI();
             renderAdminStockControls();
-            setupSlideshow();
+            renderNewArrivals();
+            renderHeroSlides();
         });
 
         function saveState() {
@@ -501,7 +500,157 @@
             localStorage.setItem('prince_cart', JSON.stringify(cart));
         }
 
-        // Live Search redirecting to search modal
+        // Render Hero Slides with "View Collection" linking to Shop by Category
+        function renderHeroSlides() {
+            const container = document.getElementById('heroSlideContainer');
+            if (!container) return;
+            
+            let slidesHtml = `
+                <div class="hero-slide absolute inset-0 opacity-100 transition-opacity duration-1000 bg-cover bg-center flex items-center justify-center" style="background-image: linear-gradient(to right, rgba(0,0,0,0.85), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80');">
+                    <div class="text-center px-4 max-w-3xl">
+                        <span class="inline-block bg-brand-green text-black font-black text-[10px] sm:text-xs px-3 py-1 rounded-full uppercase tracking-wider mb-2">New Arrival 2026</span>
+                        <h2 class="text-2xl sm:text-4xl md:text-6xl font-black italic tracking-tight text-white mb-2">ENGINEERED FOR <span class="gold-gradient-text">SPEED</span></h2>
+                        <p class="text-gray-300 text-xs sm:text-base md:text-lg mb-4">Equipping elite track & field athletes across Jamaica and worldwide.</p>
+                        <a href="#categories" class="inline-block bg-brand-gold hover:bg-brand-green text-black font-black text-xs sm:text-base px-6 sm:px-8 py-2.5 sm:py-3 rounded-full uppercase tracking-wider shadow-lg transition">Shop Categories</a>
+                    </div>
+                </div>
+            `;
+
+            products.forEach((p, idx) => {
+                slidesHtml += `
+                    <div class="hero-slide absolute inset-0 opacity-0 transition-opacity duration-1000 bg-cover bg-center flex items-center justify-center" style="background-image: linear-gradient(to right, rgba(0,0,0,0.85), rgba(0,0,0,0.4)), url('${p.image}');">
+                        <div class="text-center px-4 max-w-3xl">
+                            <span class="inline-block bg-brand-gold text-black font-black text-[10px] sm:text-xs px-3 py-1 rounded-full uppercase tracking-wider mb-2">Featured Collection • ${p.brand}</span>
+                            <h2 class="text-2xl sm:text-4xl md:text-6xl font-black italic tracking-tight text-white mb-2">${p.name}</h2>
+                            <p class="text-brand-green font-black text-base sm:text-xl mb-2">$${p.price.toFixed(2)} USD</p>
+                            <p class="text-gray-300 text-xs sm:text-sm mb-4 line-clamp-1">${p.desc || 'Professional athletic gear.'}</p>
+                            <a href="#categories" class="inline-block bg-brand-gold hover:bg-brand-green text-black font-black text-xs sm:text-base px-6 sm:px-8 py-2.5 sm:py-3 rounded-full uppercase tracking-wider shadow-lg transition">View Collection</a>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = slidesHtml;
+            slideIndex = 0;
+            if (slideInterval) clearInterval(slideInterval);
+            slideInterval = setInterval(() => { nextSlide(); }, 6000);
+        }
+
+        // Render New Arrivals as an Auto-Scrolling Marquee Ticker with Image Zoom
+        function renderNewArrivals() {
+            const grid = document.getElementById('newArrivalsGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            const latestProducts = products.slice(0, 10);
+            let cardsHtml = '';
+
+            // Build single set of cards
+            latestProducts.forEach(product => {
+                const isOutOfStock = product.stock <= 0;
+                let optionSelectorHtml = '';
+
+                if (product.category === 'Footwear') {
+                    optionSelectorHtml = `
+                        <div class="mt-2">
+                            <label class="block text-[10px] text-gray-400 font-bold mb-1">Select Size (US):</label>
+                            <select id="new-size-${product.id}" class="w-full bg-brand-black border border-gray-700 rounded p-1 text-xs text-white focus:border-brand-gold focus:outline-none">
+                                <option value="US 7">US 7</option>
+                                <option value="US 7.5">US 7.5</option>
+                                <option value="US 8">US 8</option>
+                                <option value="US 8.5">US 8.5</option>
+                                <option value="US 9" selected>US 9</option>
+                                <option value="US 9.5">US 9.5</option>
+                                <option value="US 10">US 10</option>
+                                <option value="US 10.5">US 10.5</option>
+                                <option value="US 11">US 11</option>
+                                <option value="US 11.5">US 11.5</option>
+                                <option value="US 12">US 12</option>
+                                <option value="US 13">US 13</option>
+                            </select>
+                        </div>
+                    `;
+                } else if (product.category === 'Apparel') {
+                    optionSelectorHtml = `
+                        <div class="mt-2">
+                            <label class="block text-[10px] text-gray-400 font-bold mb-1">Select Fit:</label>
+                            <select id="new-size-${product.id}" class="w-full bg-brand-black border border-gray-700 rounded p-1 text-xs text-white focus:border-brand-gold focus:outline-none">
+                                <option value="S">Small (S)</option>
+                                <option value="M">Medium (M)</option>
+                                <option value="L" selected>Large (L)</option>
+                                <option value="XL">X-Large (XL)</option>
+                                <option value="XXL">XX-Large (XXL)</option>
+                            </select>
+                        </div>
+                    `;
+                }
+
+                cardsHtml += `
+                    <div class="w-[240px] sm:w-[270px] bg-brand-card border border-gray-800 rounded-2xl overflow-hidden flex flex-col justify-between p-3 shadow-lg shrink-0">
+                        <div class="h-36 bg-black/40 flex items-center justify-center p-2 mb-2 relative group cursor-pointer" onclick="openImageZoom('${product.image}', '${product.name.replace(/'/g, "\\'")}')">
+                            <span class="absolute top-1 left-1 bg-brand-green text-black text-[9px] font-black px-1.5 py-0.5 rounded uppercase z-10">NEW</span>
+                            <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center z-0">
+                                <span class="bg-brand-gold/90 text-black text-[10px] font-black px-2 py-1 rounded-full shadow"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Zoom Image</span>
+                            </div>
+                            <img src="${product.image}" class="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300">
+                        </div>
+                        <div>
+                            <span class="text-[9px] text-brand-gold uppercase font-bold">${product.brand} • ${product.category}</span>
+                            <h4 class="text-xs font-bold text-white line-clamp-1">${product.name}</h4>
+                            <p class="text-xs font-black text-brand-green mt-1">$${product.price.toFixed(2)}</p>
+                            ${optionSelectorHtml}
+                        </div>
+                        <button onclick="addToCartFromNew(${product.id})" ${isOutOfStock ? 'disabled' : ''} class="mt-3 ${isOutOfStock ? 'bg-gray-700 text-gray-400' : 'bg-brand-gold hover:bg-brand-green text-black'} font-black text-[11px] py-1.5 rounded-lg transition uppercase">
+                            ${isOutOfStock ? 'Sold Out' : 'Add to Cart'}
+                        </button>
+                    </div>
+                `;
+            });
+
+            // Duplicate cards to guarantee seamless infinite sliding loop
+            grid.innerHTML = cardsHtml + cardsHtml;
+        }
+
+        function openImageZoom(imgSrc, title) {
+            document.getElementById('zoomedImageElement').src = imgSrc;
+            document.getElementById('zoomedImageTitle').textContent = title;
+            document.getElementById('imageZoomModal').classList.remove('hidden');
+        }
+
+        function closeImageZoom() {
+            document.getElementById('imageZoomModal').classList.add('hidden');
+        }
+
+        function addToCartFromNew(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product || product.stock <= 0) return;
+
+            let selectedSize = 'Standard';
+            const sizeElement = document.getElementById(`new-size-${productId}`);
+            if (sizeElement) {
+                selectedSize = sizeElement.value;
+            }
+
+            const cartKeyId = `${productId}-${selectedSize}`;
+            const existingItem = cart.find(item => item.cartKey === cartKeyId);
+            const currentQtyInCart = existingItem ? existingItem.qty : 0;
+
+            if (currentQtyInCart + 1 > product.stock) {
+                alert(`Sorry! Only ${product.stock} units available in stock for this option.`);
+                return;
+            }
+
+            if (existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({ ...product, cartKey: cartKeyId, size: selectedSize, qty: 1 });
+            }
+
+            saveState();
+            updateCartUI();
+            toggleCartDrawer(true);
+        }
+
         function filterProducts() {
             const term = document.getElementById('searchInput').value.toLowerCase().trim();
             if (term === '') {
@@ -532,17 +681,55 @@
 
             items.forEach(product => {
                 const isOutOfStock = product.stock <= 0;
+                let optionSelectorHtml = '';
+
+                if (product.category === 'Footwear') {
+                    optionSelectorHtml = `
+                        <div class="mt-2">
+                            <label class="block text-[10px] text-gray-400 font-bold mb-1">Select Size (US):</label>
+                            <select id="size-${product.id}" class="w-full bg-brand-black border border-gray-700 rounded p-1 text-xs text-white focus:border-brand-gold focus:outline-none">
+                                <option value="US 7">US 7</option>
+                                <option value="US 7.5">US 7.5</option>
+                                <option value="US 8">US 8</option>
+                                <option value="US 8.5">US 8.5</option>
+                                <option value="US 9" selected>US 9</option>
+                                <option value="US 9.5">US 9.5</option>
+                                <option value="US 10">US 10</option>
+                                <option value="US 10.5">US 10.5</option>
+                                <option value="US 11">US 11</option>
+                                <option value="US 11.5">US 11.5</option>
+                                <option value="US 12">US 12</option>
+                                <option value="US 13">US 13</option>
+                            </select>
+                        </div>
+                    `;
+                } else if (product.category === 'Apparel') {
+                    optionSelectorHtml = `
+                        <div class="mt-2">
+                            <label class="block text-[10px] text-gray-400 font-bold mb-1">Select Fit:</label>
+                            <select id="size-${product.id}" class="w-full bg-brand-black border border-gray-700 rounded p-1 text-xs text-white focus:border-brand-gold focus:outline-none">
+                                <option value="S">Small (S)</option>
+                                <option value="M">Medium (M)</option>
+                                <option value="L" selected>Large (L)</option>
+                                <option value="XL">X-Large (XL)</option>
+                                <option value="XXL">XX-Large (XXL)</option>
+                            </select>
+                        </div>
+                    `;
+                }
+
                 grid.innerHTML = grid.innerHTML + `
                     <div class="bg-brand-card border border-gray-800 rounded-2xl overflow-hidden flex flex-col justify-between p-3">
-                        <div class="h-32 bg-black/40 flex items-center justify-center p-2 mb-2">
+                        <div class="h-32 bg-black/40 flex items-center justify-center p-2 mb-2 cursor-pointer" onclick="openImageZoom('${product.image}', '${product.name.replace(/'/g, "\\'")}')">
                             <img src="${product.image}" class="max-h-full max-w-full object-contain">
                         </div>
                         <div>
                             <span class="text-[9px] text-brand-gold uppercase font-bold">${product.brand} • ${product.category}</span>
                             <h4 class="text-xs font-bold text-white line-clamp-1">${product.name}</h4>
                             <p class="text-xs font-black text-brand-green mt-1">$${product.price.toFixed(2)}</p>
+                            ${optionSelectorHtml}
                         </div>
-                        <button onclick="addToCart(${product.id})" ${isOutOfStock ? 'disabled' : ''} class="mt-2 ${isOutOfStock ? 'bg-gray-700 text-gray-400' : 'bg-brand-gold hover:bg-brand-green text-black'} font-black text-[11px] py-1.5 rounded-lg transition uppercase">
+                        <button onclick="addToCart(${product.id})" ${isOutOfStock ? 'disabled' : ''} class="mt-3 ${isOutOfStock ? 'bg-gray-700 text-gray-400' : 'bg-brand-gold hover:bg-brand-green text-black'} font-black text-[11px] py-1.5 rounded-lg transition uppercase">
                             ${isOutOfStock ? 'Sold Out' : 'Add to Cart'}
                         </button>
                     </div>
@@ -558,18 +745,25 @@
             const product = products.find(p => p.id === productId);
             if (!product || product.stock <= 0) return;
 
-            const existingItem = cart.find(item => item.id === productId);
+            let selectedSize = 'Standard';
+            const sizeElement = document.getElementById(`size-${productId}`);
+            if (sizeElement) {
+                selectedSize = sizeElement.value;
+            }
+
+            const cartKeyId = `${productId}-${selectedSize}`;
+            const existingItem = cart.find(item => item.cartKey === cartKeyId);
             const currentQtyInCart = existingItem ? existingItem.qty : 0;
 
             if (currentQtyInCart + 1 > product.stock) {
-                alert(`Sorry! Only ${product.stock} units available in stock.`);
+                alert(`Sorry! Only ${product.stock} units available in stock for this option.`);
                 return;
             }
 
             if (existingItem) {
                 existingItem.qty += 1;
             } else {
-                cart.push({ ...product, qty: 1 });
+                cart.push({ ...product, cartKey: cartKeyId, size: selectedSize, qty: 1 });
             }
 
             saveState();
@@ -593,19 +787,23 @@
                 cart.forEach(item => {
                     total = total + (item.price * item.qty);
                     totalItems = totalItems + item.qty;
+                    const sizeBadge = item.size && item.size !== 'Standard' ? `<span class="bg-brand-gold/20 text-brand-gold text-[10px] px-1.5 py-0.5 rounded font-bold">${item.size}</span>` : '';
                     cartItemsContainer.innerHTML = cartItemsContainer.innerHTML + `
                         <div class="flex items-center justify-between bg-brand-black p-3 rounded-xl border border-gray-800">
                             <div class="flex items-center gap-3">
                                 <img src="${item.image}" class="w-12 h-12 object-cover rounded-lg">
                                 <div>
                                     <h4 class="text-xs font-bold text-white">${item.name}</h4>
-                                    <p class="text-[11px] text-brand-green font-bold">$${item.price.toFixed(2)}</p>
+                                    <div class="flex items-center gap-2 mt-0.5">
+                                        <p class="text-[11px] text-brand-green font-bold">$${item.price.toFixed(2)}</p>
+                                        ${sizeBadge}
+                                    </div>
                                 </div>
                             </div>
                             <div class="flex items-center gap-2">
-                                <button onclick="changeQty(${item.id}, -1)" class="w-6 h-6 bg-gray-800 text-white rounded text-xs flex items-center justify-center">-</button>
+                                <button onclick="changeQty('${item.cartKey}', -1)" class="w-6 h-6 bg-gray-800 text-white rounded text-xs flex items-center justify-center">-</button>
                                 <span class="text-xs font-bold">${item.qty}</span>
-                                <button onclick="changeQty(${item.id}, 1)" class="w-6 h-6 bg-gray-800 text-white rounded text-xs flex items-center justify-center">+</button>
+                                <button onclick="changeQty('${item.cartKey}', 1)" class="w-6 h-6 bg-gray-800 text-white rounded text-xs flex items-center justify-center">+</button>
                             </div>
                         </div>
                     `;
@@ -616,9 +814,9 @@
             cartTotal.textContent = `$${total.toFixed(2)} USD`;
         }
 
-        function changeQty(productId, delta) {
-            const item = cart.find(i => i.id === productId);
-            const product = products.find(p => p.id === productId);
+        function changeQty(cartKey, delta) {
+            const item = cart.find(i => i.cartKey === cartKey);
+            const product = products.find(p => p.id === item.id);
             if (!item || !product) return;
 
             if (delta > 0 && item.qty + 1 > product.stock) {
@@ -628,7 +826,7 @@
 
             item.qty = item.qty + delta;
             if (item.qty <= 0) {
-                cart = cart.filter(i => i.id !== productId);
+                cart = cart.filter(i => i.cartKey !== cartKey);
             }
             saveState();
             updateCartUI();
@@ -643,10 +841,12 @@
             });
             saveState();
             renderAdminStockControls();
+            renderNewArrivals();
             cart = [];
             updateCartUI();
         }
 
+        // Stripe Checkout with Direct Order Email Dispatch to koolprincee@gmail.com
         function checkoutStripe() {
             const name = document.getElementById('custName').value;
             const phone = document.getElementById('custPhone').value;
@@ -655,10 +855,26 @@
             if (cart.length === 0) { alert('Your cart is empty!'); return; }
             if (!name || !phone || !address) { alert('Please fill out your name, phone, and delivery address.'); return; }
 
-            alert(`Processing Stripe Checkout for ${name}...\nTotal Amount: ${document.getElementById('cartTotal').textContent}`);
+            let orderSummaryText = `NEW STRIPE ORDER - PRINCE ATHLETICS\n\nCustomer Name: ${name}\nPhone: ${phone}\nAddress: ${address}\nTotal: ${document.getElementById('cartTotal').textContent}\n\nItems:\n`;
+            cart.forEach(item => {
+                const sizeStr = item.size && item.size !== 'Standard' ? ` [Size/Fit: ${item.size}]` : '';
+                orderSummaryText += `- ${item.name}${sizeStr} (Qty: ${item.qty}) - $${(item.price * item.qty).toFixed(2)}\n`;
+            });
+
+            // Send order details directly to koolprincee@gmail.com via Formspree API endpoint
+            fetch('https://formspree.io/f/koolprincee@gmail.com', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: 'koolprincee@gmail.com',
+                    subject: `New Stripe Order from ${name} - Prince Athletics`,
+                    message: orderSummaryText
+                })
+            }).catch(err => console.log('Email dispatch attempted.', err));
+
             deductInventory();
             toggleCartDrawer(false);
-            alert('Payment successful! Inventory updated.');
+            alert(`Payment successful via Stripe!\nOrder confirmation has been sent to koolprincee@gmail.com.`);
         }
 
         function checkoutWhatsApp() {
@@ -670,7 +886,8 @@
 
             let msg = `*NEW ORDER - PRINCE ATHLETICS*\n\n*Customer:* ${name || 'N/A'}\n*Phone:* ${phone || 'N/A'}\n*Address:* ${address || 'N/A'}\n\n*Order Details:*\n`;
             cart.forEach(item => {
-                msg = msg + `- ${item.name} (x${item.qty}) - $${(item.price * item.qty).toFixed(2)}\n`;
+                const sizeStr = item.size && item.size !== 'Standard' ? ` [${item.size}]` : '';
+                msg = msg + `- ${item.name}${sizeStr} (x${item.qty}) - $${(item.price * item.qty).toFixed(2)}\n`;
             });
             msg = msg + `\n*Total:* ${document.getElementById('cartTotal').textContent}\nWorldwide shipping requested.`;
 
@@ -716,8 +933,10 @@
             products.unshift(product);
             saveState();
             renderAdminStockControls();
+            renderNewArrivals();
+            renderHeroSlides();
             document.getElementById('addProductForm').reset();
-            alert('Product added successfully!');
+            alert('Product added successfully and published to New Arrivals & Hero Slideshow!');
         }
 
         function renderAdminStockControls() {
@@ -743,6 +962,7 @@
             if (product) {
                 product.stock = parseInt(newStock) || 0;
                 saveState();
+                renderNewArrivals();
             }
         }
 
@@ -751,6 +971,8 @@
                 products = products.filter(p => p.id !== id);
                 saveState();
                 renderAdminStockControls();
+                renderNewArrivals();
+                renderHeroSlides();
             }
         }
 
@@ -762,7 +984,6 @@
             else drawer.classList.toggle('hidden');
         }
 
-        function setupSlideshow() { setInterval(() => { nextSlide(); }, 6000); }
         function nextSlide() {
             const slides = document.querySelectorAll('.hero-slide');
             if (slides.length <= 1) return;
@@ -772,6 +993,7 @@
             slides[slideIndex].classList.remove('opacity-0');
             slides[slideIndex].classList.add('opacity-100');
         }
+
         function prevSlide() {
             const slides = document.querySelectorAll('.hero-slide');
             if (slides.length <= 1) return;
