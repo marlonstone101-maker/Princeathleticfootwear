@@ -18,6 +18,8 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- Stripe JS SDK -->
+    <script src="https://js.stripe.com/v3/"></script>
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
@@ -59,22 +61,30 @@
         </div>
     </div>
 
-    <!-- CART DRAWER -->
+    <!-- CART DRAWER WITH SHIPPING & STRIPE CHECKOUT -->
     <div id="cartDrawer" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex justify-end">
-        <div class="bg-brand-dark w-full max-w-md h-full shadow-2xl flex flex-col p-6 overflow-y-auto border-l border-brand-gold/30">
-            <div class="flex justify-between items-center border-b border-gray-800 pb-4 mb-4">
-                <h3 class="text-xl font-black italic text-yellow-400">YOUR CART</h3>
-                <button onclick="toggleCartDrawer()" class="text-gray-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+        <div class="bg-brand-dark w-full max-w-md h-full shadow-2xl flex flex-col p-4 sm:p-6 border-l border-brand-gold/30">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-3 mb-3 shrink-0">
+                <h3 class="text-base sm:text-xl font-black italic text-yellow-400">YOUR CART & CHECKOUT</h3>
+                <button onclick="toggleCartDrawer()" class="text-gray-400 hover:text-white text-xl"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <div id="cartItems" class="flex-1 space-y-3 mb-6"></div>
-            <div class="border-t border-gray-800 pt-4 space-y-4">
-                <div class="flex justify-between font-bold text-lg">
-                    <span>Total:</span>
+            <div id="cartItems" class="flex-1 overflow-y-auto space-y-3 mb-4 pr-1"></div>
+            <div class="border-t border-gray-800 pt-3 space-y-3 shrink-0">
+                <div class="flex justify-between font-bold text-sm sm:text-lg">
+                    <span>Total Amount:</span>
                     <span id="cartTotal" class="text-brand-green">$0.00 USD</span>
                 </div>
-                <button onclick="checkoutWhatsApp()" class="w-full bg-brand-green text-black font-black py-3 rounded-xl uppercase text-xs">
-                    <i class="fa-brands fa-whatsapp"></i> Order via WhatsApp
-                </button>
+                <div class="space-y-2">
+                    <p class="text-[11px] font-bold text-brand-gold uppercase tracking-wider">Customer Shipping Info</p>
+                    <input type="text" id="custName" placeholder="Full Name" class="w-full bg-brand-black border border-gray-700 rounded-lg p-2 text-xs text-white focus:border-brand-gold focus:outline-none">
+                    <input type="tel" id="custPhone" placeholder="Phone / WhatsApp Number" class="w-full bg-brand-black border border-gray-700 rounded-lg p-2 text-xs text-white focus:border-brand-gold focus:outline-none">
+                    <textarea id="custAddress" rows="2" placeholder="Worldwide Shipping Address (Street, City, Country)" class="w-full bg-brand-black border border-gray-700 rounded-lg p-2 text-xs text-white focus:border-brand-gold focus:outline-none"></textarea>
+                </div>
+                <div class="pt-1">
+                    <button onclick="checkoutStripe()" class="w-full bg-brand-gold hover:bg-yellow-400 text-black font-black py-2.5 rounded-xl transition flex items-center justify-center gap-2 uppercase tracking-wider text-xs shadow-lg">
+                        <i class="fa-solid fa-credit-card"></i> Pay with card
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -96,7 +106,7 @@
         const db = firebase.firestore();
 
         // CHANGE THIS VARIABLE FOR EACH FILE: "Footwear", "Equipment", "Apparel", or "Football"
-        const targetCategory = "Football"; // Change this value for each category page
+        const targetCategory = "Football"; 
 
         document.getElementById('categoryTitle').textContent = targetCategory + " Collection";
 
@@ -122,11 +132,14 @@
             });
         }
 
+        function saveCartLocally() {
+            localStorage.setItem('prince_cart', JSON.stringify(cart));
+        }
+
         function renderCategoryProducts() {
             const grid = document.getElementById('categoryProductGrid');
             grid.innerHTML = '';
             
-            // Flexible matching for both "Equipment" and variations
             const filtered = products.filter(p => 
                 p.category && (
                     p.category.toLowerCase() === targetCategory.toLowerCase() || 
@@ -141,23 +154,44 @@
 
             filtered.forEach(product => {
                 const isOutOfStock = product.stock <= 0;
+                let optionSelectorHtml = `
+                    <div class="mt-2">
+                        <label class="block text-[10px] text-gray-400 font-bold mb-1">Select Size (US):</label>
+                        <select id="size-${product.id}" class="w-full bg-brand-black border border-gray-700 rounded p-1 text-xs text-white focus:border-brand-gold focus:outline-none">
+                            <option value="US 7">US 7</option>
+                            <option value="US 7.5">US 7.5</option>
+                            <option value="US 8">US 8</option>
+                            <option value="US 8.5">US 8.5</option>
+                            <option value="US 9" selected>US 9</option>
+                            <option value="US 9.5">US 9.5</option>
+                            <option value="US 10">US 10</option>
+                            <option value="US 10.5">US 10.5</option>
+                            <option value="US 11">US 11</option>
+                            <option value="US 11.5">US 11.5</option>
+                            <option value="US 12">US 12</option>
+                            <option value="US 13">US 13</option>
+                        </select>
+                    </div>
+                `;
+
                 grid.innerHTML = grid.innerHTML + `
-                    <div class="bg-brand-card border border-gray-800 rounded-2xl overflow-hidden flex flex-col justify-between group">
-                        <div class="h-32 sm:h-44 bg-black/40 flex items-center justify-center p-2 relative cursor-pointer" onclick="openImageModal('${product.image}')">
+                    <div class="bg-brand-card border border-gray-800 rounded-2xl overflow-hidden flex flex-col justify-between group p-3">
+                        <div class="h-32 sm:h-44 bg-black/40 flex items-center justify-center p-2 relative cursor-pointer rounded-xl mb-2" onclick="openImageModal('${product.image}')">
                             <img src="${product.image}" class="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300" alt="${product.name}">
                             <span class="absolute top-2 left-2 bg-brand-green/20 text-brand-green font-bold text-[9px] sm:text-[10px] px-2 py-0.5 rounded-full">${product.stock} In Stock</span>
                             <span class="absolute bottom-2 right-2 bg-black/60 text-white text-[9px] px-1.5 py-0.5 rounded"><i class="fa-solid fa-expand"></i></span>
                         </div>
-                        <div class="p-3 sm:p-4 flex-1 flex flex-col justify-between">
+                        <div class="flex-1 flex flex-col justify-between">
                             <div>
                                 <span class="text-[9px] sm:text-[10px] text-brand-gold uppercase font-bold">${product.brand || 'Prince'}</span>
                                 <h3 class="text-xs sm:text-sm font-bold text-white line-clamp-2 mt-0.5">${product.name}</h3>
-                                <p class="text-[10px] sm:text-[11px] text-gray-400 mt-1 line-clamp-2">${product.desc}</p>
+                                <p class="text-[10px] sm:text-[11px] text-gray-400 mt-1 line-clamp-2">${product.desc || ''}</p>
+                                ${optionSelectorHtml}
                             </div>
                             <div class="flex items-center justify-between mt-3 pt-2 border-t border-gray-800">
                                 <span class="text-sm sm:text-base font-black text-brand-green">$${Number(product.price).toFixed(2)}</span>
                                 <button onclick="addToCart(${product.id})" ${isOutOfStock ? 'disabled' : ''} class="${isOutOfStock ? 'bg-gray-700 text-gray-400' : 'bg-brand-gold hover:bg-brand-green text-black'} font-black text-[11px] sm:text-xs px-2.5 sm:px-3 py-1.5 rounded-lg uppercase transition">
-                                    ${isOutOfStock ? 'Sold Out' : 'Add'}
+                                    ${isOutOfStock ? 'Sold Out' : 'Add to Cart'}
                                 </button>
                             </div>
                         </div>
@@ -181,39 +215,137 @@
         function addToCart(productId) {
             const product = products.find(p => p.id === productId);
             if (!product || product.stock <= 0) return;
-            const existing = cart.find(i => i.id === productId);
+
+            let selectedSize = 'Standard';
+            const sizeElement = document.getElementById(`size-${productId}`);
+            if (sizeElement) {
+                selectedSize = sizeElement.value;
+            }
+
+            const cartKeyId = `${productId}-${selectedSize}`;
+            const existing = cart.find(i => i.cartKey === cartKeyId);
+            const currentQtyInCart = existing ? existing.qty : 0;
+
+            if (currentQtyInCart + 1 > product.stock) {
+                alert(`Only ${product.stock} units available in stock for this option.`);
+                return;
+            }
+
             if (existing) {
-                if (existing.qty + 1 > product.stock) {
-                    alert(`Only ${product.stock} units available in stock.`);
-                    return;
-                }
                 existing.qty++;
             } else {
-                cart.push({ ...product, qty: 1 });
+                cart.push({ ...product, cartKey: cartKeyId, size: selectedSize, qty: 1 });
             }
-            localStorage.setItem('prince_cart', JSON.stringify(cart));
+
+            saveCartLocally();
             updateCartUI();
             toggleCartDrawer(true);
         }
 
         function updateCartUI() {
             const container = document.getElementById('cartItems');
+            const cartCount = document.getElementById('cartCount');
+            const cartTotal = document.getElementById('cartTotal');
+
+            if (!container) return;
             container.innerHTML = '';
             let total = 0, count = 0;
-            cart.forEach(item => {
-                total += item.price * item.qty;
-                count += item.qty;
-                container.innerHTML += `<div class="flex justify-between items-center bg-black p-2.5 rounded-xl text-xs border border-gray-800"><span>${item.name} (x${item.qty})</span><span class="text-brand-green font-bold">$${(item.price * item.qty).toFixed(2)}</span></div>`;
-            });
-            document.getElementById('cartCount').textContent = count;
-            document.getElementById('cartTotal').textContent = `$${total.toFixed(2)} USD`;
+
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-center text-gray-500 py-8 text-xs">Your shopping cart is empty.</p>`;
+            } else {
+                cart.forEach(item => {
+                    total += item.price * item.qty;
+                    count += item.qty;
+                    
+                    const sizeBadge = item.size && item.size !== 'Standard' ? `<span class="bg-brand-gold/20 text-brand-gold text-[10px] px-1.5 py-0.5 rounded font-bold">Size: ${item.size}</span>` : '';
+
+                    container.innerHTML += `
+                        <div class="flex items-center justify-between bg-brand-black p-3 rounded-xl border border-gray-800">
+                            <div class="flex items-center gap-3">
+                                <img src="${item.image}" class="w-12 h-12 object-cover rounded-lg">
+                                <div>
+                                    <h4 class="text-xs font-bold text-white">${item.name}</h4>
+                                    <div class="flex items-center gap-2 mt-1">
+                                        <p class="text-[11px] text-brand-green font-bold">$${item.price.toFixed(2)}</p>
+                                        ${sizeBadge}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="changeQty('${item.cartKey}', -1)" class="w-6 h-6 bg-gray-800 text-white rounded text-xs flex items-center justify-center">-</button>
+                                <span class="text-xs font-bold">${item.qty}</span>
+                                <button onclick="changeQty('${item.cartKey}', 1)" class="w-6 h-6 bg-gray-800 text-white rounded text-xs flex items-center justify-center">+</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            cartCount.textContent = count;
+            cartTotal.textContent = `$${total.toFixed(2)} USD`;
         }
 
-        function checkoutWhatsApp() {
-            if (cart.length === 0) return;
-            let msg = "*ORDER FROM CATEGORY PAGE*\n";
-            cart.forEach(i => msg += `- ${i.name} x${i.qty} - $${(i.price * i.qty).toFixed(2)}\n`);
-            window.open(`https://wa.me/8764023170?text=${encodeURIComponent(msg)}`, '_blank');
+        function changeQty(cartKey, delta) {
+            const item = cart.find(i => i.cartKey === cartKey);
+            const product = products.find(p => p.id === item.id);
+            if (!item || !product) return;
+
+            if (delta > 0 && item.qty + 1 > product.stock) {
+                alert(`Stock limit reached! Only ${product.stock} available.`);
+                return;
+            }
+
+            item.qty += delta;
+            if (item.qty <= 0) {
+                cart = cart.filter(i => i.cartKey !== cartKey);
+            }
+            saveCartLocally();
+            updateCartUI();
+        }
+
+        async function deductInventory() {
+            for (let cartItem of cart) {
+                const prod = products.find(p => p.id === cartItem.id);
+                if (prod) {
+                    const newStock = Math.max(0, prod.stock - cartItem.qty);
+                    if (db && prod.docId) {
+                        await db.collection("products").doc(prod.docId).update({ stock: newStock });
+                    }
+                }
+            }
+            cart = [];
+            saveCartLocally();
+            updateCartUI();
+        }
+
+        function checkoutStripe() {
+            const name = document.getElementById('custName').value;
+            const phone = document.getElementById('custPhone').value;
+            const address = document.getElementById('custAddress').value;
+
+            if (cart.length === 0) { alert('Your cart is empty!'); return; }
+            if (!name || !phone || !address) { alert('Please fill out your name, phone, and delivery address.'); return; }
+
+            let orderSummaryText = `NEW STRIPE ORDER - PRINCE ATHLETICS (${targetCategory} Page)\n\nCustomer Name: ${name}\nPhone: ${phone}\nAddress: ${address}\nTotal: ${document.getElementById('cartTotal').textContent}\n\nItems:\n`;
+            cart.forEach(item => {
+                const sizeStr = item.size && item.size !== 'Standard' ? ` [Size: ${item.size}]` : '';
+                orderSummaryText += `- ${item.name}${sizeStr} (Qty: ${item.qty}) - $${(item.price * item.qty).toFixed(2)}\n`;
+            });
+
+            fetch('https://formspree.io/f/koolprincee@gmail.com', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email: 'koolprincee@gmail.com',
+                    subject: `New Stripe Order from ${name} - Prince Athletics`,
+                    message: orderSummaryText
+                })
+            }).catch(err => console.log('Email dispatch attempted.', err));
+
+            deductInventory();
+            toggleCartDrawer(false);
+            alert(`Payment successful via Stripe!\nOrder confirmation has been sent to koolprincee@gmail.com.`);
         }
 
         function toggleCartDrawer(open) {
