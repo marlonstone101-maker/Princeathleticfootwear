@@ -18,6 +18,9 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <style>body { font-family: 'Montserrat', sans-serif; }</style>
 </head>
 <body class="bg-brand-black text-white antialiased flex flex-col min-h-screen">
@@ -77,23 +80,59 @@
     </div>
 
     <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDFmNZjezGqd92xfgZWAakm5v-Y73TUNg",
+            authDomain: "prince-athletics-footwear.firebaseapp.com",
+            projectId: "prince-athletics-footwear",
+            storageBucket: "prince-athletics-footwear.firebasestorage.app",
+            messagingSenderId: "562232278239",
+            appId: "1:562232278239:web:a7bf56f736c0e74b2dbd6a",
+            measurementId: "G-FEJ94T6HTQ"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
         // CHANGE THIS VARIABLE FOR EACH FILE: "Footwear", "Equipment", "Apparel", or "Football"
         const targetCategory = "Equipment"; 
 
         document.getElementById('categoryTitle').textContent = targetCategory + " Collection";
 
-        let products = JSON.parse(localStorage.getItem('prince_products')) || [];
+        let products = [];
         let cart = JSON.parse(localStorage.getItem('prince_cart')) || [];
 
         document.addEventListener('DOMContentLoaded', () => {
-            renderCategoryProducts();
+            initFirestoreSync();
             updateCartUI();
         });
+
+        // Real-time Firestore Sync
+        function initFirestoreSync() {
+            db.collection("products").orderBy("id", "desc").onSnapshot((snapshot) => {
+                const fetchedProducts = [];
+                snapshot.forEach((doc) => {
+                    fetchedProducts.push({ docId: doc.id, ...doc.data() });
+                });
+                products = fetchedProducts;
+                renderCategoryProducts();
+            }, (error) => {
+                console.log("Firestore sync error:", error);
+            });
+        }
 
         function renderCategoryProducts() {
             const grid = document.getElementById('categoryProductGrid');
             grid.innerHTML = '';
-            const filtered = products.filter(p => p.category.toLowerCase() === targetCategory.toLowerCase());
+            
+            // Flexible matching for both "Equipment" and variations
+            const filtered = products.filter(p => 
+                p.category && (
+                    p.category.toLowerCase() === targetCategory.toLowerCase() || 
+                    p.category.toLowerCase() === "track equipment"
+                )
+            );
 
             if (filtered.length === 0) {
                 grid.innerHTML = `<p class="col-span-full text-center text-gray-500 py-12">No products found in this category.</p>`;
@@ -116,7 +155,7 @@
                                 <p class="text-[10px] sm:text-[11px] text-gray-400 mt-1 line-clamp-2">${product.desc}</p>
                             </div>
                             <div class="flex items-center justify-between mt-3 pt-2 border-t border-gray-800">
-                                <span class="text-sm sm:text-base font-black text-brand-green">$${product.price.toFixed(2)}</span>
+                                <span class="text-sm sm:text-base font-black text-brand-green">$${Number(product.price).toFixed(2)}</span>
                                 <button onclick="addToCart(${product.id})" ${isOutOfStock ? 'disabled' : ''} class="${isOutOfStock ? 'bg-gray-700 text-gray-400' : 'bg-brand-gold hover:bg-brand-green text-black'} font-black text-[11px] sm:text-xs px-2.5 sm:px-3 py-1.5 rounded-lg uppercase transition">
                                     ${isOutOfStock ? 'Sold Out' : 'Add'}
                                 </button>
