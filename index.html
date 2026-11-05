@@ -102,7 +102,7 @@
         <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-2 sm:gap-4">
             <!-- Brand Logo -->
             <a href="index.html" class="flex items-center gap-2 sm:gap-3 group shrink-0">
-                <img id="mainLogo" src="logo.png" onerror="this.onerror=null; this.src='https://via.placeholder.com/150/000000/00FF66?text=PRINCE+ATHLETICS';" alt="Prince Athletics Logo" class="h-10 w-10 sm:h-14 sm:w-14 object-contain rounded-full border-2 border-brand-gold group-hover:scale-105 transition-transform duration-300">
+                <img id="mainLogo" src="logo.jpg" onerror="this.onerror=null; this.src='https://via.placeholder.com/150/000000/00FF66?text=PRINCE+ATHLETICS';" alt="Prince Athletics Logo" class="h-10 w-10 sm:h-14 sm:w-14 object-contain rounded-full border-2 border-brand-gold group-hover:scale-105 transition-transform duration-300">
                 <div>
                     <h1 class="text-sm sm:text-2xl font-black italic tracking-tighter leading-none gold-gradient-text">PRINCE ATHLETICS</h1>
                     <p class="text-[8px] sm:text-xs text-brand-green font-bold tracking-widest uppercase">Footwear & Equipment</p>
@@ -233,7 +233,7 @@
     <section class="py-6 overflow-hidden">
         <div class="text-center mb-6 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
             <h2 class="text-xl sm:text-3xl font-black italic gold-gradient-text uppercase">🔥 NEW ARRIVALS</h2>
-            <p class="text-xs text-gray-400 mt-1">Hover to pause, click any product image to zoom in</p>
+            <p class="text-xs text-gray-400 mt-1">Hover to pause, click any product to jump to its category</p>
         </div>
         <!-- Continuous Marquee Container -->
         <div class="relative w-full overflow-hidden flex">
@@ -367,7 +367,7 @@
                 <div class="flex gap-4 text-lg">
                     <a href="https://instagram.com" target="_blank" rel="noopener" class="text-gray-400 hover:text-brand-gold transition"><i class="fa-brands fa-instagram"></i></a>
                     <a href="https://facebook.com" target="_blank" rel="noopener" class="text-gray-400 hover:text-brand-gold transition"><i class="fa-brands fa-facebook"></i></a>
-                    <a href="https://wa.me/8764023170" target="_blank" rel="noopener" class="text-gray-400 hover:text-brand-green transition"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="https://wa.me/8764023170" target="_blank" rel="noopener" class="text-brand-green transition"><i class="fa-brands fa-whatsapp"></i></a>
                 </div>
             </div>
         </div>
@@ -586,79 +586,28 @@
             let cardsHtml = '';
 
             latestProducts.forEach(product => {
-                const isOutOfStock = product.stock <= 0;
-                let optionSelectorHtml = '';
-
-                if (product.category === 'Footwear') {
-                    optionSelectorHtml = `
-                        <div class="mt-2">
-                            <label class="block text-[10px] text-gray-400 font-bold mb-1">Select Size (US):</label>
-                            <select id="new-size-${product.id}" class="w-full bg-brand-black border border-gray-700 rounded p-1 text-xs text-white focus:border-brand-gold focus:outline-none">
-                                <option value="US 7">US 7</option>
-                                <option value="US 7.5">US 7.5</option>
-                                <option value="US 8">US 8</option>
-                                <option value="US 8.5">US 8.5</option>
-                                <option value="US 9" selected>US 9</option>
-                                <option value="US 9.5">US 9.5</option>
-                                <option value="US 10">US 10</option>
-                                <option value="US 10.5">US 10.5</option>
-                                <option value="US 11">US 11</option>
-                                <option value="US 11.5">US 11.5</option>
-                                <option value="US 12">US 12</option>
-                                <option value="US 13">US 13</option>
-                            </select>
-                        </div>
-                    `;
-                } else if (product.category === 'Apparel') {
-                    optionSelectorHtml = `
-                        <div class="mt-2 space-y-1.5">
-                            <div>
-                                <label class="block text-[10px] text-gray-400 font-bold mb-0.5">Select Color:</label>
-                                <select id="new-color-${product.id}" class="w-full bg-brand-black border border-gray-700 rounded p-1 text-xs text-white focus:border-brand-gold focus:outline-none">
-                                    <option value="Black" selected>Black</option>
-                                    <option value="White">White</option>
-                                    <option value="Red">Red</option>
-                                    <option value="Blue">Blue</option>
-                                    <option value="Gold">Gold</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-[10px] text-gray-400 font-bold mb-0.5">Select Size / Fit:</label>
-                                <select id="new-size-${product.id}" class="w-full bg-brand-black border border-gray-700 rounded p-1 text-xs text-white focus:border-brand-gold focus:outline-none">
-                                    <option value="S">Small (S)</option>
-                                    <option value="M">Medium (M)</option>
-                                    <option value="L" selected>Large (L)</option>
-                                    <option value="XL">X-Large (XL)</option>
-                                    <option value="XXL">XX-Large (XXL)</option>
-                                </select>
-                            </div>
-                        </div>
-                    `;
-                }
+                let categoryPage = 'footwear.html';
+                if (product.category === 'Equipment') categoryPage = 'equipment.html';
+                else if (product.category === 'Apparel') categoryPage = 'apparel.html';
+                else if (product.category === 'Football') categoryPage = 'football.html';
 
                 cardsHtml += `
-                    <div class="w-[240px] sm:w-[270px] bg-brand-card border border-gray-800 rounded-2xl overflow-hidden flex flex-col justify-between p-3 shadow-lg shrink-0">
-                        <div class="h-36 bg-black/40 flex items-center justify-center p-2 mb-2 relative group cursor-pointer" onclick="openImageZoom('${product.image}', '${product.name.replace(/'/g, "\\'")}')">
-                            <span class="absolute top-1 left-1 bg-brand-green text-black text-[9px] font-black px-1.5 py-0.5 rounded uppercase z-10">NEW</span>
-                            <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition flex items-center justify-center z-0">
-                                <span class="bg-brand-gold/90 text-black text-[10px] font-black px-2 py-1 rounded-full shadow"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> Zoom Image</span>
-                            </div>
-                            <img src="${product.image}" class="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300">
+                    <div onclick="window.location.href='${categoryPage}'" class="w-[200px] sm:w-[240px] bg-transparent flex flex-col items-center text-center group cursor-pointer shrink-0 p-2 hover:scale-105 transition duration-300">
+                        <div class="h-44 sm:h-52 w-full flex items-center justify-center relative mb-3 overflow-hidden">
+                            <span class="absolute top-2 left-2 bg-brand-green text-black text-[9px] font-black px-2 py-0.5 rounded uppercase z-10 shadow">LIVE</span>
+                            <img src="${product.image}" class="max-h-full max-w-full object-contain drop-shadow-[0_10px_15px_rgba(0,0,0,0.8)] group-hover:scale-110 transition duration-500">
                         </div>
-                        <div>
-                            <span class="text-[9px] text-brand-gold uppercase font-bold">${product.brand || 'Prince'} • ${product.category}</span>
-                            <h4 class="text-xs font-bold text-white line-clamp-1">${product.name}</h4>
-                            <p class="text-xs font-black text-brand-green mt-1">$${Number(product.price).toFixed(2)}</p>
-                            ${optionSelectorHtml}
+                        <div class="w-full">
+                            <span class="text-[9px] text-brand-gold uppercase font-bold tracking-widest">${product.brand || 'Prince'} • ${product.category}</span>
+                            <h4 class="text-xs sm:text-sm font-black text-white line-clamp-1 mt-0.5 group-hover:text-brand-gold transition">${product.name}</h4>
+                            <p class="text-xs sm:text-sm font-black text-brand-green mt-1">$${Number(product.price).toFixed(2)} USD</p>
+                            <p class="text-[10px] text-gray-400 line-clamp-1 mt-1 italic">${product.desc || 'Professional athletic gear'}</p>
                         </div>
-                        <button onclick="addToCartFromNew(${product.id})" ${isOutOfStock ? 'disabled' : ''} class="mt-3 ${isOutOfStock ? 'bg-gray-700 text-gray-400' : 'bg-brand-gold hover:bg-brand-green text-black'} font-black text-[11px] py-1.5 rounded-lg transition uppercase">
-                            ${isOutOfStock ? 'Sold Out' : 'Add to Cart'}
-                        </button>
                     </div>
                 `;
             });
 
-            grid.innerHTML = `<div class="flex items-center space-x-6 shrink-0">${cardsHtml}</div><div class="flex items-center space-x-6 shrink-0">${cardsHtml}</div>`;
+            grid.innerHTML = `<div class="flex items-center space-x-8 shrink-0">${cardsHtml}</div><div class="flex items-center space-x-8 shrink-0">${cardsHtml}</div>`;
         }
 
         function openImageZoom(imgSrc, title) {
@@ -669,43 +618,6 @@
 
         function closeImageZoom() {
             document.getElementById('imageZoomModal').classList.add('hidden');
-        }
-
-        function addToCartFromNew(productId) {
-            const product = products.find(p => p.id === productId);
-            if (!product || product.stock <= 0) return;
-
-            let selectedSize = 'Standard';
-            let selectedColor = '';
-            
-            const sizeElement = document.getElementById(`new-size-${productId}`);
-            if (sizeElement) {
-                selectedSize = sizeElement.value;
-            }
-
-            const colorElement = document.getElementById(`new-color-${productId}`);
-            if (colorElement) {
-                selectedColor = colorElement.value;
-            }
-
-            const cartKeyId = `${productId}-${selectedColor}-${selectedSize}`;
-            const existingItem = cart.find(item => item.cartKey === cartKeyId);
-            const currentQtyInCart = existingItem ? existingItem.qty : 0;
-
-            if (currentQtyInCart + 1 > product.stock) {
-                alert(`Sorry! Only ${product.stock} units available in stock for this option.`);
-                return;
-            }
-
-            if (existingItem) {
-                existingItem.qty += 1;
-            } else {
-                cart.push({ ...product, cartKey: cartKeyId, id: productId, size: selectedSize, color: selectedColor, qty: 1 });
-            }
-
-            saveCartLocally();
-            updateCartUI();
-            toggleCartDrawer(true);
         }
 
         function filterProducts() {
