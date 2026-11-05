@@ -398,10 +398,7 @@
                 </div>
                 <div class="space-y-2 pt-2">
                     <button onclick="checkoutStripe()" class="w-full bg-brand-gold hover:bg-yellow-400 text-black font-black py-3 rounded-xl transition flex items-center justify-center gap-2 uppercase tracking-wider text-xs">
-                        <i class="fa-solid fa-credit-card"></i> Pay via Stripe Gateway
-                    </button>
-                    <button onclick="checkoutWhatsApp()" class="w-full bg-brand-green hover:bg-green-400 text-black font-black py-3 rounded-xl transition flex items-center justify-center gap-2 uppercase tracking-wider text-xs">
-                        <i class="fa-brands fa-whatsapp text-sm"></i> Order via WhatsApp Direct
+                        <i class="fa-solid fa-credit-card"></i> Pay with card
                     </button>
                 </div>
             </div>
@@ -510,27 +507,22 @@
             updateCartUI();
         });
 
-        // Real-time Firestore Sync across all devices
+        // Real-time Firestore Sync (Strict Single Source of Truth - No LocalStorage for Products)
         function initFirestoreSync() {
             db.collection("products").orderBy("id", "desc").onSnapshot((snapshot) => {
-                products = [];
+                const fetchedProducts = [];
                 snapshot.forEach((doc) => {
-                    products.push({ docId: doc.id, ...doc.data() });
+                    fetchedProducts.push({ docId: doc.id, ...doc.data() });
                 });
+                
+                products = fetchedProducts;
                 renderAllUI();
             }, (error) => {
-                console.log("Firestore snapshot error:", error);
-                fallbackToLocalStorage();
+                console.log("Firestore sync error:", error);
             });
         }
 
-        function fallbackToLocalStorage() {
-            products = JSON.parse(localStorage.getItem('prince_products')) || [];
-            renderAllUI();
-        }
-
-        function saveStateLocally() {
-            localStorage.setItem('prince_products', JSON.stringify(products));
+        function saveCartLocally() {
             localStorage.setItem('prince_cart', JSON.stringify(cart));
         }
 
@@ -692,7 +684,7 @@
                 cart.push({ ...product, cartKey: cartKeyId, size: selectedSize, qty: 1 });
             }
 
-            saveStateLocally();
+            saveCartLocally();
             updateCartUI();
             toggleCartDrawer(true);
         }
@@ -801,7 +793,7 @@
             const existingItem = cart.find(item => item.cartKey === cartKeyId);
             const currentQtyInCart = existingItem ? existingItem.qty : 0;
 
-            if (currentQtyInCard + 1 > product.stock) {
+            if (currentQtyInCart + 1 > product.stock) {
                 alert(`Sorry! Only ${product.stock} units available in stock for this option.`);
                 return;
             }
@@ -812,7 +804,7 @@
                 cart.push({ ...product, cartKey: cartKeyId, size: selectedSize, qty: 1 });
             }
 
-            saveStateLocally();
+            saveCartLocally();
             updateCartUI();
             toggleCartDrawer(true);
         }
@@ -874,7 +866,7 @@
             if (item.qty <= 0) {
                 cart = cart.filter(i => i.cartKey !== cartKey);
             }
-            saveStateLocally();
+            saveCartLocally();
             updateCartUI();
         }
 
@@ -886,13 +878,10 @@
                     if (db && prod.docId) {
                         await db.collection("products").doc(prod.docId).update({ stock: newStock });
                     }
-                    prod.stock = newStock;
                 }
             }
-            saveStateLocally();
-            renderAdminStockControls();
-            renderNewArrivals();
             cart = [];
+            saveCartLocally();
             updateCartUI();
         }
 
@@ -923,25 +912,6 @@
             deductInventory();
             toggleCartDrawer(false);
             alert(`Payment successful via Stripe!\nOrder confirmation has been sent to koolprincee@gmail.com.`);
-        }
-
-        function checkoutWhatsApp() {
-            const name = document.getElementById('custName').value;
-            const phone = document.getElementById('custPhone').value;
-            const address = document.getElementById('custAddress').value;
-
-            if (cart.length === 0) { alert('Your cart is empty!'); return; }
-
-            let msg = `*NEW ORDER - PRINCE ATHLETICS*\n\n*Customer:* ${name || 'N/A'}\n*Phone:* ${phone || 'N/A'}\n*Address:* ${address || 'N/A'}\n\n*Order Details:*\n`;
-            cart.forEach(item => {
-                const sizeStr = item.size && item.size !== 'Standard' ? ` [${item.size}]` : '';
-                msg = msg + `- ${item.name}${sizeStr} (x${item.qty}) - $${(item.price * item.qty).toFixed(2)}\n`;
-            });
-            msg = msg + `\n*Total:* ${document.getElementById('cartTotal').textContent}\nWorldwide shipping requested.`;
-
-            deductInventory();
-            window.open(`https://wa.me/8764023170?text=${encodeURIComponent(msg)}`, '_blank');
-            toggleCartDrawer(false);
         }
 
         function handleProductUpload(event) {
@@ -1012,14 +982,12 @@
                     const docRef = await db.collection("products").add(product);
                     await docRef.update({ docId: docRef.id });
                 }
+                document.getElementById('addProductForm').reset();
+                alert('Product added successfully and published across all devices instantly!');
             } catch (err) {
                 console.log("Firestore upload error:", err);
+                alert("Error saving product to cloud database. Please check your connection.");
             }
-            products.unshift(product);
-            saveStateLocally();
-            renderAllUI();
-            document.getElementById('addProductForm').reset();
-            alert('Product added successfully and published across all devices instantly!');
         }
 
         function renderAdminStockControls() {
@@ -1048,13 +1016,8 @@
 
         async function updateProductStock(id, newStock) {
             const product = products.find(p => p.id === id);
-            if (product) {
-                product.stock = parseInt(newStock) || 0;
-                if (db && product.docId) {
-                    await db.collection("products").doc(product.docId).update({ stock: product.stock });
-                }
-                saveStateLocally();
-                renderNewArrivals();
+            if (product && db && product.docId) {
+                await db.collection("products").doc(product.docId).update({ stock: parseInt(newStock) || 0 });
             }
         }
 
@@ -1063,9 +1026,6 @@
                 if (db && docId) {
                     await db.collection("products").doc(docId).delete();
                 }
-                products = products.filter(p => p.id !== id);
-                saveStateLocally();
-                renderAllUI();
             }
         }
 
