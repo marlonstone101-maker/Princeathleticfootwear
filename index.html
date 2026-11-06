@@ -84,6 +84,18 @@
         .animate-marquee:hover {
             animation-play-state: paused;
         }
+        /* 3D Perspective Card Styles */
+        .perspective-card {
+            perspective: 1000px;
+        }
+        .card-3d-effect {
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+            transform-style: preserve-3d;
+        }
+        .card-3d-effect:hover {
+            transform: translateY(-8px) rotateX(4deg) rotateY(-4deg) scale(1.03);
+            box-shadow: 0 15px 30px -5px rgba(0, 255, 102, 0.25), 0 0 20px rgba(255, 215, 0, 0.2);
+        }
     </style>
 </head>
 <body class="bg-brand-black text-white antialiased flex flex-col min-h-screen">
@@ -171,6 +183,76 @@
         </div>
     </section>
 
+    <!-- 3D INTERACTIVE HIGHLIGHTS / QUICK-JUMP CAROUSEL -->
+    <section class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-8 pb-4">
+        <div class="text-center mb-5">
+            <h3 class="text-xs sm:text-sm font-black text-brand-gold uppercase tracking-widest">QUICK EXPLORE 3D GEAR</h3>
+            <p class="text-[11px] text-gray-400 mt-0.5">Swipe sideways to browse equipment and tap to jump instantly</p>
+        </div>
+        
+        <div class="flex items-center gap-4 overflow-x-auto no-scrollbar snap-x py-3 px-2 perspective-card">
+            <a href="equipment.html" class="snap-start shrink-0 w-[140px] sm:w-[170px] bg-gradient-to-br from-brand-card to-black border-2 border-brand-gold/60 rounded-2xl p-4 text-center card-3d-effect group block shadow-xl">
+                <div class="h-20 sm:h-24 flex items-center justify-center relative mb-2">
+                    <div class="absolute inset-0 bg-brand-gold/10 rounded-full blur-md group-hover:bg-brand-green/20 transition"></div>
+                    <i class="fa-solid fa-棒 text-3xl sm:text-4xl text-brand-gold group-hover:text-brand-green group-hover:scale-110 transition duration-300 relative z-10"></i>
+                    <img src="image7.jpg" alt="Relay Baton" class="absolute inset-0 w-full h-full object-cover rounded-xl opacity-20 group-hover:opacity-40 transition">
+                </div>
+                <h4 class="text-xs sm:text-sm font-black italic text-white group-hover:text-brand-gold transition">Relay Baton</h4>
+                <span class="text-[10px] text-brand-green font-bold uppercase mt-1 block">Training Gear ➔</span>
+            </a>
+
+            <a href="football.html" class="snap-start shrink-0 w-[140px] sm:w-[170px] bg-gradient-to-br from-brand-card to-black border-2 border-brand-green/60 rounded-2xl p-4 text-center card-3d-effect group block shadow-xl">
+                <div class="h-20 sm:h-24 flex items-center justify-center relative mb-2">
+                    <div class="absolute inset-0 bg-brand-green/10 rounded-full blur-md group-hover:bg-brand-gold/20 transition"></div>
+                    <i class="fa-solid fa-futbol text-3xl sm:text-4xl text-brand-green group-hover:text-brand-gold group-hover:scale-110 transition duration-300 relative z-10"></i>
+                    <img src="image6.jpg" alt="Football" class="absolute inset-0 w-full h-full object-cover rounded-xl opacity-20 group-hover:opacity-40 transition">
+                </div>
+                <h4 class="text-xs sm:text-sm font-black italic text-white group-hover:text-brand-green transition">Football</h4>
+                <span class="text-[10px] text-brand-gold font-bold uppercase mt-1 block">Pitch Gear ➔</span>
+            </a>
+
+            <a href="footwear.html" class="snap-start shrink-0 w-[140px] sm:w-[170px] bg-gradient-to-br from-brand-card to-black border-2 border-brand-gold/60 rounded-2xl p-4 text-center card-3d-effect group block shadow-xl">
+                <div class="h-20 sm:h-24 flex items-center justify-center relative mb-2">
+                    <div class="absolute inset-0 bg-brand-gold/10 rounded-full blur-md group-hover:bg-brand-green/20 transition"></div>
+                    <i class="fa-solid fa-shoe-prints text-3xl sm:text-4xl text-brand-gold group-hover:text-brand-green group-hover:scale-110 transition duration-300 relative z-10"></i>
+                    <img src="image2.jpg" alt="Spikes" class="absolute inset-0 w-full h-full object-cover rounded-xl opacity-20 group-hover:opacity-40 transition">
+                </div>
+                <h4 class="text-xs sm:text-sm font-black italic text-white group-hover:text-brand-gold transition">Pro Spikes</h4>
+                <span class="text-[10px] text-brand-green font-bold uppercase mt-1 block">Performance ➔</span>
+            </a>
+
+            <a href="apparel.html" class="snap-start shrink-0 w-[140px] sm:w-[170px] bg-gradient-to-br from-brand-card to-black border-2 border-brand-green/60 rounded-2xl p-4 text-center card-3d-effect group block shadow-xl">
+                <div class="h-20 sm:h-24 flex items-center justify-center relative mb-2">
+                    <div class="absolute inset-0 bg-brand-green/10 rounded-full blur-md group-hover:bg-brand-gold/20 transition"></div>
+                    <i class="fa-solid fa-shirt text-3xl sm:text-4xl text-brand-green group-hover:text-brand-gold group-hover:scale-110 transition duration-300 relative z-10"></i>
+                    <img src="image5.jpg" alt="Jersey" class="absolute inset-0 w-full h-full object-cover rounded-xl opacity-20 group-hover:opacity-40 transition">
+                </div>
+                <h4 class="text-xs sm:text-sm font-black italic text-white group-hover:text-brand-green transition">Team Jersey</h4>
+                <span class="text-[10px] text-brand-gold font-bold uppercase mt-1 block">Competition ➔</span>
+            </a>
+
+            <a href="equipment.html" class="snap-start shrink-0 w-[140px] sm:w-[170px] bg-gradient-to-br from-brand-card to-black border-2 border-brand-gold/60 rounded-2xl p-4 text-center card-3d-effect group block shadow-xl">
+                <div class="h-20 sm:h-24 flex items-center justify-center relative mb-2">
+                    <div class="absolute inset-0 bg-brand-gold/10 rounded-full blur-md group-hover:bg-brand-green/20 transition"></div>
+                    <i class="fa-solid fa-stopwatch text-3xl sm:text-4xl text-brand-gold group-hover:text-brand-green group-hover:scale-110 transition duration-300 relative z-10"></i>
+                    <img src="image8.jpg" alt="Stopwatch" class="absolute inset-0 w-full h-full object-cover rounded-xl opacity-20 group-hover:opacity-40 transition">
+                </div>
+                <h4 class="text-xs sm:text-sm font-black italic text-white group-hover:text-brand-gold transition">Stopwatch</h4>
+                <span class="text-[10px] text-brand-green font-bold uppercase mt-1 block">Equipment ➔</span>
+            </a>
+
+            <a href="equipment.html" class="snap-start shrink-0 w-[140px] sm:w-[170px] bg-gradient-to-br from-brand-card to-black border-2 border-brand-green/60 rounded-2xl p-4 text-center card-3d-effect group block shadow-xl">
+                <div class="h-20 sm:h-24 flex items-center justify-center relative mb-2">
+                    <div class="absolute inset-0 bg-brand-green/10 rounded-full blur-md group-hover:bg-brand-gold/20 transition"></div>
+                    <i class="fa-solid fa-stairs text-3xl sm:text-4xl text-brand-green group-hover:text-brand-gold group-hover:scale-110 transition duration-300 relative z-10"></i>
+                    <img src="image4.jpg" alt="Agility Ladder" class="absolute inset-0 w-full h-full object-cover rounded-xl opacity-20 group-hover:opacity-40 transition">
+                </div>
+                <h4 class="text-xs sm:text-sm font-black italic text-white group-hover:text-brand-green transition">Agility Ladder</h4>
+                <span class="text-[10px] text-brand-gold font-bold uppercase mt-1 block">Training Gear ➔</span>
+            </a>
+        </div>
+    </section>
+
     <!-- SHOP BY CATEGORY SECTION -->
     <section id="categories" class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-8 sm:py-12 flex-1 w-full scroll-mt-24">
         <div class="text-center mb-8">
@@ -235,7 +317,6 @@
             <h2 class="text-xl sm:text-3xl font-black italic gold-gradient-text uppercase">🔥 NEW ARRIVALS</h2>
             <p class="text-xs text-gray-400 mt-1">Hover to pause, click any product to jump to its category</p>
         </div>
-        <!-- Continuous Marquee Container -->
         <div class="relative w-full overflow-hidden flex">
             <div id="newArrivalsGrid" class="animate-marquee flex items-center space-x-6 py-2">
                 <!-- Injected dynamically via JavaScript with duplicates for infinite smooth loop -->
@@ -300,41 +381,69 @@
         </div>
     </div>
 
-    <!-- LOCAL GALLERY SECTION -->
     <section class="bg-brand-dark py-10 border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-4">
             <h3 class="text-lg sm:text-2xl font-black italic gold-gradient-text mb-1 text-center uppercase">TEAM & STORE GALLERY</h3>
-            <p class="text-center text-xs text-gray-400 mb-6">Authentic gear captured live from Kingston tracks and our athletic showroom</p>
+            <p class="text-center text-xs text-gray-400 mb-6">Authentic gear captured live from Kingston tracks and our athletic showroom (Click any photo to enlarge)</p>
             
             <div class="flex md:grid md:grid-cols-4 gap-4 overflow-x-auto no-scrollbar snap-x pb-4">
-                <div class="min-w-[240px] sm:min-w-[280px] md:min-w-0 snap-start bg-brand-card border border-gray-800 rounded-2xl overflow-hidden group shrink-0">
-                    <img src="img/gallery-1.jpg" class="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition duration-300" alt="Champs Prep">
+                
+                <!-- Gallery Item 1 -->
+                <div class="min-w-[240px] sm:min-w-[280px] md:min-w-0 snap-start bg-brand-card border border-gray-800 rounded-2xl overflow-hidden group shrink-0 cursor-pointer" onclick="openImageZoom('image12.jpg', 'Champs Preparation 2026 — Kingston National Stadium')">
+                    <div class="overflow-hidden relative">
+                        <img src="image12.jpg" class="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition duration-300" alt="Champs Prep">
+                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                            <span class="bg-brand-gold text-black font-black text-xs px-3 py-1 rounded-full shadow-lg"><i class="fa-solid fa-expand mr-1"></i> View Larger</span>
+                        </div>
+                    </div>
                     <div class="p-3">
                         <p class="text-xs font-bold text-white">Champs Preparation 2026</p>
                         <p class="text-[10px] text-gray-400">Kingston National Stadium</p>
                     </div>
                 </div>
-                <div class="min-w-[240px] sm:min-w-[280px] md:min-w-0 snap-start bg-brand-card border border-gray-800 rounded-2xl overflow-hidden group shrink-0">
-                    <img src="img/gallery-2.jpg" class="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition duration-300" alt="Pro Spikes">
+
+                <!-- Gallery Item 2 -->
+                <div class="min-w-[240px] sm:min-w-[280px] md:min-w-0 snap-start bg-brand-card border border-gray-800 rounded-2xl overflow-hidden group shrink-0 cursor-pointer" onclick="openImageZoom('image10.jpg', 'Pro Track Spikes Setup — Premium Spike Fittings')">
+                    <div class="overflow-hidden relative">
+                        <img src="image10.jpg" class="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition duration-300" alt="Pro Spikes">
+                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                            <span class="bg-brand-gold text-black font-black text-xs px-3 py-1 rounded-full shadow-lg"><i class="fa-solid fa-expand mr-1"></i> View Larger</span>
+                        </div>
+                    </div>
                     <div class="p-3">
                         <p class="text-xs font-bold text-white">Pro Track Spikes Setup</p>
                         <p class="text-[10px] text-gray-400">Premium Spike Fittings</p>
                     </div>
                 </div>
-                <div class="min-w-[240px] sm:min-w-[280px] md:min-w-0 snap-start bg-brand-card border border-gray-800 rounded-2xl overflow-hidden group shrink-0">
-                    <img src="img/gallery-3.jpg" class="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition duration-300" alt="Football Kits">
+
+                <!-- Gallery Item 3 -->
+                <div class="min-w-[240px] sm:min-w-[280px] md:min-w-0 snap-start bg-brand-card border border-gray-800 rounded-2xl overflow-hidden group shrink-0 cursor-pointer" onclick="openImageZoom('image9.jpg', 'Football Team Kits — Custom Jerseys & Shin Guards')">
+                    <div class="overflow-hidden relative">
+                        <img src="image9.jpg" class="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition duration-300" alt="Football Kits">
+                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                            <span class="bg-brand-gold text-black font-black text-xs px-3 py-1 rounded-full shadow-lg"><i class="fa-solid fa-expand mr-1"></i> View Larger</span>
+                        </div>
+                    </div>
                     <div class="p-3">
                         <p class="text-xs font-bold text-white">Football Team Kits</p>
                         <p class="text-[10px] text-gray-400">Custom Jerseys & Shin Guards</p>
                     </div>
                 </div>
-                <div class="min-w-[240px] sm:min-w-[280px] md:min-w-0 snap-start bg-brand-card border border-gray-800 rounded-2xl overflow-hidden group shrink-0">
-                    <img src="img/gallery-4.jpg" class="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition duration-300" alt="Agility Gear">
+
+                <!-- Gallery Item 4 -->
+                <div class="min-w-[240px] sm:min-w-[280px] md:min-w-0 snap-start bg-brand-card border border-gray-800 rounded-2xl overflow-hidden group shrink-0 cursor-pointer" onclick="openImageZoom('image11.jpg', 'Sprint & Agility Gear — Speed Ladders & Batons')">
+                    <div class="overflow-hidden relative">
+                        <img src="image11.jpg" class="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition duration-300" alt="Agility Gear">
+                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                            <span class="bg-brand-gold text-black font-black text-xs px-3 py-1 rounded-full shadow-lg"><i class="fa-solid fa-expand mr-1"></i> View Larger</span>
+                        </div>
+                    </div>
                     <div class="p-3">
                         <p class="text-xs font-bold text-white">Sprint & Agility Gear</p>
                         <p class="text-[10px] text-gray-400">Speed Ladders & Batons</p>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
@@ -348,12 +457,21 @@
                 <span class="text-xs text-brand-green font-bold flex items-center gap-1"><i class="fa-solid fa-truck-fast"></i> Shipping Worldwide</span>
             </div>
             <div>
-                <h4 class="text-xs sm:text-sm font-bold text-brand-gold uppercase tracking-wider mb-3">Direct Contact</h4>
-                <ul class="text-xs space-y-2.5">
-                    <li><i class="fa-brands fa-whatsapp text-brand-green mr-2 text-sm"></i> WhatsApp: 876-402-3170</li>
-                    <li><i class="fa-solid fa-phone text-brand-gold mr-2 text-xs"></i> Sales: Kirby / Jerome Kirby</li>
-                    <li><i class="fa-solid fa-mobile-screen text-brand-gold mr-2 text-xs"></i> Phone: 876-407-8784</li>
-                    <li><i class="fa-solid fa-envelope text-gray-300 mr-2 text-xs"></i> Koolprincee@gmail.com</li>
+                <h4 class="text-xs sm:text-sm font-bold text-brand-gold uppercase tracking-wider mb-3">Contact</h4>
+                <ul class="text-xs space-y-3">
+                    <li class="border-b border-gray-900 pb-2">
+                        <span class="font-bold text-white block"><i class="fa-solid fa-user-tie text-brand-gold mr-1.5 text-xs"></i> Mark Prince</span>
+                        <span class="text-brand-green font-semibold block text-[11px]">Sole Proprietor</span>
+                        <a href="tel:8764023170" class="hover:text-brand-gold transition block text-[11px] mt-0.5"><i class="fa-solid fa-phone text-[10px] mr-1 text-gray-400"></i> 876-402-3170</a>
+                    </li>
+                    <li class="pb-1">
+                        <span class="font-bold text-white block"><i class="fa-solid fa-user-gear text-brand-gold mr-1.5 text-xs"></i> Jerome Kirby</span>
+                        <span class="text-brand-green font-semibold block text-[11px]">Sales Manager</span>
+                        <a href="tel:8764078784" class="hover:text-brand-gold transition block text-[11px] mt-0.5"><i class="fa-solid fa-phone text-[10px] mr-1 text-gray-400"></i> 876-407-8784</a>
+                    </li>
+                    <li class="pt-1">
+                        <i class="fa-solid fa-envelope text-gray-300 mr-1.5 text-xs"></i> Koolprincee@gmail.com
+                    </li>
                 </ul>
             </div>
             <div>
@@ -845,34 +963,42 @@
             updateCartUI();
         }
 
-        function checkoutStripe() {
+        async function checkoutStripe() {
             const name = document.getElementById('custName').value;
             const phone = document.getElementById('custPhone').value;
             const address = document.getElementById('custAddress').value;
 
-            if (cart.length === 0) { alert('Your cart is empty!'); return; }
-            if (!name || !phone || !address) { alert('Please fill out your name, phone, and delivery address.'); return; }
+            if (cart.length === 0) return alert('Your cart is empty!');
+            if (!name || !phone || !address) return alert('Please fill out your name, phone, and delivery address.');
 
-            let orderSummaryText = `NEW STRIPE ORDER - PRINCE ATHLETICS\n\nCustomer Name: ${name}\nPhone: ${phone}\nAddress: ${address}\nTotal: ${document.getElementById('cartTotal').textContent}\n\nItems:\n`;
-            cart.forEach(item => {
-                const colorStr = item.color ? ` [Color: ${item.color}]` : '';
-                const sizeStr = item.size && item.size !== 'Standard' ? ` [Size: ${item.size}]` : '';
-                orderSummaryText += `- ${item.name}${colorStr}${sizeStr} (Qty: ${item.qty}) - $${(item.price * item.qty).toFixed(2)}\n`;
-            });
+            const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
-            fetch('https://formspree.io/f/koolprincee@gmail.com', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email: 'koolprincee@gmail.com',
-                    subject: `New Stripe Order from ${name} - Prince Athletics`,
-                    message: orderSummaryText
-                })
-            }).catch(err => console.log('Email dispatch attempted.', err));
+            try {
+                const response = await fetch('http://localhost:5000/api/create-payment-intent', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        amount: totalAmount,
+                        customerName: name,
+                        customerEmail: 'koolprincee@gmail.com'
+                    })
+                });
 
-            deductInventory();
-            toggleCartDrawer(false);
-            alert(`Payment successful via Stripe!\nOrder confirmation has been sent to koolprincee@gmail.com.`);
+                const data = await response.json();
+
+                if (data.clientSecret) {
+                    alert(`Stripe Payment Intent Created Successfully!\nClient Secret: ${data.clientSecret.substring(0, 15)}...`);
+                    
+                    deductInventory();
+                    toggleCartDrawer(false);
+                    alert('Order complete & inventory updated!');
+                } else if (data.error) {
+                    alert('Stripe Error: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Error connecting to backend:', error);
+                alert('Could not connect to Node backend. Make sure "node server.js" is running in your terminal.');
+            }
         }
 
         function handleProductUpload(event) {
