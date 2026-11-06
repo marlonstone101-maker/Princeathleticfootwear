@@ -2,7 +2,7 @@
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Prince Athletics Footwear | Train • Compete</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -41,7 +41,14 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
     <style>
+        /* Strict Viewport Stability Lock */
+        html, body {
+            max-width: 100vw;
+            overflow-x: hidden;
+            position: relative;
+        }
         body { font-family: 'Montserrat', sans-serif; }
+        
         .gold-gradient-text {
             background: linear-gradient(135deg, #FFF5C0 0%, #FFD700 50%, #B8860B 100%);
             -webkit-background-clip: text;
@@ -101,7 +108,7 @@
 <body class="bg-brand-black text-white antialiased flex flex-col min-h-screen">
 
     <!-- TOP RUNNING ANNOUNCEMENT BAR -->
-    <div class="bg-gradient-to-r from-brand-goldDark via-brand-gold to-brand-green text-black py-2 px-2 font-bold text-xs md:text-sm tracking-widest uppercase overflow-hidden">
+    <div class="bg-gradient-to-r from-brand-goldDark via-brand-gold to-brand-green text-black py-2 px-2 font-bold text-xs md:text-sm tracking-widest uppercase overflow-hidden w-full max-w-full">
         <marquee behavior="scroll" direction="left" scrollamount="5" class="flex items-center space-x-12">
             <span class="mx-6"><i class="fa-solid font-black fa-globe mr-1"></i> Worldwide Shipping Available</span>
             <span class="mx-6 font-black italic">"Commit your work to the Lord, and your plans will be established." — Proverbs 16:3</span>
@@ -110,7 +117,7 @@
     </div>
 
     <!-- MAIN NAVBAR -->
-    <nav class="sticky top-0 z-40 bg-brand-dark/95 backdrop-blur-md border-b border-brand-gold/30">
+    <nav class="sticky top-0 z-40 bg-brand-dark/95 backdrop-blur-md border-b border-brand-gold/30 w-full">
         <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-2 sm:gap-4">
             <!-- Brand Logo -->
             <a href="index.html" class="flex items-center gap-2 sm:gap-3 group shrink-0">
@@ -142,7 +149,7 @@
     </nav>
 
     <!-- MOBILE & TABLET SEARCH BAR -->
-    <div class="block md:hidden bg-transparent px-4 py-2">
+    <div class="block md:hidden bg-transparent px-4 py-2 w-full">
         <div class="relative w-full">
             <input type="text" id="searchInputMobile" oninput="document.getElementById('searchInput').value = this.value; filterProducts()" placeholder="Search spikes, jerseys, equipment..." class="w-full bg-brand-black/50 backdrop-blur-sm border border-gray-700/80 rounded-full py-2 pl-4 pr-10 text-xs text-white focus:outline-none focus:border-brand-gold">
             <i class="fa-solid fa-magnifying-glass absolute right-3 top-2.5 text-gray-400 text-xs"></i>
@@ -150,7 +157,7 @@
     </div>
 
     <!-- HERO SLIDESHOW SECTION -->
-    <header class="relative bg-brand-black overflow-hidden border-b border-brand-gold/20">
+    <header class="relative bg-brand-black overflow-hidden border-b border-brand-gold/20 w-full">
         <div id="heroCarousel" class="relative h-[280px] sm:h-[420px] md:h-[550px] w-full flex items-center justify-center">
             <div id="heroSlideContainer" class="w-full h-full relative">
                 <!-- Slides injected dynamically -->
@@ -161,7 +168,7 @@
     </header>
 
     <!-- CONTINUOUS RUNNING TOP BRANDS MARQUEE SECTION -->
-    <section class="py-5 bg-brand-dark border-b border-gray-800 overflow-hidden">
+    <section class="py-5 bg-brand-dark border-b border-gray-800 overflow-hidden w-full">
         <div class="mb-3">
             <h3 class="text-center text-[10px] sm:text-xs font-bold text-brand-gold tracking-widest uppercase">Top Brands • Top Performance • All In One Place</h3>
         </div>
@@ -183,73 +190,75 @@
         </div>
     </section>
 
-    <!-- 3D INTERACTIVE HIGHLIGHTS / QUICK-JUMP CAROUSEL -->
-    <section class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-8 pb-4">
+    <!-- 3D INTERACTIVE HIGHLIGHTS / QUICK-JUMP CAROUSEL (STABLE TOUCH SCROLL) -->
+    <section class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-8 pb-4 w-full">
         <div class="text-center mb-5">
             <h3 class="text-xs sm:text-sm font-black text-brand-gold uppercase tracking-widest">QUICK EXPLORE 3D GEAR</h3>
             <p class="text-[11px] text-gray-400 mt-0.5">Swipe sideways to browse equipment and tap to jump instantly</p>
         </div>
         
-        <div class="flex items-center gap-4 overflow-x-auto no-scrollbar snap-x py-3 px-2 perspective-card">
-            <a href="equipment.html" class="snap-start shrink-0 w-[140px] sm:w-[170px] bg-gradient-to-br from-brand-card to-black border-2 border-brand-gold/60 rounded-2xl p-4 text-center card-3d-effect group block shadow-xl">
-                <div class="h-20 sm:h-24 flex items-center justify-center relative mb-2">
-                    <div class="absolute inset-0 bg-brand-gold/10 rounded-full blur-md group-hover:bg-brand-green/20 transition"></div>
-                    <i class="fa-solid fa-棒 text-3xl sm:text-4xl text-brand-gold group-hover:text-brand-green group-hover:scale-110 transition duration-300 relative z-10"></i>
-                    <img src="image7.jpg" alt="Relay Baton" class="absolute inset-0 w-full h-full object-cover rounded-xl opacity-20 group-hover:opacity-40 transition">
-                </div>
-                <h4 class="text-xs sm:text-sm font-black italic text-white group-hover:text-brand-gold transition">Relay Baton</h4>
-                <span class="text-[10px] text-brand-green font-bold uppercase mt-1 block">Training Gear ➔</span>
-            </a>
+        <div class="w-full overflow-x-auto no-scrollbar touch-pan-x py-3 px-2">
+            <div class="flex items-center gap-4 w-max perspective-card">
+                <a href="equipment.html" class="snap-start shrink-0 w-[140px] sm:w-[170px] bg-gradient-to-br from-brand-card to-black border-2 border-brand-gold/60 rounded-2xl p-4 text-center card-3d-effect group block shadow-xl">
+                    <div class="h-20 sm:h-24 flex items-center justify-center relative mb-2">
+                        <div class="absolute inset-0 bg-brand-gold/10 rounded-full blur-md group-hover:bg-brand-green/20 transition"></div>
+                        <i class="fa-solid fa-棒 text-3xl sm:text-4xl text-brand-gold group-hover:text-brand-green group-hover:scale-110 transition duration-300 relative z-10"></i>
+                        <img src="image7.jpg" alt="Relay Baton" class="absolute inset-0 w-full h-full object-cover rounded-xl opacity-20 group-hover:opacity-40 transition">
+                    </div>
+                    <h4 class="text-xs sm:text-sm font-black italic text-white group-hover:text-brand-gold transition">Relay Baton</h4>
+                    <span class="text-[10px] text-brand-green font-bold uppercase mt-1 block">Training Gear ➔</span>
+                </a>
 
-            <a href="football.html" class="snap-start shrink-0 w-[140px] sm:w-[170px] bg-gradient-to-br from-brand-card to-black border-2 border-brand-green/60 rounded-2xl p-4 text-center card-3d-effect group block shadow-xl">
-                <div class="h-20 sm:h-24 flex items-center justify-center relative mb-2">
-                    <div class="absolute inset-0 bg-brand-green/10 rounded-full blur-md group-hover:bg-brand-gold/20 transition"></div>
-                    <i class="fa-solid fa-futbol text-3xl sm:text-4xl text-brand-green group-hover:text-brand-gold group-hover:scale-110 transition duration-300 relative z-10"></i>
-                    <img src="image6.jpg" alt="Football" class="absolute inset-0 w-full h-full object-cover rounded-xl opacity-20 group-hover:opacity-40 transition">
-                </div>
-                <h4 class="text-xs sm:text-sm font-black italic text-white group-hover:text-brand-green transition">Football</h4>
-                <span class="text-[10px] text-brand-gold font-bold uppercase mt-1 block">Pitch Gear ➔</span>
-            </a>
+                <a href="football.html" class="snap-start shrink-0 w-[140px] sm:w-[170px] bg-gradient-to-br from-brand-card to-black border-2 border-brand-green/60 rounded-2xl p-4 text-center card-3d-effect group block shadow-xl">
+                    <div class="h-20 sm:h-24 flex items-center justify-center relative mb-2">
+                        <div class="absolute inset-0 bg-brand-green/10 rounded-full blur-md group-hover:bg-brand-gold/20 transition"></div>
+                        <i class="fa-solid fa-futbol text-3xl sm:text-4xl text-brand-green group-hover:text-brand-gold group-hover:scale-110 transition duration-300 relative z-10"></i>
+                        <img src="image6.jpg" alt="Football" class="absolute inset-0 w-full h-full object-cover rounded-xl opacity-20 group-hover:opacity-40 transition">
+                    </div>
+                    <h4 class="text-xs sm:text-sm font-black italic text-white group-hover:text-brand-green transition">Football</h4>
+                    <span class="text-[10px] text-brand-gold font-bold uppercase mt-1 block">Pitch Gear ➔</span>
+                </a>
 
-            <a href="footwear.html" class="snap-start shrink-0 w-[140px] sm:w-[170px] bg-gradient-to-br from-brand-card to-black border-2 border-brand-gold/60 rounded-2xl p-4 text-center card-3d-effect group block shadow-xl">
-                <div class="h-20 sm:h-24 flex items-center justify-center relative mb-2">
-                    <div class="absolute inset-0 bg-brand-gold/10 rounded-full blur-md group-hover:bg-brand-green/20 transition"></div>
-                    <i class="fa-solid fa-shoe-prints text-3xl sm:text-4xl text-brand-gold group-hover:text-brand-green group-hover:scale-110 transition duration-300 relative z-10"></i>
-                    <img src="image2.jpg" alt="Spikes" class="absolute inset-0 w-full h-full object-cover rounded-xl opacity-20 group-hover:opacity-40 transition">
-                </div>
-                <h4 class="text-xs sm:text-sm font-black italic text-white group-hover:text-brand-gold transition">Pro Spikes</h4>
-                <span class="text-[10px] text-brand-green font-bold uppercase mt-1 block">Performance ➔</span>
-            </a>
+                <a href="footwear.html" class="snap-start shrink-0 w-[140px] sm:w-[170px] bg-gradient-to-br from-brand-card to-black border-2 border-brand-gold/60 rounded-2xl p-4 text-center card-3d-effect group block shadow-xl">
+                    <div class="h-20 sm:h-24 flex items-center justify-center relative mb-2">
+                        <div class="absolute inset-0 bg-brand-gold/10 rounded-full blur-md group-hover:bg-brand-green/20 transition"></div>
+                        <i class="fa-solid fa-shoe-prints text-3xl sm:text-4xl text-brand-gold group-hover:text-brand-green group-hover:scale-110 transition duration-300 relative z-10"></i>
+                        <img src="image2.jpg" alt="Spikes" class="absolute inset-0 w-full h-full object-cover rounded-xl opacity-20 group-hover:opacity-40 transition">
+                    </div>
+                    <h4 class="text-xs sm:text-sm font-black italic text-white group-hover:text-brand-gold transition">Pro Spikes</h4>
+                    <span class="text-[10px] text-brand-green font-bold uppercase mt-1 block">Performance ➔</span>
+                </a>
 
-            <a href="apparel.html" class="snap-start shrink-0 w-[140px] sm:w-[170px] bg-gradient-to-br from-brand-card to-black border-2 border-brand-green/60 rounded-2xl p-4 text-center card-3d-effect group block shadow-xl">
-                <div class="h-20 sm:h-24 flex items-center justify-center relative mb-2">
-                    <div class="absolute inset-0 bg-brand-green/10 rounded-full blur-md group-hover:bg-brand-gold/20 transition"></div>
-                    <i class="fa-solid fa-shirt text-3xl sm:text-4xl text-brand-green group-hover:text-brand-gold group-hover:scale-110 transition duration-300 relative z-10"></i>
-                    <img src="image5.jpg" alt="Jersey" class="absolute inset-0 w-full h-full object-cover rounded-xl opacity-20 group-hover:opacity-40 transition">
-                </div>
-                <h4 class="text-xs sm:text-sm font-black italic text-white group-hover:text-brand-green transition">Team Jersey</h4>
-                <span class="text-[10px] text-brand-gold font-bold uppercase mt-1 block">Competition ➔</span>
-            </a>
+                <a href="apparel.html" class="snap-start shrink-0 w-[140px] sm:w-[170px] bg-gradient-to-br from-brand-card to-black border-2 border-brand-green/60 rounded-2xl p-4 text-center card-3d-effect group block shadow-xl">
+                    <div class="h-20 sm:h-24 flex items-center justify-center relative mb-2">
+                        <div class="absolute inset-0 bg-brand-green/10 rounded-full blur-md group-hover:bg-brand-gold/20 transition"></div>
+                        <i class="fa-solid fa-shirt text-3xl sm:text-4xl text-brand-green group-hover:text-brand-gold group-hover:scale-110 transition duration-300 relative z-10"></i>
+                        <img src="image5.jpg" alt="Jersey" class="absolute inset-0 w-full h-full object-cover rounded-xl opacity-20 group-hover:opacity-40 transition">
+                    </div>
+                    <h4 class="text-xs sm:text-sm font-black italic text-white group-hover:text-brand-green transition">Team Jersey</h4>
+                    <span class="text-[10px] text-brand-gold font-bold uppercase mt-1 block">Competition ➔</span>
+                </a>
 
-            <a href="equipment.html" class="snap-start shrink-0 w-[140px] sm:w-[170px] bg-gradient-to-br from-brand-card to-black border-2 border-brand-gold/60 rounded-2xl p-4 text-center card-3d-effect group block shadow-xl">
-                <div class="h-20 sm:h-24 flex items-center justify-center relative mb-2">
-                    <div class="absolute inset-0 bg-brand-gold/10 rounded-full blur-md group-hover:bg-brand-green/20 transition"></div>
-                    <i class="fa-solid fa-stopwatch text-3xl sm:text-4xl text-brand-gold group-hover:text-brand-green group-hover:scale-110 transition duration-300 relative z-10"></i>
-                    <img src="image8.jpg" alt="Stopwatch" class="absolute inset-0 w-full h-full object-cover rounded-xl opacity-20 group-hover:opacity-40 transition">
-                </div>
-                <h4 class="text-xs sm:text-sm font-black italic text-white group-hover:text-brand-gold transition">Stopwatch</h4>
-                <span class="text-[10px] text-brand-green font-bold uppercase mt-1 block">Equipment ➔</span>
-            </a>
+                <a href="equipment.html" class="snap-start shrink-0 w-[140px] sm:w-[170px] bg-gradient-to-br from-brand-card to-black border-2 border-brand-gold/60 rounded-2xl p-4 text-center card-3d-effect group block shadow-xl">
+                    <div class="h-20 sm:h-24 flex items-center justify-center relative mb-2">
+                        <div class="absolute inset-0 bg-brand-gold/10 rounded-full blur-md group-hover:bg-brand-green/20 transition"></div>
+                        <i class="fa-solid fa-stopwatch text-3xl sm:text-4xl text-brand-gold group-hover:text-brand-green group-hover:scale-110 transition duration-300 relative z-10"></i>
+                        <img src="image8.jpg" alt="Stopwatch" class="absolute inset-0 w-full h-full object-cover rounded-xl opacity-20 group-hover:opacity-40 transition">
+                    </div>
+                    <h4 class="text-xs sm:text-sm font-black italic text-white group-hover:text-brand-gold transition">Stopwatch</h4>
+                    <span class="text-[10px] text-brand-green font-bold uppercase mt-1 block">Equipment ➔</span>
+                </a>
 
-            <a href="equipment.html" class="snap-start shrink-0 w-[140px] sm:w-[170px] bg-gradient-to-br from-brand-card to-black border-2 border-brand-green/60 rounded-2xl p-4 text-center card-3d-effect group block shadow-xl">
-                <div class="h-20 sm:h-24 flex items-center justify-center relative mb-2">
-                    <div class="absolute inset-0 bg-brand-green/10 rounded-full blur-md group-hover:bg-brand-gold/20 transition"></div>
-                    <i class="fa-solid fa-stairs text-3xl sm:text-4xl text-brand-green group-hover:text-brand-gold group-hover:scale-110 transition duration-300 relative z-10"></i>
-                    <img src="image4.jpg" alt="Agility Ladder" class="absolute inset-0 w-full h-full object-cover rounded-xl opacity-20 group-hover:opacity-40 transition">
-                </div>
-                <h4 class="text-xs sm:text-sm font-black italic text-white group-hover:text-brand-green transition">Agility Ladder</h4>
-                <span class="text-[10px] text-brand-gold font-bold uppercase mt-1 block">Training Gear ➔</span>
-            </a>
+                <a href="equipment.html" class="snap-start shrink-0 w-[140px] sm:w-[170px] bg-gradient-to-br from-brand-card to-black border-2 border-brand-green/60 rounded-2xl p-4 text-center card-3d-effect group block shadow-xl">
+                    <div class="h-20 sm:h-24 flex items-center justify-center relative mb-2">
+                        <div class="absolute inset-0 bg-brand-green/10 rounded-full blur-md group-hover:bg-brand-gold/20 transition"></div>
+                        <i class="fa-solid fa-stairs text-3xl sm:text-4xl text-brand-green group-hover:text-brand-gold group-hover:scale-110 transition duration-300 relative z-10"></i>
+                        <img src="image4.jpg" alt="Agility Ladder" class="absolute inset-0 w-full h-full object-cover rounded-xl opacity-20 group-hover:opacity-40 transition">
+                    </div>
+                    <h4 class="text-xs sm:text-sm font-black italic text-white group-hover:text-brand-green transition">Agility Ladder</h4>
+                    <span class="text-[10px] text-brand-gold font-bold uppercase mt-1 block">Training Gear ➔</span>
+                </a>
+            </div>
         </div>
     </section>
 
@@ -311,8 +320,8 @@
         </div>
     </section>
 
-    <!-- NEW ARRIVALS SECTION (CONTINUOUS AUTO-MOVING MARQUEE TICKER) -->
-    <section class="py-6 overflow-hidden">
+    <!-- NEW ARRIVALS SECTION -->
+    <section class="py-6 overflow-hidden w-full">
         <div class="text-center mb-6 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
             <h2 class="text-xl sm:text-3xl font-black italic gold-gradient-text uppercase">🔥 NEW ARRIVALS</h2>
             <p class="text-xs text-gray-400 mt-1">Hover to pause, click any product to jump to its category</p>
@@ -325,7 +334,7 @@
     </section>
 
     <!-- FEATURED HIGHLIGHT BANNER -->
-    <section class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6">
+    <section class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 w-full">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <a href="footwear.html" class="group relative bg-brand-dark border-2 border-brand-gold rounded-3xl overflow-hidden shadow-2xl p-6 sm:p-8 flex flex-col justify-between hover:scale-[1.02] transition duration-300 min-h-[260px]">
                 <img src="image3.jpg" alt="Footwear Banner" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-700">
@@ -381,75 +390,74 @@
         </div>
     </div>
 
-    <section class="bg-brand-dark py-10 border-t border-gray-800">
+    <!-- TEAM & STORE GALLERY -->
+    <section class="bg-brand-dark py-10 border-t border-gray-800 w-full">
         <div class="max-w-7xl mx-auto px-4">
             <h3 class="text-lg sm:text-2xl font-black italic gold-gradient-text mb-1 text-center uppercase">TEAM & STORE GALLERY</h3>
             <p class="text-center text-xs text-gray-400 mb-6">Authentic gear captured live from Kingston tracks and our athletic showroom (Click any photo to enlarge)</p>
             
-            <div class="flex md:grid md:grid-cols-4 gap-4 overflow-x-auto no-scrollbar snap-x pb-4">
-                
-                <!-- Gallery Item 1 -->
-                <div class="min-w-[240px] sm:min-w-[280px] md:min-w-0 snap-start bg-brand-card border border-gray-800 rounded-2xl overflow-hidden group shrink-0 cursor-pointer" onclick="openImageZoom('image12.jpg', 'Champs Preparation 2026 — Kingston National Stadium')">
-                    <div class="overflow-hidden relative">
-                        <img src="image12.jpg" class="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition duration-300" alt="Champs Prep">
-                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                            <span class="bg-brand-gold text-black font-black text-xs px-3 py-1 rounded-full shadow-lg"><i class="fa-solid fa-expand mr-1"></i> View Larger</span>
+            <div class="w-full overflow-x-auto no-scrollbar touch-pan-x pb-4">
+                <div class="flex md:grid md:grid-cols-4 gap-4 w-max md:w-full">
+                    
+                    <div class="min-w-[240px] sm:min-w-[280px] md:min-w-0 bg-brand-card border border-gray-800 rounded-2xl overflow-hidden group shrink-0 cursor-pointer" onclick="openImageZoom('image12.jpg', 'Champs Preparation 2026 — Kingston National Stadium')">
+                        <div class="overflow-hidden relative">
+                            <img src="image12.jpg" class="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition duration-300" alt="Champs Prep">
+                            <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                                <span class="bg-brand-gold text-black font-black text-xs px-3 py-1 rounded-full shadow-lg"><i class="fa-solid fa-expand mr-1"></i> View Larger</span>
+                            </div>
+                        </div>
+                        <div class="p-3">
+                            <p class="text-xs font-bold text-white">Champs Preparation 2026</p>
+                            <p class="text-[10px] text-gray-400">Kingston National Stadium</p>
                         </div>
                     </div>
-                    <div class="p-3">
-                        <p class="text-xs font-bold text-white">Champs Preparation 2026</p>
-                        <p class="text-[10px] text-gray-400">Kingston National Stadium</p>
-                    </div>
-                </div>
 
-                <!-- Gallery Item 2 -->
-                <div class="min-w-[240px] sm:min-w-[280px] md:min-w-0 snap-start bg-brand-card border border-gray-800 rounded-2xl overflow-hidden group shrink-0 cursor-pointer" onclick="openImageZoom('image10.jpg', 'Pro Track Spikes Setup — Premium Spike Fittings')">
-                    <div class="overflow-hidden relative">
-                        <img src="image10.jpg" class="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition duration-300" alt="Pro Spikes">
-                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                            <span class="bg-brand-gold text-black font-black text-xs px-3 py-1 rounded-full shadow-lg"><i class="fa-solid fa-expand mr-1"></i> View Larger</span>
+                    <div class="min-w-[240px] sm:min-w-[280px] md:min-w-0 bg-brand-card border border-gray-800 rounded-2xl overflow-hidden group shrink-0 cursor-pointer" onclick="openImageZoom('image10.jpg', 'Pro Track Spikes Setup — Premium Spike Fittings')">
+                        <div class="overflow-hidden relative">
+                            <img src="image10.jpg" class="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition duration-300" alt="Pro Spikes">
+                            <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                                <span class="bg-brand-gold text-black font-black text-xs px-3 py-1 rounded-full shadow-lg"><i class="fa-solid fa-expand mr-1"></i> View Larger</span>
+                            </div>
+                        </div>
+                        <div class="p-3">
+                            <p class="text-xs font-bold text-white">Pro Track Spikes Setup</p>
+                            <p class="text-[10px] text-gray-400">Premium Spike Fittings</p>
                         </div>
                     </div>
-                    <div class="p-3">
-                        <p class="text-xs font-bold text-white">Pro Track Spikes Setup</p>
-                        <p class="text-[10px] text-gray-400">Premium Spike Fittings</p>
-                    </div>
-                </div>
 
-                <!-- Gallery Item 3 -->
-                <div class="min-w-[240px] sm:min-w-[280px] md:min-w-0 snap-start bg-brand-card border border-gray-800 rounded-2xl overflow-hidden group shrink-0 cursor-pointer" onclick="openImageZoom('image9.jpg', 'Football Team Kits — Custom Jerseys & Shin Guards')">
-                    <div class="overflow-hidden relative">
-                        <img src="image9.jpg" class="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition duration-300" alt="Football Kits">
-                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                            <span class="bg-brand-gold text-black font-black text-xs px-3 py-1 rounded-full shadow-lg"><i class="fa-solid fa-expand mr-1"></i> View Larger</span>
+                    <div class="min-w-[240px] sm:min-w-[280px] md:min-w-0 bg-brand-card border border-gray-800 rounded-2xl overflow-hidden group shrink-0 cursor-pointer" onclick="openImageZoom('image9.jpg', 'Football Team Kits — Custom Jerseys & Shin Guards')">
+                        <div class="overflow-hidden relative">
+                            <img src="image9.jpg" class="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition duration-300" alt="Football Kits">
+                            <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                                <span class="bg-brand-gold text-black font-black text-xs px-3 py-1 rounded-full shadow-lg"><i class="fa-solid fa-expand mr-1"></i> View Larger</span>
+                            </div>
+                        </div>
+                        <div class="p-3">
+                            <p class="text-xs font-bold text-white">Football Team Kits</p>
+                            <p class="text-[10px] text-gray-400">Custom Jerseys & Shin Guards</p>
                         </div>
                     </div>
-                    <div class="p-3">
-                        <p class="text-xs font-bold text-white">Football Team Kits</p>
-                        <p class="text-[10px] text-gray-400">Custom Jerseys & Shin Guards</p>
-                    </div>
-                </div>
 
-                <!-- Gallery Item 4 -->
-                <div class="min-w-[240px] sm:min-w-[280px] md:min-w-0 snap-start bg-brand-card border border-gray-800 rounded-2xl overflow-hidden group shrink-0 cursor-pointer" onclick="openImageZoom('image11.jpg', 'Sprint & Agility Gear — Speed Ladders & Batons')">
-                    <div class="overflow-hidden relative">
-                        <img src="image11.jpg" class="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition duration-300" alt="Agility Gear">
-                        <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                            <span class="bg-brand-gold text-black font-black text-xs px-3 py-1 rounded-full shadow-lg"><i class="fa-solid fa-expand mr-1"></i> View Larger</span>
+                    <div class="min-w-[240px] sm:min-w-[280px] md:min-w-0 bg-brand-card border border-gray-800 rounded-2xl overflow-hidden group shrink-0 cursor-pointer" onclick="openImageZoom('image11.jpg', 'Sprint & Agility Gear — Speed Ladders & Batons')">
+                        <div class="overflow-hidden relative">
+                            <img src="image11.jpg" class="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition duration-300" alt="Agility Gear">
+                            <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+                                <span class="bg-brand-gold text-black font-black text-xs px-3 py-1 rounded-full shadow-lg"><i class="fa-solid fa-expand mr-1"></i> View Larger</span>
+                            </div>
+                        </div>
+                        <div class="p-3">
+                            <p class="text-xs font-bold text-white">Sprint & Agility Gear</p>
+                            <p class="text-[10px] text-gray-400">Speed Ladders & Batons</p>
                         </div>
                     </div>
-                    <div class="p-3">
-                        <p class="text-xs font-bold text-white">Sprint & Agility Gear</p>
-                        <p class="text-[10px] text-gray-400">Speed Ladders & Batons</p>
-                    </div>
-                </div>
 
+                </div>
             </div>
         </div>
     </section>
 
     <!-- ORGANIZED FOOTER -->
-    <footer class="bg-black text-gray-400 py-10 border-t border-brand-gold/30">
+    <footer class="bg-black text-gray-400 py-10 border-t border-brand-gold/30 w-full">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
             <div>
                 <h4 class="text-base sm:text-lg font-black text-white gold-gradient-text mb-3">PRINCE ATHLETICS</h4>
