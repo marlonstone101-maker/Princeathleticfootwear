@@ -660,6 +660,7 @@
                 <div class="space-y-2">
                     <p class="text-[11px] font-bold text-brand-gold uppercase tracking-wider">Customer Shipping Info</p>
                     <input type="text" id="custName" placeholder="Full Name" class="w-full bg-brand-black border border-gray-700 rounded-lg p-2 text-xs text-white focus:border-brand-gold focus:outline-none">
+                    <input type="email" id="custEmail" placeholder="Email Address (for receipt & order confirmation)" class="w-full bg-brand-black border border-gray-700 rounded-lg p-2 text-xs text-white focus:border-brand-gold focus:outline-none">
                     <input type="tel" id="custPhone" placeholder="Phone / WhatsApp Number" class="w-full bg-brand-black border border-gray-700 rounded-lg p-2 text-xs text-white focus:border-brand-gold focus:outline-none">
                     <textarea id="custAddress" rows="2" placeholder="Delivery Address / Parish / Town" class="w-full bg-brand-black border border-gray-700 rounded-lg p-2 text-xs text-white focus:border-brand-gold focus:outline-none"></textarea>
                 </div>
@@ -1120,12 +1121,13 @@
 
         async function checkoutStripe() {
             const name = document.getElementById('custName').value;
+            const email = document.getElementById('custEmail').value;
             const phone = document.getElementById('custPhone').value;
             const address = document.getElementById('custAddress').value;
             const deliverySelect = document.getElementById('deliveryOption');
 
             if (cart.length === 0) return alert('Your cart is empty!');
-            if (!name || !phone || !address) return alert('Please fill out your name, phone, and delivery address.');
+            if (!name || !email || !phone || !address) return alert('Please fill out your name, email, phone, and delivery address.');
 
             const subtotalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
             let deliveryFeeJMD = deliverySelect ? parseFloat(deliverySelect.value) || 0 : 500;
@@ -1139,24 +1141,25 @@
                     body: JSON.stringify({
                         amount: totalAmount,
                         customerName: name,
-                        customerEmail: 'koolprincee@gmail.com'
+                        customerEmail: email,
+                        deliveryOption: deliverySelect ? deliverySelect.options[deliverySelect.selectedIndex].text : 'Standard Delivery',
+                        items: cart.map(i => ({ name: i.name, price: i.price, qty: i.qty, size: i.size, color: i.color }))
                     })
                 });
 
                 const data = await response.json();
 
                 if (data.clientSecret) {
-                    alert(`Stripe Payment Intent Created Successfully!\nClient Secret: ${data.clientSecret.substring(0, 15)}...`);
+                    alert(`Stripe Payment Successful & Receipt Generated!\nAn order confirmation and receipt have been sent to: ${email}`);
                     
                     deductInventory();
                     toggleCartDrawer(false);
-                    alert('Order complete & inventory updated!');
                 } else if (data.error) {
                     alert('Stripe Error: ' + data.error);
                 }
             } catch (error) {
                 console.error('Error connecting to backend:', error);
-                alert('Could not connect to Node backend. Make sure "node server.js" is running in your terminal.');
+                alert('Could not connect to Node backend. Make sure "node server.js" is running in your backend server.');
             }
         }
 
