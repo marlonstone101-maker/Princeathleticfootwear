@@ -69,7 +69,19 @@
                 <button onclick="toggleCartDrawer()" class="text-gray-400 hover:text-white text-xl p-1"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div id="cartItems" class="flex-1 overflow-y-auto space-y-3 mb-4 pr-1"></div>
-            <div class="border-t border-gray-800 pt-3 space-y-3 shrink-0">
+            
+            <!-- Delivery Options Section -->
+            <div class="border-t border-gray-800 pt-3 space-y-2 shrink-0">
+                <label class="block text-[11px] font-bold text-brand-gold uppercase tracking-wider">Select Delivery Location & Option</label>
+                <select id="deliveryOption" onchange="updateCartUI()" class="w-full bg-brand-black border border-gray-700 rounded-lg p-2 text-xs text-white focus:border-brand-gold focus:outline-none font-bold">
+                    <option value="500">Kingston, Portmore, Spanish Town — $500 JMD / USD Eq</option>
+                    <option value="1000">Other Areas (Tara Courier / Knutsford Express) — $1000 JMD / USD Eq</option>
+                    <option value="0">Pickup / In-Store — Free</option>
+                </select>
+                <p class="text-[10px] text-gray-400 italic">Shipping handled via Kingston, Portmore, Spanish Town delivery or Tara Courier / Knutsford Express.</p>
+            </div>
+
+            <div class="border-t border-gray-800 pt-3 space-y-3 shrink-0 mt-2">
                 <div class="flex justify-between font-bold text-sm sm:text-lg">
                     <span>Total Amount:</span>
                     <span id="cartTotal" class="text-brand-green">$0.00 USD</span>
@@ -243,16 +255,17 @@
             const container = document.getElementById('cartItems');
             const cartCount = document.getElementById('cartCount');
             const cartTotal = document.getElementById('cartTotal');
+            const deliverySelect = document.getElementById('deliveryOption');
 
             if (!container) return;
             container.innerHTML = '';
-            let total = 0, count = 0;
+            let subtotal = 0, count = 0;
 
             if (cart.length === 0) {
                 container.innerHTML = `<p class="text-center text-gray-500 py-8 text-xs">Your shopping cart is empty.</p>`;
             } else {
                 cart.forEach(item => {
-                    total += item.price * item.qty;
+                    subtotal += item.price * item.qty;
                     count += item.qty;
                     
                     const sizeBadge = item.size ? `<span class="bg-brand-gold/20 text-brand-gold text-[10px] px-1.5 py-0.5 rounded font-bold">Size: ${item.size}</span>` : '';
@@ -279,8 +292,12 @@
                 });
             }
 
+            let deliveryFeeJMD = deliverySelect ? parseFloat(deliverySelect.value) || 0 : 500;
+            let deliveryFeeUSD = deliveryFeeJMD > 0 ? deliveryFeeJMD / 150 : 0; 
+            let finalTotal = subtotal + deliveryFeeUSD;
+
             cartCount.textContent = count;
-            cartTotal.textContent = `$${total.toFixed(2)} USD`;
+            cartTotal.textContent = `$${finalTotal.toFixed(2)} USD (inc. delivery)`;
         }
 
         function changeQty(cartKey, delta) {
@@ -320,11 +337,17 @@
             const name = document.getElementById('custName').value;
             const phone = document.getElementById('custPhone').value;
             const address = document.getElementById('custAddress').value;
+            const deliverySelect = document.getElementById('deliveryOption');
 
             if (cart.length === 0) { alert('Your cart is empty!'); return; }
             if (!name || !phone || !address) { alert('Please fill out your name, phone, and delivery address.'); return; }
 
-            let orderSummaryText = `NEW STRIPE ORDER - PRINCE ATHLETICS (${targetCategory} Page)\n\nCustomer Name: ${name}\nPhone: ${phone}\nAddress: ${address}\nTotal: ${document.getElementById('cartTotal').textContent}\n\nItems:\n`;
+            const subtotalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            let deliveryFeeJMD = deliverySelect ? parseFloat(deliverySelect.value) || 0 : 500;
+            let deliveryFeeUSD = deliveryFeeJMD > 0 ? deliveryFeeJMD / 150 : 0;
+            const totalAmount = subtotalAmount + deliveryFeeUSD;
+
+            let orderSummaryText = `NEW STRIPE ORDER - PRINCE ATHLETICS (${targetCategory} Page)\n\nCustomer Name: ${name}\nPhone: ${phone}\nAddress: ${address}\nDelivery Option: ${deliverySelect.options[deliverySelect.selectedIndex].text}\nTotal Amount: ${document.getElementById('cartTotal').textContent}\n\nItems:\n`;
             cart.forEach(item => {
                 const sizeStr = item.size ? ` [Size: ${item.size}]` : '';
                 orderSummaryText += `- ${item.name}${sizeStr} (Qty: ${item.qty}) - $${(item.price * item.qty).toFixed(2)}\n`;
