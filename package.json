@@ -1,7 +1,33 @@
 {
+  "name": "prince-athletics-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
   "dependencies": {
     "axios": "^1.21.1",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.10",
     "express": "^5.3.0",
+    "express-rate-limit": "^8.7.3",
+    "helmet": "^8.3.0",
+    "nodemailer": "^10.3.1",
+    "stripe": "^23.1.0",
     "wipay-node": "^1.0.4"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marlonstone101-maker/prince-athletics-backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/marlonstone101-maker/prince-athletics-backend/issues"
+  },
+  "homepage": "https://github.com/marlonstone101-maker/prince-athletics-backend#readme"
 }
