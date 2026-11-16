@@ -2,7 +2,7 @@
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Apparel & Jerseys | Prince Athletics Footwear</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -22,15 +22,24 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <style>
+        /* Strict Viewport Stability Lock */
+        html, body {
+            max-width: 100vw;
+            overflow-x: hidden;
+            position: relative;
+        }
         body { font-family: 'Montserrat', sans-serif; }
         .neon-glow {
             box-shadow: 0 0 15px rgba(0, 255, 102, 0.4);
+        }
+        .stock-badge-glow {
+            box-shadow: 0 0 12px rgba(0, 255, 102, 0.6);
         }
     </style>
 </head>
 <body class="bg-brand-black text-white antialiased flex flex-col min-h-screen">
     <!-- NAVBAR -->
-    <nav class="sticky top-0 z-40 bg-brand-dark/95 backdrop-blur-md border-b border-brand-gold/30">
+    <nav class="sticky top-0 z-40 bg-brand-dark/95 backdrop-blur-md border-b border-brand-gold/30 w-full">
         <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
             <a href="index.html" class="flex items-center gap-3 group">
                 <img src="logo.jpg" onerror="this.onerror=null; this.src='https://via.placeholder.com/150/000000/00FF66?text=PRINCE';" class="h-12 w-12 object-contain rounded-full border-2 border-brand-gold">
@@ -49,11 +58,11 @@
         </div>
     </nav>
 
-    <!-- CATALOG CONTENT (2-ROW MOBILE OPTIMIZED GRID) -->
-    <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-8 sm:py-12 flex-1 w-full">
+    <!-- CATALOG CONTENT (STABLE 2-COLUMN MOBILE & 4-COLUMN DESKTOP GRID) -->
+    <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-8 sm:py-12 flex-1 w-full max-w-full overflow-hidden">
         <h2 id="categoryTitle" class="text-2xl sm:text-3xl font-black italic text-yellow-400 uppercase mb-2">Category Catalog</h2>
         <p class="text-xs text-gray-400 mb-8">Authentic apparel, jerseys, and gear available for this section.</p>
-        <div id="categoryProductGrid" class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6"></div>
+        <div id="categoryProductGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 w-full"></div>
     </main>
 
     <!-- IMAGE LIGHTBOX MODAL (OPEN / CLOSE) -->
@@ -168,47 +177,52 @@
             filtered.forEach(product => {
                 const isOutOfStock = product.stock <= 0;
                 let optionSelectorHtml = `
-                    <div class="mt-2 space-y-1.5">
+                    <div class="mt-2 space-y-1">
                         <div>
-                            <label class="block text-[10px] text-gray-400 font-bold mb-0.5">Select Color:</label>
-                            <select id="color-${product.id}" class="w-full bg-brand-black border border-gray-700 rounded-lg p-1.5 text-xs text-white focus:border-brand-gold focus:outline-none">
-                                <option value="Black" selected>Black</option>
-                                <option value="White">White</option>
-                                <option value="Red">Red</option>
-                                <option value="Blue">Blue</option>
-                                <option value="Gold">Gold</option>
+                            <select id="color-${product.id}" class="w-full bg-brand-black border border-gray-700 rounded px-2 py-1 text-[11px] text-white focus:border-brand-gold focus:outline-none">
+                                <option value="Black" selected>Color: Black</option>
+                                <option value="White">Color: White</option>
+                                <option value="Red">Color: Red</option>
+                                <option value="Blue">Color: Blue</option>
+                                <option value="Gold">Color: Gold</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[10px] text-gray-400 font-bold mb-0.5">Select Size / Fit:</label>
-                            <select id="size-${product.id}" class="w-full bg-brand-black border border-gray-700 rounded-lg p-1.5 text-xs text-white focus:border-brand-gold focus:outline-none">
-                                <option value="S">Small (S)</option>
-                                <option value="M">Medium (M)</option>
-                                <option value="L" selected>Large (L)</option>
-                                <option value="XL">X-Large (XL)</option>
-                                <option value="XXL">XX-Large (XXL)</option>
+                            <select id="size-${product.id}" class="w-full bg-brand-black border border-gray-700 rounded px-2 py-1 text-[11px] text-white focus:border-brand-gold focus:outline-none">
+                                <option value="S">Size: Small (S)</option>
+                                <option value="M">Size: Medium (M)</option>
+                                <option value="L" selected>Size: Large (L)</option>
+                                <option value="XL">Size: X-Large (XL)</option>
+                                <option value="XXL">Size: 2XL</option>
                             </select>
                         </div>
                     </div>
                 `;
 
                 grid.innerHTML = grid.innerHTML + `
-                    <div class="bg-brand-card border border-gray-800 rounded-2xl overflow-hidden flex flex-col justify-between group p-3">
-                        <div class="h-32 sm:h-44 bg-black/40 flex items-center justify-center p-2 relative cursor-pointer rounded-xl mb-2" onclick="openImageModal('${product.image}')">
-                            <img src="${product.image}" class="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300" alt="${product.name}">
-                            <span class="absolute top-2 left-2 bg-brand-green/20 text-brand-green font-bold text-[9px] sm:text-[10px] px-2.5 py-0.5 rounded-full">${product.stock} In Stock</span>
-                            <span class="absolute bottom-2 right-2 bg-black/60 text-white text-[9px] px-1.5 py-0.5 rounded"><i class="fa-solid fa-expand"></i></span>
+                    <div class="bg-brand-card border border-gray-800 hover:border-brand-gold/60 rounded-xl overflow-hidden flex flex-col justify-between group p-2.5 transition duration-200 shadow-lg min-w-0">
+                        <!-- Amazon-Style Prominent Image Frame -->
+                        <div class="h-44 sm:h-52 bg-black/60 flex items-center justify-center p-2 relative cursor-pointer rounded-lg mb-2 overflow-hidden border border-gray-800/80" onclick="openImageModal('${product.image}')">
+                            <img src="${product.image}" class="max-h-full max-w-full object-contain group-hover:scale-105 transition duration-300 drop-shadow-md" alt="${product.name}">
+                            <!-- Enhanced High-Visibility In Stock Badge -->
+                            <span class="absolute top-2 left-2 bg-brand-green text-black font-black text-[10px] px-2.5 py-1 rounded-md uppercase stock-badge-glow z-10">
+                                <i class="fa-solid fa-check mr-1"></i> ${product.stock} In Stock
+                            </span>
+                            <span class="absolute bottom-1.5 right-1.5 bg-black/70 text-white text-[9px] px-1.5 py-0.5 rounded"><i class="fa-solid fa-expand"></i></span>
                         </div>
-                        <div class="flex-1 flex flex-col justify-between">
+                        <div class="flex-1 flex flex-col justify-between min-w-0">
                             <div>
-                                <span class="text-[9px] sm:text-[10px] text-brand-gold uppercase font-bold">${product.brand || 'Prince'}</span>
-                                <h3 class="text-xs sm:text-sm font-bold text-white line-clamp-2 mt-0.5">${product.name}</h3>
-                                <p class="text-[10px] sm:text-[11px] text-gray-400 mt-1 line-clamp-2">${product.desc || ''}</p>
+                                <span class="text-[9px] text-brand-gold uppercase font-bold tracking-wider">${product.brand || 'Prince'}</span>
+                                <h3 class="text-xs sm:text-sm font-bold text-white line-clamp-2 mt-0.5 leading-tight">${product.name}</h3>
+                                <p class="text-[10px] text-gray-400 mt-1 line-clamp-1">${product.desc || ''}</p>
                                 ${optionSelectorHtml}
                             </div>
-                            <div class="mt-3 pt-2.5 border-t border-gray-800 flex flex-col gap-2">
-                                <span class="text-sm sm:text-base font-black text-brand-green">$${Number(product.price).toFixed(2)}</span>
-                                <button onclick="addToCart(${product.id})" ${isOutOfStock ? 'disabled' : ''} class="${isOutOfStock ? 'bg-gray-700 text-gray-400 cursor-not-allowed' : 'bg-brand-gold hover:bg-brand-green text-black'} font-black text-[11px] sm:text-xs w-full py-2 rounded-xl uppercase transition shadow text-center">
+                            <div class="mt-2.5 pt-2 border-t border-gray-800 flex flex-col gap-2">
+                                <div class="flex items-baseline justify-between">
+                                    <span class="text-sm sm:text-base font-black text-brand-green">$${Number(product.price).toFixed(2)}</span>
+                                    <span class="text-[9px] text-gray-400 uppercase">USD</span>
+                                </div>
+                                <button onclick="addToCart(${product.id})" ${isOutOfStock ? 'disabled' : ''} class="${isOutOfStock ? 'bg-gray-700 text-gray-400 cursor-not-allowed' : 'bg-brand-gold hover:bg-brand-green text-black'} font-black text-[11px] w-full py-2 rounded-lg uppercase transition shadow text-center">
                                     ${isOutOfStock ? 'Sold Out' : 'Add to Cart'}
                                 </button>
                             </div>
