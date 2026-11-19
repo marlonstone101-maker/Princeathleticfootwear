@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const axios = require('axios');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,73 +15,108 @@ app.get('/', (req, res) => {
     res.status(200).send('Prince Athletics Footwear Backend Server (WiPay Integrated) is running successfully!');
 });
 
-
+// Create WiPay Checkout Transaction
 app.post('/api/create-wipay-transaction', async (req, res) => {
+    const accountNumber = (process.env.WIPAY_ACCOUNT_NUMBER || '').trim();
+    if (!accountNumber) {
+        console.error('Missing WIPAY_ACCOUNT_NUMBER environment variable.');
+        return res.status(500).json({ error: 'Server configuration error: WIPAY_ACCOUNT_NUMBER is not set.' });
+    }
+
+    const {
+        order_id,
+        total,
+        amount,
+        currency,
+        customer_name,
+        customer_email,
+        customer_phone,
+        customer,
+        returnUrl
+    } = req.body || {};
+
+    const finalOrderId = String(order_id || `PA-${Date.now()}`).replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 32) || `PA${Date.now()}`;
+    const finalTotal = Number(total ?? amount);
+    const customerName = customer_name || customer?.name || '';
+    const customerEmail = customer_email || customer?.email || '';
+    const customerPhone = customer_phone || customer?.phone || '';
+    const responseUrl = returnUrl || 'https://princeathletics.com/index.html';
+
+    if (!finalTotal || isNaN(finalTotal) || finalTotal <= 0) {
+        return res.status(400).json({ error: 'Invalid order total amount.' });
+    }
+
+    const formData = new URLSearchParams();
+    formData.append('account_number', accountNumber);
+    formData.append('avs', '0');
+    formData.append('country_code', 'JM');
+    formData.append('currency', currency || 'JMD');
+    formData.append('data', JSON.stringify({ order_id: finalOrderId }));
+    formData.append('environment', process.env.WIPAY_ENVIRONMENT || 'live');
+    formData.append('fee_structure', 'customer_pay');
+    formData.append('method', 'credit_card_co');
+    formData.append('order_id', finalOrderId);
+    formData.append('origin', 'PrinceAthletics');
+    formData.append('response_url', responseUrl);
+    formData.append('total', finalTotal.toFixed(2));
+
+    if (customerName) formData.append('name', customerName);
+    if (customerEmail) formData.append('email', customerEmail);
+    if (customerPhone) formData.append('phone', customerPhone);
+
     try {
-        const { items, customer, amount } = req.body;
-
-        if (!items || !customer || !amount) {
-            return res.status(400).json({ error: 'Missing required transaction fields (items, customer, amount).' });
-        }
-
-        
-        const wipayAccountNumber = process.env.WIPAY_ACCOUNT_NUMBER || '123456789';
-        const wipayApiKey = process.env.WIPAY_API_KEY || 'your_wipay_api_key_here';
-        const environment = process.env.WIPAY_ENV || 'sandbox'; // change to 'live' for production
-
-        const orderId = 'PA-' + Date.now();
-        const successUrl = 'https://wa.me/8764023170';
-        const cancelUrl = 'https://princeathleticfootwear-1.onrender.com';
-
-        // Construct WiPay payload
-        const wipayPayload = {
-            account_number: wipayAccountNumber,
-            api_key: wipayApiKey,
-            environment: environment,
-            total: Number(amount).toFixed(2),
-            order_id: orderId,
-            fee_structure: 'customer',
-            currency: 'USD',
-            country_code: 'JM',
-            return_url: successUrl,
-            cancel_url: cancelUrl,
-            customer_name: customer.name,
-            customer_email: customer.email,
-            customer_phone: customer.phone,
-            response_url: 'https://princeathleticfootwear-1.onrender.com/api/wipay-response'
-        };
-
-        // If you are using WiPay's Hosted Checkout API or direct redirect URL generation:
-        // For demonstration, we return a successful transaction response containing the payment gateway URL or client approval token.
-        // In live integration, you would post this payload to WiPay's endpoint or redirect the client.
-        
-        console.log(`[WiPay] Processing transaction ${orderId} for ${customer.name} totaling $${amount} USD`);
-
-        res.status(200).json({
-            success: true,
-            orderId: orderId,
-            paymentUrl: `https://wipaycaribbean.com/checkout/index.php?order_id=${orderId}&amount=${Number(amount).toFixed(2)}`,
-            message: 'WiPay transaction initialized successfully.'
+        const response = await fetch('https://jm.wipayfinancial.com/plugins/payments/request', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: formData.toString()
         });
 
-    } catch (error) {
-        console.error('WiPay Server Error:', error);
-        res.status(500).json({ error: error.message || 'Internal server error while processing WiPay transaction.' });
+        console.log('[WiPay HTTP Status]:', response.status, response.statusText);
+        const rawText = await response.text();
+        console.log('[WiPay Raw Response]:', rawText);
+
+        let data;
+        try {
+            data = JSON.parse(rawText);
+        } catch (parseError) {
+            return res.status(502).json({
+                success: false,
+                error: 'WiPay returned a non-JSON response',
+                status: response.status,
+                raw: rawText.slice(0, 500)
+            });
+        }
+
+        if (data && data.url) {
+            res.status(200).json({
+                success: true,
+                orderId: finalOrderId,
+                paymentUrl: data.url,
+                checkoutUrl: data.url,
+                transaction_id: data.transaction_id || null
+            });
+        } else {
+            console.error('WiPay Error:', data);
+            res.status(400).json({ error: data?.message || 'Failed to initialize WiPay checkout' });
+        }
+    } catch (err) {
+        console.error('Server Error:', err);
+        res.status(500).json({ error: 'Internal server error connecting to WiPay' });
     }
 });
 
-// WiPay IPN / Response Webhook Listener
-app.post('/api/wipay-response', (req, res) => {
+// WiPay IPN / Response Webhook Listener (supports both GET and POST)
+app.all('/api/wipay-response', (req, res) => {
     try {
-        const paymentData = req.body;
-        console.log('[WiPay IPN Webhook Received]:', paymentData);
-
-        // Here you can verify transaction status and update Firebase Firestore order fulfillment status if needed.
-
-        res.status(200).send('IPN Received Successfully');
+        const paymentData = { ...req.query, ...req.body };
+        console.log('[WiPay Response Received]:', paymentData);
+        res.status(200).send('WiPay Response Received Successfully');
     } catch (err) {
-        console.error('Error handling WiPay IPN:', err);
-        res.status(500).send('Error handling IPN');
+        console.error('Error handling WiPay response:', err);
+        res.status(500).send('Error handling WiPay response');
     }
 });
 
