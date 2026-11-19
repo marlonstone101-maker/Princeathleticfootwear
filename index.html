@@ -437,7 +437,7 @@
         </div>
     </section>
 
-    <!-- FREQUENTLY ASKED QUESTIONS (FAQ) SECTION (NEW MODERN REDESIGNED ACCORDION) -->
+    <!-- FREQUENTLY ASKED QUESTIONS (FAQ) SECTION -->
     <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
         <div class="text-center mb-10">
             <span class="inline-block bg-brand-green/20 text-brand-green text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-widest border border-brand-green/40 mb-3">
@@ -448,7 +448,6 @@
         </div>
 
         <div class="grid grid-cols-1 gap-4">
-            
             <!-- FAQ Item 1 -->
             <details class="group bg-gradient-to-r from-brand-card via-[#191919] to-brand-card border-2 border-brand-gold/30 hover:border-brand-gold rounded-2xl overflow-hidden shadow-xl transition-all duration-300 open:border-brand-gold open:shadow-[0_0_20px_rgba(255,215,0,0.2)]">
                 <summary class="flex justify-between items-center p-4 sm:p-6 cursor-pointer font-black text-xs sm:text-sm text-white group-hover:text-brand-gold select-none">
@@ -592,7 +591,6 @@
                     We offer a range of athletic footwear, including track and field spikes, running shoes, netball sneakers, football boots, throwing shoes, and selected sportswear and accessories. Our goal is to provide athletes with quality sporting products at affordable prices.
                 </div>
             </details>
-
         </div>
     </section>
 
@@ -624,7 +622,6 @@
             
             <div class="w-full overflow-x-auto no-scrollbar touch-pan-x pb-4">
                 <div class="flex md:grid md:grid-cols-5 gap-4 w-max md:w-full">
-                    
                     <div class="min-w-[240px] sm:min-w-[260px] md:min-w-0 bg-brand-card border border-gray-800 rounded-2xl overflow-hidden group shrink-0 cursor-pointer" onclick="openImageZoom('image14.jpg', 'Mark Prince & Prince Athletics Showroom — Kingston, Jamaica')">
                         <div class="overflow-hidden relative pointer-events-none">
                             <img src="image14.jpg" class="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition duration-300" alt="Owner and Business">
@@ -689,7 +686,6 @@
                             <p class="text-[10px] text-gray-400">Speed Ladders & Batons</p>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -698,8 +694,6 @@
     <!-- NEW BUSINESS INFO & EQUIPMENT CHECKLIST SECTION -->
     <section class="bg-gradient-to-b from-brand-black via-brand-dark to-brand-black py-12 border-t border-brand-gold/20 w-full">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            
-            <!-- Header Badge & Intro -->
             <div class="text-center max-w-3xl mx-auto mb-10">
                 <span class="inline-block bg-brand-gold text-black font-black text-xs px-3 py-1 rounded-full uppercase tracking-widest mb-3">
                     🇯🇲 Registered Jamaican Business
@@ -715,10 +709,7 @@
                 </p>
             </div>
 
-            <!-- Two Column Layout: Equipment Checklist & Serving/Sourcing Guarantee -->
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                
-                <!-- Left: Sports Equipment & Accessories List -->
                 <div class="lg:col-span-7 bg-brand-card/90 border border-brand-gold/40 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
                     <div class="absolute top-0 right-0 p-6 opacity-5 pointer-events-none">
                         <i class="fa-solid fa-medal text-9xl text-brand-gold"></i>
@@ -783,10 +774,7 @@
                     </div>
                 </div>
 
-                <!-- Right: Serving Jamaica & Sourcing Guarantee Card -->
                 <div class="lg:col-span-5 flex flex-col gap-6">
-                    
-                    <!-- Serving Card -->
                     <div class="bg-brand-card/90 border border-brand-green/40 rounded-3xl p-6 sm:p-8 shadow-2xl">
                         <h3 class="text-base sm:text-lg font-black text-brand-green uppercase tracking-wider mb-3 flex items-center gap-2">
                             <i class="fa-solid fa-map-location-dot"></i> Serving Jamaica 🇯🇲
@@ -796,7 +784,6 @@
                         </p>
                     </div>
 
-                    <!-- Special Sourcing Guarantee Card -->
                     <div class="bg-gradient-to-br from-brand-card to-black border-2 border-brand-gold rounded-3xl p-6 sm:p-8 shadow-2xl relative">
                         <div class="absolute -top-3 -right-3 bg-brand-gold text-black font-black text-[10px] px-3 py-1 rounded-full uppercase shadow-lg">
                             Custom Sourcing
@@ -811,11 +798,8 @@
                             <i class="fa-brands fa-whatsapp text-base"></i> Contact Prince: 18764023170
                         </a>
                     </div>
-
                 </div>
-
             </div>
-
         </div>
     </section>
 
@@ -1036,7 +1020,72 @@
         document.addEventListener('DOMContentLoaded', () => {
             initFirestoreSync();
             updateCartUI();
+            handleWiPayReturnRedirect();
         });
+
+        // Build pre-filled WhatsApp order URL
+        function buildWhatsAppOrderUrl(orderData) {
+            const { items, customer, amount, deliveryLabel } = orderData;
+            let orderMsg = `🔥 *NEW PAID ORDER (WiPay) - PRINCE ATHLETICS* 🔥\n\n`;
+            orderMsg += `👤 *Customer Name:* ${customer.name}\n`;
+            orderMsg += `📧 *Email:* ${customer.email}\n`;
+            orderMsg += `📞 *Phone:* ${customer.phone}\n`;
+            orderMsg += `📍 *Delivery Address:* ${customer.address}\n`;
+            if (deliveryLabel) {
+                orderMsg += `🚚 *Delivery Method:* ${deliveryLabel}\n`;
+            }
+            orderMsg += `\n🛒 *Items Ordered:*\n`;
+
+            items.forEach((item, idx) => {
+                orderMsg += `${idx + 1}. ${item.name} (Qty: ${item.qty} | Size: ${item.size || 'N/A'}${item.color ? ' | Color: ' + item.color : ''}) - $${(Number(item.price) * Number(item.qty)).toFixed(2)} USD\n`;
+            });
+
+            orderMsg += `\n💰 *Total Amount:* $${Number(amount).toFixed(2)} USD\n`;
+            orderMsg += `✅ *Payment Status:* Paid via WiPay`;
+
+            const encodedMessage = encodeURIComponent(orderMsg);
+            return `https://wa.me/18764023170?text=${encodedMessage}`;
+        }
+
+        // Automatically handle redirect to WhatsApp after successful WiPay return
+        async function handleWiPayReturnRedirect() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const status = (urlParams.get('status') || urlParams.get('wipay_status') || '').toLowerCase();
+            const pendingOrderRaw = localStorage.getItem('prince_pending_wipay_order');
+
+            if (pendingOrderRaw && (status === 'success' || status === 'paid' || status === 'completed')) {
+                try {
+                    const orderData = JSON.parse(pendingOrderRaw);
+                    localStorage.removeItem('prince_pending_wipay_order');
+
+                    // Clean query params from URL without reloading
+                    window.history.replaceState({}, document.title, window.location.pathname);
+
+                    // Deduct inventory if products are loaded or directly via docId
+                    if (Array.isArray(orderData.items) && db) {
+                        for (const item of orderData.items) {
+                            if (item.docId) {
+                                const docRef = db.collection("products").doc(item.docId);
+                                const docSnap = await docRef.get();
+                                if (docSnap.exists) {
+                                    const currentStock = Number(docSnap.data().stock) || 0;
+                                    await docRef.update({ stock: Math.max(0, currentStock - (Number(item.qty) || 1)) });
+                                }
+                            }
+                        }
+                    }
+
+                    cart = [];
+                    saveCartLocally();
+                    updateCartUI();
+
+                    const whatsappUrl = buildWhatsAppOrderUrl(orderData);
+                    window.location.href = whatsappUrl;
+                } catch (err) {
+                    console.error('Error processing post-WiPay WhatsApp redirect:', err);
+                }
+            }
+        }
 
         // Real-time Firestore Sync (Strict Single Source of Truth - No LocalStorage for Products)
         function initFirestoreSync() {
@@ -1250,7 +1299,7 @@
                     `;
                 }
 
-                grid.innerHTML = grid.innerHTML + `
+                grid.innerHTML += `
                     <div class="bg-brand-card border border-gray-800 rounded-2xl overflow-hidden flex flex-col justify-between p-3">
                         <div class="h-32 bg-black/40 flex items-center justify-center p-2 mb-2 cursor-pointer" onclick="openImageZoom('${escapeJsSingleQuote(sanitizeImageUrl(product.image))}', '${safeZoomName}')">
                             <img src="${safeImg}" alt="${safeName}" class="max-h-full max-w-full object-contain">
@@ -1338,7 +1387,7 @@
                         badgesHtml += `<span class="bg-brand-gold/20 text-brand-gold text-[10px] px-1.5 py-0.5 rounded font-bold">Size: ${escapeHtml(item.size)}</span>`;
                     }
 
-                    cartItemsContainer.innerHTML = cartItemsContainer.innerHTML + `
+                    cartItemsContainer.innerHTML += `
                         <div class="flex items-center justify-between bg-brand-black p-3 rounded-xl border border-gray-800">
                             <div class="flex items-center gap-3">
                                 <img src="${escapeHtml(sanitizeImageUrl(item.image))}" alt="${escapeHtml(item.name)}" class="w-12 h-12 object-cover rounded-lg">
@@ -1416,14 +1465,17 @@
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return alert('Please enter a valid email address.');
 
             const subtotalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            let deliveryFeeJMD = deliverySelect ? parseFloat(deliverySelect.value) || 0 : 500;
-            let deliveryFeeUSD = deliveryFeeJMD > 0 ? deliveryFeeJMD / 150 : 0;
+            const deliveryFeeJMD = deliverySelect ? parseFloat(deliverySelect.value) || 0 : 500;
+            const deliveryFeeUSD = deliveryFeeJMD > 0 ? deliveryFeeJMD / 150 : 0;
+            const deliveryLabel = deliverySelect ? deliverySelect.options[deliverySelect.selectedIndex].text : '';
             const totalAmount = subtotalAmount + deliveryFeeUSD;
 
             const checkoutData = {
                 items: cart,
                 customer: { name, email, phone, address },
-                amount: totalAmount
+                deliveryLabel,
+                amount: totalAmount,
+                returnUrl: window.location.origin + window.location.pathname
             };
 
             try {
@@ -1435,62 +1487,16 @@
 
                 const data = await response.json();
 
-                // Build WhatsApp order message string
-                let orderMsg = `🔥 *NEW PAID ORDER (WiPay) - PRINCE ATHLETICS* 🔥\n\n`;
-                orderMsg += `👤 *Customer Name:* ${name}\n`;
-                orderMsg += `📧 *Email:* ${email}\n`;
-                orderMsg += `📞 *Phone:* ${phone}\n`;
-                orderMsg += `📍 *Delivery Address:* ${address}\n\n`;
-                orderMsg += `🛒 *Items Ordered:*\n`;
-                
-                cart.forEach((item, idx) => {
-                    orderMsg += `${idx + 1}. ${item.name} (${item.brand || 'Prince'} | Qty: ${item.qty} | Size: ${item.size || 'N/A'}${item.color ? ' | Color: ' + item.color : ''}) - $${(item.price * item.qty).toFixed(2)} USD\n`;
-                });
-
-                orderMsg += `\n💰 *Total Amount Paid:* $${totalAmount.toFixed(2)} USD\n`;
-                orderMsg += `✅ *Payment Status:* Successful via WiPay`;
-
-                const encodedMessage = encodeURIComponent(orderMsg);
-                const whatsappUrl = `https://wa.me/18764023170?text=${encodedMessage}`;
-
-                if (data.paymentUrl) {
-                    deductInventory();
-                    toggleCartDrawer(false);
-                    window.location.href = whatsappUrl;
-                } else {
-                    alert('WiPay Payment Successful! Redirecting you to WhatsApp to send your order.');
-                    deductInventory();
-                    toggleCartDrawer(false);
-                    window.location.href = whatsappUrl;
+                if (!response.ok || !data.paymentUrl) {
+                    throw new Error(data.error || 'Could not start WiPay checkout');
                 }
+
+                // Save order locally so when WiPay redirects back on success, WhatsApp opens with the full order
+                localStorage.setItem('prince_pending_wipay_order', JSON.stringify(checkoutData));
+                window.location.href = data.paymentUrl;
             } catch (error) {
                 console.error('Error connecting to backend:', error);
-                
-                // Fallback direct WhatsApp redirect with order details if backend is offline/unreachable
-                let orderMsg = `🔥 *NEW PAID ORDER (WiPay) - PRINCE ATHLETICS* 🔥\n\n`;
-                orderMsg += `👤 *Customer Name:* ${name}\n`;
-                orderMsg += `📧 *Email:* ${email}\n`;
-                orderMsg += `📞 *Phone:* ${phone}\n`;
-                orderMsg += `📍 *Delivery Address:* ${address}\n\n`;
-                orderMsg += `🛒 *Items Ordered:*\n`;
-                
-                cart.forEach((item, idx) => {
-                    orderMsg += `${idx + 1}. ${item.name} (Qty: ${item.qty} | Size: ${item.size || 'N/A'}${item.color ? ' | Color: ' + item.color : ''}) - $${(item.price * item.qty).toFixed(2)} USD\n`;
-                });
-
-                const subtotalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-                let deliveryFeeJMD = deliverySelect ? parseFloat(deliverySelect.value) || 0 : 500;
-                let deliveryFeeUSD = deliveryFeeJMD > 0 ? deliveryFeeJMD / 150 : 0;
-                orderMsg += `\n💰 *Total Amount:* $${(subtotalAmount + deliveryFeeUSD).toFixed(2)} USD\n`;
-                orderMsg += `✅ *Payment Status:* Paid via WiPay`;
-
-                const encodedMessage = encodeURIComponent(orderMsg);
-                const whatsappUrl = `https://wa.me/18764023170?text=${encodedMessage}`;
-
-                alert('WiPay Payment Confirmed! Sending order to WhatsApp.');
-                deductInventory();
-                toggleCartDrawer(false);
-                window.location.href = whatsappUrl;
+                alert('Could not connect to WiPay checkout. Please try again.');
             }
         }
 
@@ -1594,7 +1600,7 @@
                 const safeId = Number(p.id);
                 const safeStock = Math.max(0, parseInt(p.stock) || 0);
                 const safeDocId = escapeJsSingleQuote(p.docId || '');
-                container.innerHTML = container.innerHTML + `
+                container.innerHTML += `
                     <div class="flex items-center justify-between bg-brand-black p-2 rounded border border-gray-800 text-xs">
                         <span class="truncate font-bold text-white w-1/2">${escapeHtml(p.name)}</span>
                         <div class="flex items-center gap-2">

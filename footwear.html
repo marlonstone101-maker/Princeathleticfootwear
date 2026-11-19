@@ -141,7 +141,72 @@
         document.addEventListener('DOMContentLoaded', () => {
             initFirestoreSync();
             updateCartUI();
+            handleWiPayReturnRedirect();
         });
+
+        // Build pre-filled WhatsApp order URL
+        function buildWhatsAppOrderUrl(orderData) {
+            const { items, customer, amount, deliveryLabel } = orderData;
+            let orderMsg = `🔥 *NEW PAID ORDER (WiPay) - PRINCE ATHLETICS* 🔥\n\n`;
+            orderMsg += `👤 *Customer Name:* ${customer.name}\n`;
+            orderMsg += `📧 *Email:* ${customer.email}\n`;
+            orderMsg += `📞 *Phone:* ${customer.phone}\n`;
+            orderMsg += `📍 *Delivery Address:* ${customer.address}\n`;
+            if (deliveryLabel) {
+                orderMsg += `🚚 *Delivery Method:* ${deliveryLabel}\n`;
+            }
+            orderMsg += `\n🛒 *Items Ordered:*\n`;
+
+            items.forEach((item, idx) => {
+                orderMsg += `${idx + 1}. ${item.name} (${item.brand || 'Prince'} | Qty: ${item.qty} | Size: ${item.size || 'N/A'}) - $${(Number(item.price) * Number(item.qty)).toFixed(2)} USD\n`;
+            });
+
+            orderMsg += `\n💰 *Total Amount Paid:* $${Number(amount).toFixed(2)} USD\n`;
+            orderMsg += `✅ *Payment Status:* Successful via WiPay`;
+
+            const encodedMessage = encodeURIComponent(orderMsg);
+            return `https://wa.me/18764023170?text=${encodedMessage}`;
+        }
+
+        // Automatically handle redirect to WhatsApp after successful WiPay return
+        async function handleWiPayReturnRedirect() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const status = (urlParams.get('status') || urlParams.get('wipay_status') || '').toLowerCase();
+            const pendingOrderRaw = localStorage.getItem('prince_pending_wipay_order');
+
+            if (pendingOrderRaw && (status === 'success' || status === 'paid' || status === 'completed')) {
+                try {
+                    const orderData = JSON.parse(pendingOrderRaw);
+                    localStorage.removeItem('prince_pending_wipay_order');
+
+                    // Clean query params from URL without reloading
+                    window.history.replaceState({}, document.title, window.location.pathname);
+
+                    // Deduct inventory in Firestore
+                    if (Array.isArray(orderData.items) && db) {
+                        for (const item of orderData.items) {
+                            if (item.docId) {
+                                const docRef = db.collection("products").doc(item.docId);
+                                const docSnap = await docRef.get();
+                                if (docSnap.exists) {
+                                    const currentStock = Number(docSnap.data().stock) || 0;
+                                    await docRef.update({ stock: Math.max(0, currentStock - (Number(item.qty) || 1)) });
+                                }
+                            }
+                        }
+                    }
+
+                    cart = [];
+                    saveCartLocally();
+                    updateCartUI();
+
+                    const whatsappUrl = buildWhatsAppOrderUrl(orderData);
+                    window.location.href = whatsappUrl;
+                } catch (err) {
+                    console.error('Error processing post-WiPay WhatsApp redirect:', err);
+                }
+            }
+        }
 
         // Real-time Firestore Sync
         function initFirestoreSync() {
@@ -353,24 +418,27 @@
         }
 
         async function checkoutWiPay() {
-            const name = document.getElementById('custName').value;
-            const email = document.getElementById('custEmail').value;
-            const phone = document.getElementById('custPhone').value;
-            const address = document.getElementById('custAddress').value;
+            const name = document.getElementById('custName').value.trim();
+            const email = document.getElementById('custEmail').value.trim();
+            const phone = document.getElementById('custPhone').value.trim();
+            const address = document.getElementById('custAddress').value.trim();
             const deliverySelect = document.getElementById('deliveryOption');
 
             if (cart.length === 0) { alert('Your cart is empty!'); return; }
             if (!name || !email || !phone || !address) { alert('Please fill out your name, email, phone, and delivery address.'); return; }
 
             const subtotalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            let deliveryFeeJMD = deliverySelect ? parseFloat(deliverySelect.value) || 0 : 500;
-            let deliveryFeeUSD = deliveryFeeJMD > 0 ? deliveryFeeJMD / 150 : 0;
+            const deliveryFeeJMD = deliverySelect ? parseFloat(deliverySelect.value) || 0 : 500;
+            const deliveryFeeUSD = deliveryFeeJMD > 0 ? deliveryFeeJMD / 150 : 0;
+            const deliveryLabel = deliverySelect ? deliverySelect.options[deliverySelect.selectedIndex].text : '';
             const totalAmount = subtotalAmount + deliveryFeeUSD;
 
             const checkoutData = {
                 items: cart,
                 customer: { name, email, phone, address },
-                amount: totalAmount
+                deliveryLabel,
+                amount: totalAmount,
+                returnUrl: window.location.origin + window.location.pathname
             };
 
             try {
@@ -382,63 +450,16 @@
 
                 const data = await response.json();
 
-                // Build WhatsApp order message string
-                let orderMsg = `🔥 *NEW PAID ORDER (WiPay) - PRINCE ATHLETICS* 🔥\n\n`;
-                orderMsg += `👤 *Customer Name:* ${name}\n`;
-                orderMsg += `📧 *Email:* ${email}\n`;
-                orderMsg += `📞 *Phone:* ${phone}\n`;
-                orderMsg += `📍 *Delivery Address:* ${address}\n\n`;
-                orderMsg += `🛒 *Items Ordered:*\n`;
-                
-                cart.forEach((item, idx) => {
-                    orderMsg += `${idx + 1}. ${item.name} (${item.brand || 'Prince'} | Qty: ${item.qty} | Size: ${item.size || 'N/A'}) - $${(item.price * item.qty).toFixed(2)} USD\n`;
-                });
-
-                orderMsg += `\n💰 *Total Amount Paid:* $${totalAmount.toFixed(2)} USD\n`;
-                orderMsg += `✅ *Payment Status:* Successful via WiPay`;
-
-                const encodedMessage = encodeURIComponent(orderMsg);
-                const whatsappUrl = `https://wa.me/8764023170?text=${encodedMessage}`;
-
-                if (data.paymentUrl) {
-                    deductInventory();
-                    toggleCartDrawer(false);
-                    window.location.href = whatsappUrl;
-                } else {
-                    alert('WiPay Payment Successful! Redirecting you to WhatsApp to send your order.');
-                    deductInventory();
-                    toggleCartDrawer(false);
-                    window.location.href = whatsappUrl;
+                if (!response.ok || !data.paymentUrl) {
+                    throw new Error(data.error || 'Could not start WiPay checkout');
                 }
+
+                // Save order locally so when WiPay redirects back on success, WhatsApp opens with the full order
+                localStorage.setItem('prince_pending_wipay_order', JSON.stringify(checkoutData));
+                window.location.href = data.paymentUrl;
             } catch (error) {
                 console.error('Error connecting to backend:', error);
-                
-                // Fallback direct WhatsApp redirect with order details if backend is offline/unreachable
-                let orderMsg = `🔥 *NEW PAID ORDER (WiPay) - PRINCE ATHLETICS* 🔥\n\n`;
-                orderMsg += `👤 *Customer Name:* ${name}\n`;
-                orderMsg += `📧 *Email:* ${email}\n`;
-                orderMsg += `📞 *Phone:* ${phone}\n`;
-                orderMsg += `📍 *Delivery Address:* ${address}\n\n`;
-                orderMsg += `🛒 *Items Ordered:*\n`;
-                
-                cart.forEach((item, idx) => {
-                    orderMsg += `${idx + 1}. ${item.name} (Qty: ${item.qty} | Size: ${item.size || 'N/A'}) - $${(item.price * item.qty).toFixed(2)} USD\n`;
-                });
-
-                const subtotalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-                let deliveryFeeJMD = deliverySelect ? parseFloat(deliverySelect.value) || 0 : 500;
-                let deliveryFeeUSD = deliveryFeeJMD > 0 ? deliveryFeeJMD / 150 : 0;
-                orderMsg += `\n💰 *Total Amount:* $${(subtotalAmount + deliveryFeeUSD).toFixed(2)} USD\n`;
-                orderMsg += `✅ *Payment Status:* Paid via WiPay`;
-
-                const encodedMessage = encodeURIComponent(orderMsg);
-                const whatsappUrl = `https://wa.me/1
-                18764023170?text=${encodedMessage}`;
-
-                alert('WiPay Payment Confirmed! Sending order to WhatsApp.');
-                deductInventory();
-                toggleCartDrawer(false);
-                window.location.href = whatsappUrl;
+                alert('Could not connect to WiPay checkout. Please try again.');
             }
         }
 

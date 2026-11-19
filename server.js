@@ -52,18 +52,31 @@ app.post('/api/create-wipay-transaction', async (req, res) => {
             response_url: 'https://princeathleticfootwear-1.onrender.com/api/wipay-response'
         };
 
-        // If you are using WiPay's Hosted Checkout API or direct redirect URL generation:
-        // For demonstration, we return a successful transaction response containing the payment gateway URL or client approval token.
-        // In live integration, you would post this payload to WiPay's endpoint or redirect the client.
-        
-        console.log(`[WiPay] Processing transaction ${orderId} for ${customer.name} totaling $${amount} USD`);
+        const wipayResponse = await fetch('https://jm.wipayfinancial.com/plugins/payments/request', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(wipayPayload)
+    });
 
-        res.status(200).json({
-            success: true,
-            orderId: orderId,
-            paymentUrl: `https://wipaycaribbean.com/checkout/index.php?order_id=${orderId}&amount=${Number(amount).toFixed(2)}`,
-            message: 'WiPay transaction initialized successfully.'
-        });
+    const wipayData = await wipayResponse.json();
+
+    if (!wipayResponse.ok || !wipayData.url) {
+      return res.status(400).json({
+        success: false,
+        error: wipayData.message || 'WiPay failed to generate payment URL'
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      orderId,
+      paymentUrl: wipayData.url,
+      transaction_id: wipayData.transaction_id || null,
+      message: 'WiPay transaction initialized successfully.'
+    });
 
     } catch (error) {
         console.error('WiPay Server Error:', error);
