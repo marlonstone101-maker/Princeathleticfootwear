@@ -863,8 +863,8 @@
             <div class="border-t border-gray-800 pt-3 space-y-2 shrink-0">
                 <label class="block text-[11px] font-bold text-brand-gold uppercase tracking-wider">Select Delivery Location & Option</label>
                 <select id="deliveryOption" onchange="updateCartUI()" class="w-full bg-brand-black border border-gray-700 rounded-lg p-2 text-xs text-white focus:border-brand-gold focus:outline-none font-bold">
-                    <option value="500">Kingston, Portmore, Spanish Town — $500 JMD / USD Eq</option>
-                    <option value="1000">Other Areas (Tara Courier / Knutsford Express) — $1000 JMD / USD Eq</option>
+                    <option value="500">Kingston, Portmore, Spanish Town — $500 JMD</option>
+                    <option value="1000">Other Areas (Tara Courier / Knutsford Express) — $1000 JMD</option>
                     <option value="0">Pickup / In-Store — Free</option>
                 </select>
                 <p class="text-[10px] text-gray-400 italic">Shipping handled via Kingston, Portmore, Spanish Town delivery or Tara Courier / Knutsford Express.</p>
@@ -873,7 +873,7 @@
             <div class="border-t border-gray-800 pt-3 space-y-3 shrink-0 mt-2">
                 <div class="flex justify-between font-bold text-sm sm:text-lg">
                     <span>Total Amount:</span>
-                    <span id="cartTotal" class="text-brand-green">$0.00 USD</span>
+                    <span id="cartTotal" class="text-brand-green">$0.00 JMD</span>
                 </div>
                 <div class="space-y-2">
                     <p class="text-[11px] font-bold text-brand-gold uppercase tracking-wider">Customer Shipping Info</p>
@@ -922,8 +922,8 @@
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-bold text-gray-300 mb-1">Price ($ USD)</label>
-                        <input type="number" step="0.01" id="pPrice" required placeholder="189.99" class="w-full bg-brand-black border border-gray-700 rounded-lg p-2.5 text-xs text-white focus:border-brand-gold focus:outline-none">
+                        <label class="block text-xs font-bold text-gray-300 mb-1">Price ($ JMD)</label>
+                        <input type="number" step="0.01" id="pPrice" required placeholder="15000.00" class="w-full bg-brand-black border border-gray-700 rounded-lg p-2.5 text-xs text-white focus:border-brand-gold focus:outline-none">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-300 mb-1">Category</label>
@@ -1037,10 +1037,10 @@
             orderMsg += `\n🛒 *Items Ordered:*\n`;
 
             items.forEach((item, idx) => {
-                orderMsg += `${idx + 1}. ${item.name} (Qty: ${item.qty} | Size: ${item.size || 'N/A'}${item.color ? ' | Color: ' + item.color : ''}) - $${(Number(item.price) * Number(item.qty)).toFixed(2)} USD\n`;
+                orderMsg += `${idx + 1}. ${item.name} (Qty: ${item.qty} | Size: ${item.size || 'N/A'}${item.color ? ' | Color: ' + item.color : ''}) - $${(Number(item.price) * Number(item.qty)).toFixed(2)} JMD\n`;
             });
 
-            orderMsg += `\n💰 *Total Amount:* $${Number(amount).toFixed(2)} USD\n`;
+            orderMsg += `\n💰 *Total Amount:* $${Number(amount).toFixed(2)} JMD\n`;
             orderMsg += `✅ *Payment Status:* Paid via WiPay`;
 
             const encodedMessage = encodeURIComponent(orderMsg);
@@ -1142,7 +1142,7 @@
                         <div class="text-center px-4 max-w-3xl">
                             <span class="inline-block bg-brand-gold text-black font-black text-[10px] sm:text-xs px-3 py-1 rounded-full uppercase tracking-wider mb-2">Featured Collection • ${safeBrand}</span>
                             <h2 class="text-2xl sm:text-4xl md:text-6xl font-black italic tracking-tight text-white mb-2">${safeName}</h2>
-                            <p class="text-brand-green font-black text-base sm:text-xl mb-2">$${safePrice} USD</p>
+                            <p class="text-brand-green font-black text-base sm:text-xl mb-2">$${safePrice} JMD</p>
                             <p class="text-gray-300 text-xs sm:text-sm mb-4 line-clamp-1">${safeDesc}</p>
                             <a href="#categories" class="inline-block bg-brand-gold hover:bg-brand-green text-black font-black text-xs sm:text-base px-6 sm:px-8 py-2.5 sm:py-3 rounded-full uppercase tracking-wider shadow-lg transition">View Collection</a>
                         </div>
@@ -1193,7 +1193,7 @@
                         <div class="w-full">
                             <span class="text-[9px] text-brand-gold uppercase font-bold tracking-widest">${safeBrand} • ${safeCategory}</span>
                             <h4 class="text-xs sm:text-sm font-black text-white line-clamp-1 mt-0.5 group-hover:text-brand-gold transition">${safeName}</h4>
-                            <p class="text-xs sm:text-sm font-black text-brand-green mt-1">$${safePrice} USD</p>
+                            <p class="text-xs sm:text-sm font-black text-brand-green mt-1">$${safePrice} JMD</p>
                             <p class="text-[10px] text-gray-400 line-clamp-1 mt-1 italic">${safeDesc}</p>
                         </div>
                     </div>
@@ -1307,7 +1307,7 @@
                         <div>
                             <span class="text-[9px] text-brand-gold uppercase font-bold">${safeBrand} • ${safeCategory}</span>
                             <h4 class="text-xs font-bold text-white line-clamp-1">${safeName}</h4>
-                            <p class="text-xs font-black text-brand-green mt-1">$${safePrice}</p>
+                            <p class="text-xs font-black text-brand-green mt-1">$${safePrice} JMD</p>
                             ${optionSelectorHtml}
                         </div>
                         <button onclick="addToCart(${safeId})" ${isOutOfStock ? 'disabled' : ''} class="mt-3 ${isOutOfStock ? 'bg-gray-700 text-gray-400' : 'bg-brand-gold hover:bg-brand-green text-black'} font-black text-[11px] py-1.5 rounded-lg transition uppercase">
@@ -1394,7 +1394,7 @@
                                 <div>
                                     <h4 class="text-xs font-bold text-white">${escapeHtml(item.name)}</h4>
                                     <div class="flex flex-wrap items-center gap-1 mt-1">
-                                        <p class="text-[11px] text-brand-green font-bold mr-1">$${itemPrice.toFixed(2)}</p>
+                                        <p class="text-[11px] text-brand-green font-bold mr-1">$${itemPrice.toFixed(2)} JMD</p>
                                         ${badgesHtml}
                                     </div>
                                 </div>
@@ -1409,13 +1409,12 @@
                 });
             }
 
-            // Calculate delivery fee in USD equivalent
+            // Calculate delivery fee in JMD
             let deliveryFeeJMD = deliverySelect ? parseFloat(deliverySelect.value) || 0 : 500;
-            let deliveryFeeUSD = deliveryFeeJMD > 0 ? deliveryFeeJMD / 150 : 0; 
-            let finalTotal = subtotal + deliveryFeeUSD;
+            let finalTotal = subtotal + deliveryFeeJMD;
 
             cartCount.textContent = totalItems;
-            cartTotal.textContent = `$${finalTotal.toFixed(2)} USD (inc. delivery)`;
+            cartTotal.textContent = `$${finalTotal.toFixed(2)} JMD (inc. delivery)`;
         }
 
         function modifyCartQty(index, delta) {
@@ -1466,15 +1465,15 @@
 
             const subtotalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
             const deliveryFeeJMD = deliverySelect ? parseFloat(deliverySelect.value) || 0 : 500;
-            const deliveryFeeUSD = deliveryFeeJMD > 0 ? deliveryFeeJMD / 150 : 0;
             const deliveryLabel = deliverySelect ? deliverySelect.options[deliverySelect.selectedIndex].text : '';
-            const totalAmount = subtotalAmount + deliveryFeeUSD;
+            const totalAmount = subtotalAmount + deliveryFeeJMD;
 
             const checkoutData = {
                 items: cart,
                 customer: { name, email, phone, address },
                 deliveryLabel,
                 amount: totalAmount,
+                currency: 'JMD',
                 returnUrl: window.location.origin + window.location.pathname
             };
 

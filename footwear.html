@@ -86,8 +86,8 @@
             <div class="border-t border-gray-800 pt-3 space-y-2 shrink-0">
                 <label class="block text-[11px] font-bold text-brand-gold uppercase tracking-wider">Select Delivery Location & Option</label>
                 <select id="deliveryOption" onchange="updateCartUI()" class="w-full bg-brand-black border border-gray-700 rounded-lg p-2 text-xs text-white focus:border-brand-gold focus:outline-none font-bold">
-                    <option value="500">Kingston, Portmore, Spanish Town — $500 JMD / USD Eq</option>
-                    <option value="1000">Other Areas (Tara Courier / Knutsford Express) — $1000 JMD / USD Eq</option>
+                    <option value="500">Kingston, Portmore, Spanish Town — $500 JMD</option>
+                    <option value="1000">Other Areas (Tara Courier / Knutsford Express) — $1000 JMD</option>
                     <option value="0">Pickup / In-Store — Free</option>
                 </select>
                 <p class="text-[10px] text-gray-400 italic">Shipping handled via Kingston, Portmore, Spanish Town delivery or Tara Courier / Knutsford Express.</p>
@@ -96,7 +96,7 @@
             <div class="border-t border-gray-800 pt-3 space-y-3 shrink-0 mt-2">
                 <div class="flex justify-between font-bold text-sm sm:text-lg">
                     <span>Total Amount:</span>
-                    <span id="cartTotal" class="text-brand-green">$0.00 USD</span>
+                    <span id="cartTotal" class="text-brand-green">$0.00 JMD</span>
                 </div>
                 <div class="space-y-2">
                     <p class="text-[11px] font-bold text-brand-gold uppercase tracking-wider">Customer Shipping Info</p>
@@ -158,10 +158,10 @@
             orderMsg += `\n🛒 *Items Ordered:*\n`;
 
             items.forEach((item, idx) => {
-                orderMsg += `${idx + 1}. ${item.name} (${item.brand || 'Prince'} | Qty: ${item.qty} | Size: ${item.size || 'N/A'}) - $${(Number(item.price) * Number(item.qty)).toFixed(2)} USD\n`;
+                orderMsg += `${idx + 1}. ${item.name} (${item.brand || 'Prince'} | Qty: ${item.qty} | Size: ${item.size || 'N/A'}) - $${(Number(item.price) * Number(item.qty)).toFixed(2)} JMD\n`;
             });
 
-            orderMsg += `\n💰 *Total Amount Paid:* $${Number(amount).toFixed(2)} USD\n`;
+            orderMsg += `\n💰 *Total Amount Paid:* $${Number(amount).toFixed(2)} JMD\n`;
             orderMsg += `✅ *Payment Status:* Successful via WiPay`;
 
             const encodedMessage = encodeURIComponent(orderMsg);
@@ -281,7 +281,7 @@
                             <div class="mt-2.5 pt-2 border-t border-gray-800 flex flex-col gap-2">
                                 <div class="flex items-baseline justify-between">
                                     <span class="text-sm sm:text-base font-black text-brand-green">$${Number(product.price).toFixed(2)}</span>
-                                    <span class="text-[9px] text-gray-400 uppercase">USD</span>
+                                    <span class="text-[9px] text-gray-400 uppercase">JMD</span>
                                 </div>
                                 <button onclick="addToCart(${product.id})" ${isOutOfStock ? 'disabled' : ''} class="${isOutOfStock ? 'bg-gray-700 text-gray-400 cursor-not-allowed' : 'bg-brand-gold hover:bg-brand-green text-black'} font-black text-[11px] w-full py-2 rounded-lg uppercase transition shadow text-center">
                                     ${isOutOfStock ? 'Sold Out' : 'Add to Cart'}
@@ -361,7 +361,7 @@
                                 <div>
                                     <h4 class="text-xs font-bold text-white">${item.name}</h4>
                                     <div class="flex items-center gap-2 mt-1">
-                                        <p class="text-[11px] text-brand-green font-bold">$${item.price.toFixed(2)}</p>
+                                        <p class="text-[11px] text-brand-green font-bold">$${item.price.toFixed(2)} JMD</p>
                                         ${sizeBadge}
                                     </div>
                                 </div>
@@ -377,11 +377,10 @@
             }
 
             let deliveryFeeJMD = deliverySelect ? parseFloat(deliverySelect.value) || 0 : 500;
-            let deliveryFeeUSD = deliveryFeeJMD > 0 ? deliveryFeeJMD / 150 : 0; 
-            let finalTotal = subtotal + deliveryFeeUSD;
+            let finalTotal = subtotal + deliveryFeeJMD;
 
             cartCount.textContent = count;
-            cartTotal.textContent = `$${finalTotal.toFixed(2)} USD (inc. delivery)`;
+            cartTotal.textContent = `$${finalTotal.toFixed(2)} JMD (inc. delivery)`;
         }
 
         function changeQty(cartKey, delta) {
@@ -429,15 +428,15 @@
 
             const subtotalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
             const deliveryFeeJMD = deliverySelect ? parseFloat(deliverySelect.value) || 0 : 500;
-            const deliveryFeeUSD = deliveryFeeJMD > 0 ? deliveryFeeJMD / 150 : 0;
             const deliveryLabel = deliverySelect ? deliverySelect.options[deliverySelect.selectedIndex].text : '';
-            const totalAmount = subtotalAmount + deliveryFeeUSD;
+            const totalAmount = subtotalAmount + deliveryFeeJMD;
 
             const checkoutData = {
                 items: cart,
                 customer: { name, email, phone, address },
                 deliveryLabel,
                 amount: totalAmount,
+                currency: 'JMD',
                 returnUrl: window.location.origin + window.location.pathname
             };
 
