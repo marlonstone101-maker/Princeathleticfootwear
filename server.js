@@ -62,6 +62,7 @@ app.post('/api/create-wipay-transaction', async (req, res) => {
     });
 
     const wipayData = await wipayResponse.json();
+    console.log('[WiPay API Response]:', wipayData);
 
     if (!wipayResponse.ok || !wipayData.url) {
       return res.status(400).json({
